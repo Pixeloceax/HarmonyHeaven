@@ -1,0 +1,31 @@
+@startuml activity login and register
+!theme blueprint
+title Activity Diagram for login and register
+
+start
+:Navigate to the website;
+
+if(User have an account) then (yes)
+:Click on the login button;
+:Complete login form;
+
+
+else (no)
+:Click on the register button;
+:Complete register form;
+endif
+while(Valid input) is (no)
+:Display error message;
+:update the informations;
+
+endwhile (yes)
+:Display success message;
+
+fork
+:Redirect to the DashBoard page;
+fork again
+:Redirect to the cart page;
+endfork
+stop
+
+@enduml

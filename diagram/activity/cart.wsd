@@ -1,0 +1,60 @@
+@startuml
+!theme blueprint
+title Activity Diagram for PlaceOrder
+
+start
+: User selects products;
+: User views selected products;
+
+fork
+  : Selects quantity;
+fork again
+  : Selects colors;
+fork again
+  : Selects edition;
+endfork
+
+: User adds products to the cart;
+: User reviews the cart;
+
+while (Cart review not successful?)
+  :No;
+  :User adjusts cart or adds products and retries;
+endwhile
+:Yes;
+
+if (User logged in?) then (yes)
+  : User adds delivery information;
+  : System prompts for payment;
+
+  while (Payment not successful?)
+    : Payment failed;
+    : User adjusts payment information;
+  endwhile
+
+  : Order placed successfully;
+  stop
+
+else (no)
+  : User prompted to log in or register;
+
+  if (User chooses to log in or register) then (yes)
+    : User logs in or registers;
+    : User adds delivery information;
+    : System prompts for payment;
+
+    while (Payment not successful?)
+      : Payment failed;
+      : User adjusts payment information;
+    endwhile
+
+    : Order placed successfully;
+    stop
+
+  else (no)
+    : User cancels order;
+    stop
+  endif
+endif
+
+@enduml

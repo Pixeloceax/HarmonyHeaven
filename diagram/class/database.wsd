@@ -1,0 +1,113 @@
+@startuml class diagram
+
+skin rose
+!theme blueprint
+
+title Classes - Class Diagram
+
+class user {
+    + id
+    + name
+    + email
+    + password
+    + address
+    + phone
+    + role
+    + created_at
+    + updated_at
+}
+
+class product {
+    + id
+    + name
+    + description
+    + price
+    + image
+    + category_id
+    + created_at
+    + updated_at
+}
+
+class category {
+    + id
+    + name
+    + created_at
+    + updated_at
+}
+
+class collections {
+    + id
+    + name
+    + created_at
+    + updated_at
+}
+
+class product_category {
+    + id
+    + product_id
+    + category_id
+    + created_at
+    + updated_at
+}
+
+class cart {
+    + id
+    + user_id
+    + product_id
+    + quantity
+    + created_at
+    + updated_at
+}
+
+class page {
+    + id
+    + name
+    + content
+    + created_at
+    + updated_at
+}
+
+class order {
+    + id
+    + user_id
+    + total
+    + created_at
+    + updated_at
+}
+
+class payment {
+    + id
+    + order_id
+    + payment_method
+    + created_at
+    + updated_at
+}
+
+class delivery {
+    + id
+    + order_id
+    + delivery_method
+    + created_at
+    + updated_at
+}
+
+class deliveryInformation {
+    + id
+    + order_id
+    + name
+    + address
+    + phone
+    + created_at
+    + updated_at
+}
+
+user "1" -- "0..*" cart
+user "1" -- "0..*" order
+order "1" -- "0..*" payment
+order "1" -- "0..*" delivery
+order "1" -- "0..*" deliveryInformation
+product "1" -- "0..*" cart
+product "1" -- "0..*" product_category
+category "1" -- "0..*" product_category
+
+@enduml

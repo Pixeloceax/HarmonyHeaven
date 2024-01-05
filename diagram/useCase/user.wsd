@@ -1,0 +1,27 @@
+@startuml useCase user
+!theme blueprint
+
+skinparam actorStyle awesome
+
+actor Utilisateur as User
+left to right direction
+
+usecase "s'inscrire" as register
+usecase "se connecter" as login
+usecase "se déconnecter" as logout
+usecase "voir son profil" as profile
+usecase "rechercher un produit" as searchProduct
+usecase "voir les produits" as products
+usecase "voir le panier" as cart
+usecase "passer commande" as order
+
+User --> login
+User --> register
+User --> products
+User --> searchProduct
+User --> cart
+User --> order
+User --> profile
+User --> logout
+
+@enduml
