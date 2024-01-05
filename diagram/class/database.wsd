@@ -3,6 +3,8 @@
 skin rose
 !theme blueprint
 
+left to right direction
+
 title Classes - Class Diagram
 
 class user {
@@ -35,16 +37,9 @@ class category {
     + updated_at
 }
 
-class collections {
+class subcategory {
     + id
     + name
-    + created_at
-    + updated_at
-}
-
-class product_category {
-    + id
-    + product_id
     + category_id
     + created_at
     + updated_at
@@ -53,16 +48,15 @@ class product_category {
 class cart {
     + id
     + user_id
-    + product_id
-    + quantity
     + created_at
     + updated_at
 }
 
-class page {
+class cart_item {
     + id
-    + name
-    + content
+    + cart_id
+    + product_id
+    + quantity
     + created_at
     + updated_at
 }
@@ -75,10 +69,26 @@ class order {
     + updated_at
 }
 
-class payment {
+class order_item {
+    + id
+    + order_id
+    + product_id
+    + quantity
+    + created_at
+    + updated_at
+}
+
+class payment_method {
     + id
     + order_id
     + payment_method
+    + created_at
+    + updated_at
+}
+
+class payment {
+    + id
+    + order_id
     + created_at
     + updated_at
 }
@@ -101,13 +111,17 @@ class deliveryInformation {
     + updated_at
 }
 
-user "1" -- "0..*" cart
+user "1" -- "0..1" cart
 user "1" -- "0..*" order
-order "1" -- "0..*" payment
-order "1" -- "0..*" delivery
-order "1" -- "0..*" deliveryInformation
-product "1" -- "0..*" cart
-product "1" -- "0..*" product_category
-category "1" -- "0..*" product_category
+order "1" -- "1" order_item
+order "1..*" -- "1..*" delivery
+delivery "*" -- "1" deliveryInformation
+payment_method "1..*" -- "1" order
+payment "1" -- "1" payment_method
+product "1..*" -- "1..*" category
+product "0..*" -- "1..*" cart_item
+product "0..*" -- "1..*" order_item
+category "1" -- "0..*" subcategory
+cart "1" -- "*" cart_item
 
 @enduml
