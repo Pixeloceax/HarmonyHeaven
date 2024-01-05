@@ -1,4 +1,5 @@
-@startuml
+@startuml Ordering Diargram Activity
+
 !theme blueprint
 title Ordering Diargram Activity
 
