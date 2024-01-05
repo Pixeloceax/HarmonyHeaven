@@ -1,19 +1,16 @@
 @startuml
 !theme blueprint
-title Activity Diagram for PlaceOrder
+title Ordering Diargram Activity
 
 start
 : User selects products;
 : User views selected products;
 
-fork
   : Selects quantity;
-fork again
   : Selects colors;
-fork again
   : Selects edition;
-endfork
 
+  
 : User adds products to the cart;
 : User reviews the cart;
 
