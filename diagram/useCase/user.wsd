@@ -9,19 +9,25 @@ left to right direction
 usecase "s'inscrire" as register
 usecase "se connecter" as login
 usecase "se déconnecter" as logout
-usecase "voir son profil" as profile
+usecase "voir son profil" as seeProfile
+usecase "modifier son profil" as editProfile
 usecase "rechercher un produit" as searchProduct
-usecase "voir les produits" as products
-usecase "voir le panier" as cart
+usecase "voir les produits" as seeProducts
+usecase "voir le panier" as seeCart
+usecase "ajouter au panier" as addToCart
+usecase "supprimer du panier" as removeFromCart
 usecase "passer commande" as order
 
-User --> login
 User --> register
-User --> products
-User --> searchProduct
-User --> cart
-User --> order
-User --> profile
+User --> login
 User --> logout
+User --> seeProfile
+User --> editProfile
+User --> searchProduct
+User --> seeProducts
+User --> seeCart
+User --> addToCart
+User --> removeFromCart
+User --> order
 
 @enduml
