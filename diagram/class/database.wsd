@@ -115,7 +115,7 @@ user "1" -- "0..1" cart
 user "1" -- "0..*" order
 order "1" -- "1" order_item
 order "1..*" -- "1..*" delivery
-delivery "*" -- "1" deliveryInformation
+delivery "1..*" -- "1" deliveryInformation
 payment_method "1..*" -- "1" order
 payment "1" -- "1" payment_method
 product "1..*" -- "1..*" category
