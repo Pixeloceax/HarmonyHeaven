@@ -3,116 +3,127 @@
 skin rose
 !theme blueprint
 
-left to right direction
 
-title Classes - Class Diagram
+title Class Diagram - Harmony Heaven Ecommerce
 
-class user {
-    + id
-    + name
-    + email
-    + password
-    + phone
-    + role
+class User {
+    + String name
+    + String email
+    + String password
+    + String address
+    + String phone
+    + String role
 }
 
-class product {
-    + id
-    + name
-    + description
-    + price
-    + image
-    + seller
-    + slug
-    + quantity
+class Product {
+    + String name
+    + String description
+    + Float price
+    + String image
+    + String type
+    + String label
+    + String year
+    + String country
+    + String format
+    + List <Genre> genres
+    + List <Style> styles
+}
+
+class Genre {
+    + String name
+    + String description
+}
+
+class Style {
+    + String name
+    + String description
+}
+
+class Cart {
+    + User user
+    + List<CartItem> items
+}
+
+class CartItem {
+    + Product product
+    + int quantity
+}
+
+class Order {
+    + User user
+    + List<OrderItem> items
+    + Payment payment
+    + Delivery delivery
+}
+
+class OrderItem {
+    + Product product
+    + int quantity
+}
+
+class Receipt {
+    + Order order
+    + String receiptNumber
 
 }
 
-class category {
-    + id
-    + name
+class PaymentMethod {
+    + String name
+    + String description
 }
 
-class subcategory {
-    + category_id
-    + id
-    + name
+class Payment {
+    + PaymentMethod method
+    + String status
 }
 
-class cart {
-    + id
-    + user_id
-    + quantity
+class Delivery {
+    + String address
+    + String status
 }
 
-class cart_item {
-    + id
-    + cart_id
-    + product_id
+class DeliveryInformation {
+    + Delivery delivery
+    + String trackingDetails
 }
 
-class order {
-    + id
-    + user_id
-    + total
-}
+User "1" *-- "1" Cart : has  
+'Un utilisateur a un panier (relation un-à-un)
 
-class order_item {
-    + id
-    + order_id
-    + product_id
-    + quantity
-}
+Cart "1" *-- "*" CartItem : contains  
+'Un panier peut contenir plusieurs articles (relation un-à-plusieurs)
 
-class receipt{
-    +id
-    +price
-    +name
-    +delivery
-    +payment
-    +product
-    +date
-}
+User "1" *-- "*" Order : places 
+'Un utilisateur peut passer plusieurs commandes (relation un-à-plusieurs)
 
-class payment_method {
-    + id
-    + order_id
-    + payment_method
-}
+Order "1" *-- "*" OrderItem : contains 
+'Une commande peut contenir plusieurs articles (relation un-à-plusieurs)
 
-class payment {
-    + id
-    + order_id
-}
+Order "1" -- "1" Delivery : is delivered by 
+'Une commande est livrée par une livraison (relation un-à-un)
 
-class delivery {
-    + id
-    + order_id
-    + delivery_method
-    + command_date 
-    + delivery_date
-    + UUID4
-}
+Receipt "1" -- "1" Order : is for 
+'Un reçu est pour une commande (relation un-à-un)
 
-class deliveryInformation {
-    + id
-    + order_id
-    + name
-    + address
-}
+Order "1" -- "1" Payment : pays with 
+'Une commande est payée avec un paiement (relation un-à-un)
 
-user "1" -- "0..1" cart
-user "1" -- "0..*" order
-order "1" -- "1" order_item
-order "1..*" -- "1..*" delivery
-delivery "1..*" -- "1" deliveryInformation
-payment_method "1..*" -- "1" order
-payment "1" -- "1" payment_method
-product "1..*" -- "1..*" category
-product "0..*" -- "1..*" cart
-category "1" -- "0..*" subcategory
-cart_item "1" -- "1" order_item
-cart "1" -- "*" cart_item
-receipt "1" -- "1" order
+Payment "1" -- "1" PaymentMethod : uses  
+'Un paiement utilise une méthode de paiement (relation un-à-un)
+
+Delivery "1" -- "1" DeliveryInformation : has  
+ 'Une livraison a des informations de livraison (relation un-à-un)
+
+CartItem "1" -- "1" Product : is for 
+'Un CartItem est pour un Product (relation un-à-un)
+
+OrderItem "1" -- "1" Product : is for 
+'Un OrderItem est pour un Product (relation un-à-un)
+
+Product "1" -- "*" Genre : has  
+'Un produit peut avoir plusieurs genres (relation un-à-plusieurs)
+
+Product "1" -- "*" Style : has  
+'Un produit peut avoir plusieurs styles (relation un-à-plusieurs)
 
 @enduml
