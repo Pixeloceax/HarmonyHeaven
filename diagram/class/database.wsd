@@ -49,20 +49,20 @@ class CartItem {
     + int quantity
 }
 
-class Order {
+class Command {
     + User user
-    + List<OrderItem> items
+    + List<CommandItem> items
     + Payment payment
     + Delivery delivery
 }
 
-class OrderItem {
+class CommandItem {
     + Product product
     + int quantity
 }
 
 class Receipt {
-    + Order order
+    + Command command
     + String receiptNumber
 
 }
@@ -93,19 +93,19 @@ User "1" *-- "1" Cart : has
 Cart "1" *-- "*" CartItem : contains  
 'Un panier peut contenir plusieurs articles (relation un-à-plusieurs)
 
-User "1" *-- "*" Order : places 
+User "1" *-- "*" Command : places 
 'Un utilisateur peut passer plusieurs commandes (relation un-à-plusieurs)
 
-Order "1" *-- "*" OrderItem : contains 
+Command "1" *-- "*" CommandItem : contains 
 'Une commande peut contenir plusieurs articles (relation un-à-plusieurs)
 
-Order "1" -- "1" Delivery : is delivered by 
+Command "1" -- "1" Delivery : is delivered by 
 'Une commande est livrée par une livraison (relation un-à-un)
 
-Receipt "1" -- "1" Order : is for 
+Receipt "1" -- "1" Command : is for 
 'Un reçu est pour une commande (relation un-à-un)
 
-Order "1" -- "1" Payment : pays with 
+Command "1" -- "1" Payment : pays with 
 'Une commande est payée avec un paiement (relation un-à-un)
 
 Payment "1" -- "1" PaymentMethod : uses  
@@ -117,8 +117,8 @@ Delivery "1" -- "1" DeliveryInformation : has
 CartItem "1" -- "1" Product : is for 
 'Un CartItem est pour un Product (relation un-à-un)
 
-OrderItem "1" -- "1" Product : is for 
-'Un OrderItem est pour un Product (relation un-à-un)
+CommandItem "1" -- "1" Product : is for 
+'Un commandItem est pour un Product (relation un-à-un)
 
 Product "1" -- "*" Genre : has  
 'Un produit peut avoir plusieurs genres (relation un-à-plusieurs)
