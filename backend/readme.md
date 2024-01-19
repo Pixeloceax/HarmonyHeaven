@@ -1,4 +1,7 @@
-Commandes utiles:
-mettre à jour les dépendances : composer update
+# Commandes utiles Symfony:
 
-test gitbot
+`mettre à jour les dépendances:`
+
+```
+composer update
+```
