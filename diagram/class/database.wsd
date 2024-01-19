@@ -120,10 +120,9 @@ CartItem "1" -- "1" Product : is for
 CommandItem "1" -- "1" Product : is for 
 'Un commandItem est pour un Product (relation un-à-un)
 
-Product "1" -- "*" Genre : has  
-'Un produit peut avoir plusieurs genres (relation un-à-plusieurs)
+Product "*" -- "*" Genre : has  
+'Un produit peut avoir plusieurs genres et un genre peut appartenir à plusieurs produits (relation plusieurs-à-plusieurs)
 
-Product "1" -- "*" Style : has  
-'Un produit peut avoir plusieurs styles (relation un-à-plusieurs)
-
+Product "*" -- "*" Style : has  
+'Un produit peut avoir plusieurs styles et un style peut appartenir à plusieurs produits (relation plusieurs-à-plusieurs)
 @enduml
