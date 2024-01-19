@@ -24,7 +24,9 @@
 /public/assets/
 ###< symfony/asset-mapper ###
 
+### Docker ###
 Dockerfile
-compose.*
 
+### Composer ###
+compose.*
 composer.lock
