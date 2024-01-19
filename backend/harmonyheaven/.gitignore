@@ -26,3 +26,5 @@
 
 Dockerfile
 compose.*
+
+composer.lock
