@@ -49,6 +49,9 @@ class Product
     #[ORM\ManyToMany(targetEntity: Style::class, inversedBy: 'products')]
     private Collection $style;
 
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->genre = new ArrayCollection();
@@ -212,6 +215,18 @@ class Product
     public function removeStyle(Style $style): static
     {
         $this->style->removeElement($style);
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
