@@ -52,6 +52,9 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $artist = null;
+
     public function __construct()
     {
         $this->genre = new ArrayCollection();
@@ -227,6 +230,18 @@ class Product
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getArtist(): ?string
+    {
+        return $this->artist;
+    }
+
+    public function setArtist(string $artist): static
+    {
+        $this->artist = $artist;
 
         return $this;
     }
