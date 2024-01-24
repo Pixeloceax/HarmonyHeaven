@@ -41,7 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Cart $cart = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Command::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Command::class, cascade: ['persist'])]
     private Collection $commands;
 
     public function __construct()
