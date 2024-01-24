@@ -1,18 +1,26 @@
-import {createBrowserRouter, createRoutesFromElements,Route } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  Outlet,
+  Link,
+} from "react-router-dom";
 import Test from "./components/test";
 
 function App() {
   const router = createBrowserRouter(
-    createRoutesFromElements(
-      <Route>
-        
-      </Route>
-    )
-  )
+    createRoutesFromElements(<Route path="/test" element={<Test />}></Route>)
+  );
   return (
-    <div>
-      
-    </div>
+    <>
+      <div>
+        <Link to="/">Home</Link>
+        <Link to="/test">Test</Link>
+      </div>
+      <div>
+        <Outlet />
+      </div>
+    </>
   );
 }
 
