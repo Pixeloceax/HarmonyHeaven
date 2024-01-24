@@ -19,6 +19,10 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    App\DataFixtures\ProductFixtures:
+        arguments:
+            $consumerKey: '%env(DISCOGS_CONSUMER_KEY)%'
+            $consumerSecret: '%env(DISCOGS_CONSUMER_SECRET)%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
