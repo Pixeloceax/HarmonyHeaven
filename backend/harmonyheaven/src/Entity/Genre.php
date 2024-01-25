@@ -19,9 +19,6 @@ class Genre
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
-
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'genre')]
     private Collection $products;
 
@@ -43,18 +40,6 @@ class Genre
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): static
-    {
-        $this->description = $description;
 
         return $this;
     }
