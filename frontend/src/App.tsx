@@ -17,7 +17,7 @@ type Props = object;
 type State = {
   showModeratorBoard: boolean;
   showAdminBoard: boolean;
-  currentUser: IUser | undefined;
+  currentUser: IUser | null;
 };
 
 class App extends Component<Props, State> {
@@ -28,17 +28,21 @@ class App extends Component<Props, State> {
     this.state = {
       showModeratorBoard: false,
       showAdminBoard: false,
-      currentUser: undefined,
+      currentUser: null,
     };
   }
 
-  componentDidMount() {
-    const user = AuthService.getCurrentUser();
+ async componentDidMount() {
+    try {
+      const user = await AuthService.getCurrentUser();
 
-    if (user) {
-      this.setState({
-        currentUser: user,
-      });
+      if (user) {
+        this.setState({
+          currentUser: user,
+        });
+      }
+    } catch (error) {
+      console.error("Error getting current user:", error);
     }
 
     EventBus.on("logout", this.logOut);
@@ -53,7 +57,7 @@ class App extends Component<Props, State> {
     this.setState({
       showModeratorBoard: false,
       showAdminBoard: false,
-      currentUser: undefined,
+      currentUser: null,
     });
   }
 
