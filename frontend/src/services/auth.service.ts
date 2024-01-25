@@ -2,6 +2,7 @@ import axios from "axios";
 
 const BACKEND_URL="https://127.0.0.1:8000";
 const LOGIN="/login"
+const REGISTER = "/register"
 
 class AuthService {
   async login(email: string, password: string) {
@@ -23,15 +24,11 @@ class AuthService {
     username: string,
     email: string,
     password: string,
-    adress: string,
-    phone: string
   ) {
-    return axios.post(BACKEND_URL+LOGIN + "signup", {
+    return axios.post(BACKEND_URL+REGISTER, {
       username,
       email,
       password,
-      adress,
-      phone,
     });
   }
 
