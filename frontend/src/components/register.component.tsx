@@ -1,8 +1,6 @@
 import { Component } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import bcrypt from "bcrypt";
-
 import AuthService from "../services/auth.service";
 
 type Props = object;
@@ -84,13 +82,9 @@ export default class Register extends Component<Props, State> {
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    bcrypt.hash(password, 10, (err: any, hash: any) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
+    
 
-      AuthService.register(username, email, hash, adress, phone).then(
+      AuthService.register(username, email, password, adress, phone).then(
         (response) => {
           this.setState({
             message: response.data.message,
@@ -111,11 +105,11 @@ export default class Register extends Component<Props, State> {
           });
         }
       );
-    });
-  }
+    };
+  
 
   render() {
-    const { successful, message } = this.state;
+     const { successful, message } = this.state; 
 
     const initialValues = {
       username: "",

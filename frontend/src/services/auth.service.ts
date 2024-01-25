@@ -1,14 +1,15 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_APP_API_URL;
+const BACKEND_URL="https://127.0.0.1:8000";
+const LOGIN="/login"
 
 class AuthService {
-  async login(username: string, password: string) {
-    const response = await axios.post(API_URL, {
-      username,
+  async login(email: string, password: string) {
+    const response = await axios.post(BACKEND_URL+LOGIN, {
+      email,
       password,
     });
-    if (response.data.accessToken) {
+    if (response.data.token) {
       localStorage.setItem("user", JSON.stringify(response.data));
     }
     return response.data;
@@ -25,7 +26,7 @@ class AuthService {
     adress: string,
     phone: string
   ) {
-    return axios.post(API_URL + "signup", {
+    return axios.post(BACKEND_URL+LOGIN + "signup", {
       username,
       email,
       password,
