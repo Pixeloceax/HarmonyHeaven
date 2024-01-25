@@ -37,4 +37,27 @@ class LoginController extends AbstractController
             'token' => $token,
         ]);
     }
+
+    /**
+     * @Route("/get-current-user", name="get-current-user", methods={"POST"})
+     */
+    public function getCurrentUser(Request $request, UserRepository $userRepository): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $email = $data['email'];
+        $user = $userRepository->findOneBy(['email' => $email]);
+        
+        if(!$user) {
+            return new JsonResponse(['error' => 'Une erreur est survenue.'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse([
+            'user'  => $user->getUserIdentifier(),
+            'roles' => $user->getRoles(),
+            'name'=> $user->getName(),
+            'address' => $user->getAddress(),
+            'phone' => $user->getPhone(),
+        ]);
+    }
 }
