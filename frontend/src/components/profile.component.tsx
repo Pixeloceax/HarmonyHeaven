@@ -8,7 +8,7 @@ type Props = object;
 type State = {
   redirect: string | null;
   userReady: boolean;
-  currentUser: IUser & { accessToken: string };
+  currentUser: IUser | null;
 };
 export default class Profile extends Component<Props, State> {
   constructor(props: Props) {
@@ -17,15 +17,22 @@ export default class Profile extends Component<Props, State> {
     this.state = {
       redirect: null,
       userReady: false,
-      currentUser: { accessToken: "" },
+      currentUser: null,
     };
   }
 
-  componentDidMount() {
-    const currentUser = AuthService.getCurrentUser();
+  async componentDidMount() {
+    try {
+      const currentUser = await AuthService.getCurrentUser();
 
-    if (!currentUser) this.setState({ redirect: "/home" });
-    this.setState({ currentUser: currentUser, userReady: true });
+      if (!currentUser) {
+        this.setState({ redirect: "/home" });
+      } else {
+        this.setState({ currentUser, userReady: true });
+      }
+    } catch (error) {
+      console.error("Error getting current user:", error);
+    }
   }
 
   render() {
@@ -34,36 +41,22 @@ export default class Profile extends Component<Props, State> {
     }
 
     const { currentUser } = this.state;
-
     return (
       <div className="container">
-        {this.state.userReady ? (
+        {this.state.userReady && currentUser != null ? (
           <div>
-            <header className="jumbotron">
+            <header>
               <h3>
-                <strong>{currentUser.username}</strong> Profile
+                <strong>{currentUser.name}</strong> Profile
               </h3>
             </header>
             <p>
-              <strong>Token:</strong> {currentUser.accessToken.substring(0, 20)}{" "}
-              ...{" "}
-              {currentUser.accessToken.substring(
-                currentUser.accessToken.length - 20
-              )}
+              <strong>Email:</strong> {currentUser.user}
             </p>
-            <p>
-              <strong>Id:</strong> {currentUser.id}
-            </p>
-            <p>
-              <strong>Email:</strong> {currentUser.email}
-            </p>
-            <strong>Authorities:</strong>
-            <ul>
-              {currentUser.roles &&
-                currentUser.roles.map((role, index) => (
-                  <li key={index}>{role}</li>
-                ))}
-            </ul>
+            <p>{currentUser.roles}</p>
+            <p>{currentUser.address}</p>
+            <p>{currentUser.phone}</p>
+            <p>{currentUser.password}</p>
           </div>
         ) : null}
       </div>

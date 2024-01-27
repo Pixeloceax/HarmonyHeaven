@@ -3,3 +3,17 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+login:
+    path: /login
+    controller: App\Controller\LoginController::login
+    methods: POST
+
+get-current-user:
+    path: /get-current-user
+    controller: App\Controller\LoginController::getCurrentUser
+    methods: POST
+register:
+    path: /register
+    controller: App\Controller\RegistrationController::register
+    methods: POST

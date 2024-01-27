@@ -1,8 +1,6 @@
 import { Component } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import bcrypt from "bcrypt";
-
 import AuthService from "../services/auth.service";
 
 type Props = object;
@@ -50,22 +48,6 @@ export default class Register extends Component<Props, State> {
           (val: any) => val && val.length >= 6 && val.length <= 40
         )
         .required("This field is required!"),
-      adress: Yup.string()
-        .test(
-          "len",
-          "The adress must be between 3 and 40 characters.",
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (val: any) => val && val.length >= 3 && val.length <= 40
-        )
-        .required("This field is required!"),
-      phone: Yup.string()
-        .test(
-          "len",
-          "The phone must be between 10 and 15 characters.",
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (val: any) => val && val.length >= 10 && val.length <= 15
-        )
-        .required("This field is required!"),
     });
   }
 
@@ -73,10 +55,8 @@ export default class Register extends Component<Props, State> {
     username: string;
     email: string;
     password: string;
-    adress: string;
-    phone: string;
   }) {
-    const { username, email, password, adress, phone } = formValue;
+    const { username, email, password } = formValue;
 
     this.setState({
       message: "",
@@ -84,13 +64,9 @@ export default class Register extends Component<Props, State> {
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    bcrypt.hash(password, 10, (err: any, hash: any) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
+    
 
-      AuthService.register(username, email, hash, adress, phone).then(
+      AuthService.register(username, email, password ).then(
         (response) => {
           this.setState({
             message: response.data.message,
@@ -111,18 +87,16 @@ export default class Register extends Component<Props, State> {
           });
         }
       );
-    });
-  }
+    };
+  
 
   render() {
-    const { successful, message } = this.state;
+     const { successful, message } = this.state; 
 
     const initialValues = {
       username: "",
       email: "",
       password: "",
-      adress: "",
-      phone: "",
     };
 
     return (
@@ -175,24 +149,6 @@ export default class Register extends Component<Props, State> {
                     />
                     <ErrorMessage
                       name="password"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="adress"> Adress </label>
-                    <Field name="adress" type="text" className="form-control" />
-                    <ErrorMessage
-                      name="adress"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-
-                    <label htmlFor="phone"> Phone </label>
-                    <Field name="phone" type="text" className="form-control" />
-                    <ErrorMessage
-                      name="phone"
                       component="div"
                       className="alert alert-danger"
                     />
