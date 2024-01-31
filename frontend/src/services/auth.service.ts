@@ -31,26 +31,27 @@ class AuthService {
   }
 
   async getCurrentUser(): Promise<IUser | null> {
-    // eslint-disable-next-line no-async-promise-executor
-    return new Promise(async (resolve, reject) => {
-      try {
-        const token: string | null = localStorage.getItem("user");
-        if (!token) {
-          reject(new Error("User email not found in local storage"));
-          return;
-        }
-        const email = JSON.parse(token).user;
-        const response = await axios.post(
-          `${this.BACKEND_URL}${this.GET_USER_DATA}`,
-          {
-            email,
-          }
-        );
-        resolve(response.data);
-      } catch (error) {
-        reject(error);
+    try {
+      const token: string | null = this.getUserToken();
+      if (!token) {
+        throw new Error("User email not found in local storage");
       }
-    });
+      const email = JSON.parse(token).user;
+      const response = await axios.post(
+        `${this.BACKEND_URL}${this.GET_USER_DATA}`,
+        {
+          email,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  private getUserToken(): string | null {
+    return localStorage.getItem("user");
   }
 }
 
