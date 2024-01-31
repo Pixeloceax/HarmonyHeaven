@@ -1,15 +1,15 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
-const API_URL = import.meta.env.VITE_APP_API_URL;
-
 class UserService {
+  private readonly BACKEND_URL = "http://localhost:8000";
+
   getPublicContent() {
-    return axios.get(API_URL + "all");
+    return axios.get(this.BACKEND_URL + "all");
   }
 
   getUserBoard() {
-    return axios.get(API_URL + "user", { headers: authHeader() });
+    return axios.get(this.BACKEND_URL + "/profile", { headers: authHeader() });
   }
 }
 
