@@ -1,17 +1,14 @@
 import axios from "axios";
 import IUser from "../types/use.type";
 
-
 class AuthService {
-
-  private readonly BACKEND_URL="https://127.0.0.1:8000";
-  private readonly LOGIN="/login"
-  private readonly GET_USER_DATA = "/get-current-user"
-  private readonly REGISTER ="/register"
-
+  private readonly BACKEND_URL = "http://localhost:8000";
+  private readonly LOGIN = "/login";
+  private readonly GET_USER_DATA = "/get-current-user";
+  private readonly REGISTER = "/register";
 
   async login(email: string, password: string) {
-    const response = await axios.post(this.BACKEND_URL+this.LOGIN, {
+    const response = await axios.post(this.BACKEND_URL + this.LOGIN, {
       email,
       password,
     });
@@ -25,13 +22,8 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
-  register(
-    username: string,
-    email: string,
-    password: string,
-  ) {
-
-    return axios.post(this.BACKEND_URL+this.REGISTER, {
+  register(username: string, email: string, password: string) {
+    return axios.post(this.BACKEND_URL + this.REGISTER, {
       username,
       email,
       password,
@@ -39,23 +31,28 @@ class AuthService {
   }
 
   async getCurrentUser(): Promise<IUser | null> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const token: string | null =  localStorage.getItem("user");
-        if (!token) {
-          reject(new Error('User email not found in local storage'));
-          return;
-        }
-        const email = JSON.parse(token).user
-        const response = await axios.post(`${this.BACKEND_URL}${this.GET_USER_DATA}`, {
-          email
-        });
-        resolve(response.data);
-      } catch (error) {
-        reject(error);
+    try {
+      const token: string | null = this.getUserToken();
+      if (!token) {
+        throw new Error("User email not found in local storage");
       }
-    });
-  }  
+      const email = JSON.parse(token).user;
+      const response = await axios.post(
+        `${this.BACKEND_URL}${this.GET_USER_DATA}`,
+        {
+          email,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  private getUserToken(): string | null {
+    return localStorage.getItem("user");
+  }
 }
 
 export default new AuthService();
