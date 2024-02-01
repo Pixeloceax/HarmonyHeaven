@@ -20,8 +20,15 @@ function getAutocompleteValue(fieldName: string): string {
 
 const validationSchema = Yup.object().shape({
   name: Yup.string(),
-  user: Yup.string().email("Invalid email"),
-  password: Yup.string().min(8, "Must be at least 8 characters"),
+  user: Yup.string()
+    .email()
+    .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Invalid email address."),
+  password: Yup.string()
+    .min(12, "Password must be at least 12 characters long")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/,
+      "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
+    ),
   address: Yup.string(),
   phone: Yup.string(),
 });
