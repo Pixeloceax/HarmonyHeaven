@@ -6,7 +6,7 @@ import IUser from "./types/use.type";
 
 import Login from "./components/login.component";
 import Register from "./components/register.component";
-import Home from "./pages/Home";
+import Home from "./pages/home/Home";
 import BoardUser from "./components/board-user.component";
 
 import EventBus from "./common/EventBus";
@@ -31,7 +31,7 @@ class App extends Component<Props, State> {
     };
   }
 
- async componentDidMount() {
+  async componentDidMount() {
     try {
       const user = await AuthService.getCurrentUser();
 

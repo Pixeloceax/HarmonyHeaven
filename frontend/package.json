@@ -17,11 +17,7 @@
     "@mui/material": "^5.15.5",
     "aws-sdk": "^2.1012.0",
     "axios": "^1.6.5",
-<<<<<<< HEAD
     "bcrypt": "^5.1.1",
-=======
-    "axios-mock-adapter": "^1.22.0",
->>>>>>> 2546baaaf9afc0c42f31a1549d2f690fcd61f0ce
     "formik": "^2.4.5",
     "i18next": "^23.7.18",
     "jsdom": "^24.0.0",
