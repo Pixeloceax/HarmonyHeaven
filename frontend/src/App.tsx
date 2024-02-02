@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import AuthService from "./services/auth.service";
 import IUser from "./types/use.type";
@@ -9,24 +9,17 @@ import Register from "./components/register.component";
 import Home from "./pages/home/Home";
 import BoardUser from "./components/board-user.component";
 
-import EventBus from "./common/EventBus";
-
 type Props = object;
 
 type State = {
-  showModeratorBoard: boolean;
-  showAdminBoard: boolean;
   currentUser: IUser | null;
 };
 
 class App extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.logOut = this.logOut.bind(this);
 
     this.state = {
-      showModeratorBoard: false,
-      showAdminBoard: false,
       currentUser: null,
     };
   }
@@ -43,32 +36,25 @@ class App extends Component<Props, State> {
     } catch (error) {
       console.error("Error getting current user:", error);
     }
-
-    EventBus.on("logout", this.logOut);
-  }
-
-  componentWillUnmount() {
-    EventBus.remove("logout", this.logOut);
-  }
-
-  logOut() {
-    AuthService.logout();
-    this.setState({
-      showModeratorBoard: false,
-      showAdminBoard: false,
-      currentUser: null,
-    });
   }
 
   render() {
+    const { currentUser } = this.state;
+
     return (
       <BrowserRouter>
-        <div className="container mt-3">
+        <div>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="*" element={<Home />} />
-            <Route path="/login" element={<Login history={[]} />} />
-            <Route path="/register" element={<Register />} />
+            <Route
+              path="/login"
+              element={currentUser ? <Navigate to="/" /> : <Login />}
+            />
+            <Route
+              path="/register"
+              element={currentUser ? <Navigate to="/" /> : <Register />}
+            />
             <Route path="/user" element={<BoardUser />} />
           </Routes>
         </div>

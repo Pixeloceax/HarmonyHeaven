@@ -3,7 +3,6 @@ import { Navigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import UserService from "../services/user.service";
 import IUser from "../types/use.type";
-
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -77,7 +76,7 @@ class BoardUser extends React.Component<
     try {
       const user = await AuthService.getCurrentUser();
       if (!user) {
-        this.setState({ redirect: "/home" });
+        this.setState({ redirect: "/" });
       } else {
         this.setState({ currentUser: user, formData: user });
       }

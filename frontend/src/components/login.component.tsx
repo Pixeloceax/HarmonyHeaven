@@ -4,11 +4,7 @@ import * as Yup from "yup";
 
 import AuthService from "../services/auth.service";
 
-interface RouterProps {
-  history: Array<string>;
-}
-
-type Props = RouterProps;
+type Props = object;
 
 type State = {
   username: string;
@@ -47,8 +43,7 @@ export default class Login extends Component<Props, State> {
 
     AuthService.login(email, password).then(
       () => {
-        this.props.history.push("/profile");
-        window.location.reload();
+        window.location.href = "/user";
       },
       (error) => {
         const resMessage =
