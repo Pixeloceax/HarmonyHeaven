@@ -39,13 +39,13 @@ export default class Register extends Component<Props, State> {
         .required("This field is required!"),
       email: Yup.string()
         .email("This is not a valid email.")
+        .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Invalid email address.")
         .required("This field is required!"),
       password: Yup.string()
-        .test(
-          "len",
-          "The password must be between 6 and 40 characters.",
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (val: any) => val && val.length >= 6 && val.length <= 40
+        .min(12, "Password must be at least 12 characters long")
+        .matches(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/,
+          "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
         )
         .required("This field is required!"),
     });
@@ -64,34 +64,32 @@ export default class Register extends Component<Props, State> {
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    
+    AuthService.register(username, email, password).then(
+      (response) => {
+        this.setState({
+          message: response.data.message,
+          successful: true,
+        });
+        window.location.href = "/login";
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
 
-      AuthService.register(username, email, password ).then(
-        (response) => {
-          this.setState({
-            message: response.data.message,
-            successful: true,
-          });
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          this.setState({
-            successful: false,
-            message: resMessage,
-          });
-        }
-      );
-    };
-  
+        this.setState({
+          successful: false,
+          message: resMessage,
+        });
+      }
+    );
+  }
 
   render() {
-     const { successful, message } = this.state; 
+    const { successful, message } = this.state;
 
     const initialValues = {
       username: "",

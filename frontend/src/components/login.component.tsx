@@ -4,11 +4,7 @@ import * as Yup from "yup";
 
 import AuthService from "../services/auth.service";
 
-interface RouterProps {
-  history: Array<string>;
-}
-
-type Props = RouterProps;
+type Props = object;
 
 type State = {
   username: string;
@@ -47,8 +43,7 @@ export default class Login extends Component<Props, State> {
 
     AuthService.login(email, password).then(
       () => {
-        this.props.history.push("/profile");
-        window.location.reload();
+        window.location.href = "/user";
       },
       (error) => {
         const resMessage =
@@ -111,6 +106,26 @@ export default class Login extends Component<Props, State> {
                   component="div"
                   className="alert alert-danger"
                 />
+              </div>
+
+              <div className="form-group">
+                <div className="custom-control custom-checkbox">
+                  <Field
+                    type="checkbox"
+                    name="rememberMe"
+                    id="rememberMe"
+                    className="custom-control-input"
+                  />
+                  <label htmlFor="rememberMe" className="custom-control-label">
+                    Remember Me
+                  </label>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <button className="forgot-password">
+                  <a href="/forgot-password">Forgot Password?</a>
+                </button>
               </div>
 
               <div className="form-group">
