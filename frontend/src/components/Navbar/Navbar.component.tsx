@@ -10,13 +10,13 @@ class Navbar extends React.Component {
           </a>
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
-              <a href="/home" className="nav-link">
-                Home
+              <a href="/login" className="nav-link">
+                login
               </a>
             </li>
             <li className="nav-item">
-              <a href="/profile" className="nav-link">
-                Profile
+              <a href="/register" className="nav-link">
+                register
               </a>
             </li>
             <li className="nav-item">
