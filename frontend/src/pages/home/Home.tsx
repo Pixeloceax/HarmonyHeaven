@@ -1,7 +1,8 @@
 import { Component } from "react";
 import UserService from "../../services/user.service";
+import Navbar from "../../components/Navbar/Navbar.component";
+import Footer from "../../components/Footer/footer.component";
 import "./Home.css";
-import HH_header from "../../assets/images/HH_header.png";
 
 type Props = object;
 
@@ -38,13 +39,27 @@ export default class Home extends Component<Props, State> {
 
   render() {
     return (
-      <div className="containt">
-        <div className="Mainheader">
-          <img src={HH_header} className="neon" />
-        </div>
-        <main>main</main>
-        <footer>footer</footer>
-      </div>
+      <>
+        <Navbar />
+        <main className="main-content">
+          <section className="container section-container">
+            <div className="div-container">
+              <h1 className="text-content">
+                Harmony <br /> Heaven
+              </h1>
+            </div>
+          </section>
+          <section className="another-section">
+            <div className="another-div">
+              <h1 className="another-text">
+                Welcome to Harmony Heaven, a place to share your music with the
+                world.
+              </h1>
+            </div>
+          </section>
+        </main>
+        <Footer />
+      </>
     );
   }
 }
