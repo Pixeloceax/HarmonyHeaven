@@ -8,8 +8,13 @@ import Login from "./components/login.component";
 import Register from "./components/register.component";
 import Home from "./pages/home/Home";
 import BoardUser from "./components/board-user.component";
+import Product from './pages/product/Product.page';
+
+import EventBus from "./common/EventBus";
+
 import ForgotPassword from "./components/forgot-password.component";
 import ResetPassword from "./pages/reset-password/reset-password.page";
+
 
 type Props = object;
 
@@ -58,8 +63,12 @@ class App extends Component<Props, State> {
               element={currentUser ? <Navigate to="/" /> : <Register />}
             />
             <Route path="/user" element={<BoardUser />} />
+
+            <Route path="/products" element={<Product />} />
+
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
+
           </Routes>
         </div>
       </BrowserRouter>
