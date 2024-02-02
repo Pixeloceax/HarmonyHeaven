@@ -9,6 +9,7 @@ import Register from "./components/register.component";
 import Home from "./pages/Home";
 import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
+import Product from './pages/product/Product.page';
 
 import EventBus from "./common/EventBus";
 
@@ -72,6 +73,7 @@ class App extends Component<Props, State> {
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/user" element={<BoardUser />} />
+            <Route path="/products" element={<Product />} />
           </Routes>
         </div>
       </BrowserRouter>
