@@ -1,5 +1,4 @@
 import { Component } from "react";
-import UserService from "../../services/user.service";
 import Navbar from "../../components/Navbar/Navbar.component";
 import Footer from "../../components/Footer/footer.component";
 import "./Home.css";
@@ -13,28 +12,9 @@ type State = {
 export default class Home extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
     this.state = {
       content: "",
     };
-  }
-
-  componentDidMount() {
-    UserService.getPublicContent().then(
-      (response) => {
-        this.setState({
-          content: response.data,
-        });
-      },
-      (error) => {
-        this.setState({
-          content:
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString(),
-        });
-      }
-    );
   }
 
   render() {
