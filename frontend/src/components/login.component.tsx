@@ -109,6 +109,26 @@ export default class Login extends Component<Props, State> {
               </div>
 
               <div className="form-group">
+                <div className="custom-control custom-checkbox">
+                  <Field
+                    type="checkbox"
+                    name="rememberMe"
+                    id="rememberMe"
+                    className="custom-control-input"
+                  />
+                  <label htmlFor="rememberMe" className="custom-control-label">
+                    Remember Me
+                  </label>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <button className="forgot-password">
+                  <a href="/forgot-password">Forgot Password?</a>
+                </button>
+              </div>
+
+              <div className="form-group">
                 <button
                   type="submit"
                   className="btn btn-primary btn-block"
