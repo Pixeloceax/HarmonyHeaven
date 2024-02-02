@@ -66,7 +66,7 @@ class App extends Component<Props, State> {
         <div className="container mt-3">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
+            <Route path="*" element={<Home />} />
             <Route path="/login" element={<Login history={[]} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/user" element={<BoardUser />} />
