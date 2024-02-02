@@ -64,13 +64,13 @@ export default class Register extends Component<Props, State> {
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
     AuthService.register(username, email, password).then(
       (response) => {
         this.setState({
           message: response.data.message,
           successful: true,
         });
+        window.location.href = "/login";
       },
       (error) => {
         const resMessage =
