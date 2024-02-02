@@ -30,6 +30,14 @@ class AuthService {
     });
   }
 
+  forgotPassword(email: string) {
+    return axios.post(this.BACKEND_URL + "/forgot-password", { email });
+  }
+
+  resetPassword(password: string, token: string) {
+    return axios.post(this.BACKEND_URL + "/reset-password", { password, token });
+  }
+
   async getCurrentUser(): Promise<IUser | null> {
     try {
       const token: string | null = this.getUserToken();
