@@ -12,6 +12,7 @@ type State = {
 export default class Home extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
+
     this.state = {
       content: "",
     };
