@@ -1,6 +1,7 @@
 import axios from "axios";
 import IUser from "../types/use.type";
-
+import authHeader from "./auth-header";
+import { jwtDecode } from "jwt-decode";
 class AuthService {
   private readonly BACKEND_URL = "http://localhost:8000";
   private readonly LOGIN = "/login";
@@ -8,11 +9,11 @@ class AuthService {
   private readonly REGISTER = "/register";
 
   async login(email: string, password: string) {
-    const response = await axios.post(this.BACKEND_URL + this.LOGIN, {
+    const response = await axios.post(`${this.BACKEND_URL}${this.LOGIN}`, {
       email,
       password,
     });
-    if (response.data.token) {
+    if (response.data) {
       localStorage.setItem("user", JSON.stringify(response.data));
     }
     return response.data;
@@ -20,6 +21,7 @@ class AuthService {
 
   logout() {
     localStorage.removeItem("user");
+    window.location.reload();
   }
 
   register(username: string, email: string, password: string) {
@@ -35,20 +37,27 @@ class AuthService {
   }
 
   resetPassword(password: string, token: string) {
-    return axios.post(this.BACKEND_URL + "/reset-password", { password, token });
+    return axios.post(this.BACKEND_URL + "/reset-password", {
+      password,
+      token,
+    });
   }
 
   async getCurrentUser(): Promise<IUser | null> {
+    const token: string | null = this.getUserToken();
+    if (!token) {
+      console.error("User email not found in local storage");
+      return null;
+    }
+    const email = (jwtDecode(token) as { email: string }).email;
     try {
-      const token: string | null = this.getUserToken();
-      if (!token) {
-        throw new Error("User email not found in local storage");
-      }
-      const email = JSON.parse(token).user;
       const response = await axios.post(
         `${this.BACKEND_URL}${this.GET_USER_DATA}`,
         {
-          email,
+          email: email,
+        },
+        {
+          headers: this.getAuthHeaders(),
         }
       );
       return response.data;
@@ -60,6 +69,10 @@ class AuthService {
 
   private getUserToken(): string | null {
     return localStorage.getItem("user");
+  }
+
+  private getAuthHeaders() {
+    return authHeader();
   }
 }
 
