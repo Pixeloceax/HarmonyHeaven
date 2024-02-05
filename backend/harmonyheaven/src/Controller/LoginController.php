@@ -33,8 +33,7 @@ class LoginController extends AbstractController
         }
 
         return new JsonResponse([
-            'user'  => $user->getUserIdentifier(),
-            'token' => $token,
+            'user' => $token,
         ]);
     }
 
@@ -46,9 +45,10 @@ class LoginController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         $email = $data['email'];
+        $token = $request->headers->get('Authorization');
         $user = $userRepository->findOneBy(['email' => $email]);
-        
-        if(!$user) {
+
+        if(!$user || $token === null || !$email || $email == null) {
             return new JsonResponse(['error' => 'Une erreur est survenue.'], JsonResponse::HTTP_BAD_REQUEST);
         }
 

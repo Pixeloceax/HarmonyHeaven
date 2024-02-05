@@ -37,7 +37,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $admin = new User();
         // Set admin data
         $admin->setRoles(['ROLE_ADMIN'])
-            ->setEmail('pisha@hotmail.fr')
+            ->setEmail($_ENV['ADMIN_EMAIL'])
             ->setPassword($this->passwordHasher->hashPassword($admin, $_ENV['ADMIN_PASSWORD']))
             ->setName('Pisha')
             ->setAddress('17, rue Isabeau de Roubaix. 59100 ROUBAIX')
