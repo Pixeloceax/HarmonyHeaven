@@ -10,7 +10,6 @@ import Home from "./pages/home/Home";
 import BoardUser from "./components/board-user.component";
 import Product from "./pages/product/Product.page";
 import Navbar from "./components/Navbar/Navbar.component";
-import EventBus from "./common/EventBus";
 
 import ForgotPassword from "./components/forgot-password.component";
 import ResetPassword from "./pages/reset-password/reset-password.page";
@@ -50,7 +49,7 @@ class App extends Component<Props, State> {
     return (
       <BrowserRouter>
         <div>
-        {/* <Navbar /> */}
+          <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="*" element={<Home />} />
