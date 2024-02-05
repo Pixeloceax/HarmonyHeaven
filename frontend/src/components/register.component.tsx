@@ -44,7 +44,7 @@ export default class Register extends Component<Props, State> {
       password: Yup.string()
         .min(12, "Password must be at least 12 characters long")
         .matches(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/,
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{13,}$/,
           "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
         )
         .required("This field is required!"),
