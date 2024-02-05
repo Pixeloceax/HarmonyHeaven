@@ -23,3 +23,8 @@ products-list:
     path: /products-list
     controller: App\Controller\ProductController::getProducts
     methods: GET
+
+genres-list:
+    path: /genres-list
+    controller: App\Controller\GenreController::getGenres
+    methods: GET
