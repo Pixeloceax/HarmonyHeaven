@@ -29,7 +29,7 @@ export default class Products extends Component<Props, State> {
 
   async fetchProducts() {
     try {
-      const response = await axios.get<IProduct[]>('https://127.0.0.1:8000/products-list');
+      const response = await axios.get<IProduct[]>('http://127.0.0.1:8000/products-list');
       this.setState({ products: response.data });
     } catch (error) {
       console.error('Error fetching products:', error);

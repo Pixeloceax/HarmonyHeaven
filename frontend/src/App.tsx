@@ -8,13 +8,12 @@ import Login from "./components/login.component";
 import Register from "./components/register.component";
 import Home from "./pages/home/Home";
 import BoardUser from "./components/board-user.component";
-import Product from './pages/product/Product.page';
-
+import Product from "./pages/product/Product.page";
+import Navbar from "./components/Navbar/Navbar.component";
 import EventBus from "./common/EventBus";
 
 import ForgotPassword from "./components/forgot-password.component";
 import ResetPassword from "./pages/reset-password/reset-password.page";
-
 
 type Props = object;
 
@@ -51,6 +50,7 @@ class App extends Component<Props, State> {
     return (
       <BrowserRouter>
         <div>
+        {/* <Navbar /> */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="*" element={<Home />} />
@@ -68,7 +68,6 @@ class App extends Component<Props, State> {
 
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
-
           </Routes>
         </div>
       </BrowserRouter>

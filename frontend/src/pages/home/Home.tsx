@@ -1,41 +1,103 @@
 import { Component } from "react";
-import Navbar from "../../components/Navbar/Navbar.component";
 import Footer from "../../components/Footer/footer.component";
+import IGenre from "../../types/genre.type";
+import axios from "axios";
 import "./Home.css";
 
 type Props = object;
-
 type State = {
-  content: string;
+  searchQuery: string;
+  selectedGenre: string | null;
+  genres: IGenre[] | null;
 };
 
 export default class Home extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
     this.state = {
-      content: "",
+      searchQuery: "",
+      selectedGenre: null,
+      genres: null,
     };
   }
 
+  componentDidMount() {
+    this.fetchGenres();
+  }
+
+  async fetchGenres() {
+    try {
+      const response = await axios.get<IGenre[]>(
+        "http://127.0.0.1:8000/genres-list"
+      );
+      this.setState({ genres: response.data });
+    } catch (error) {
+      console.error("Error fetching genres:", error);
+    }
+  }
+
+  handleGenreSelect = (genre: string | undefined) => {
+    this.setState({ selectedGenre: genre ?? null });
+  };
+
+  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log("Submitted search query:", this.state.searchQuery);
+    console.log("Selected genre:", this.state.selectedGenre);
+  };
+
   render() {
+    const { genres } = this.state;
     return (
       <>
-        <Navbar />
-        <main className="main-content">
-          <section className="container section-container">
-            <div className="div-container">
-              <h1 className="text-content">
-                Harmony <br /> Heaven
+        <main className="mainSection">
+          <section className="homeSection">
+            <div className="content">
+              <h1 className="HHVinyl">
+                <p>
+                  EXCEPTIONAL <br />
+                  VINYLS
+                  <br />
+                  <br />
+                  HARMONY <br />
+                  HEAVEN
+                </p>
               </h1>
             </div>
           </section>
-          <section className="another-section">
-            <div className="another-div">
-              <h1 className="another-text">
-                Welcome to Harmony Heaven, a place to share your music with the
-                world.
-              </h1>
+          <section className="secondSection">
+            <div className="midSection">
+              <h1>NEWS & HOT</h1>
+
+              <div className="genre-buttons">
+                <select
+                  value={this.state.selectedGenre || ""}
+                  onChange={(e) => this.handleGenreSelect(e.target.value)}
+                >
+                  <option value="" disabled>
+                    Genres
+                  </option>
+                  {genres &&
+                    genres.map((genre) => (
+                      <option key={genre.id} value={genre.name}>
+                        {genre.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <form onSubmit={this.handleSubmit}>
+                <label>
+                  <input
+                    type="text"
+                    value={this.state.searchQuery}
+                    onChange={(e) =>
+                      this.setState({ searchQuery: e.target.value })
+                    }
+                  />
+                </label>
+                <button type="submit">Submit</button>
+              </form>
             </div>
           </section>
         </main>
