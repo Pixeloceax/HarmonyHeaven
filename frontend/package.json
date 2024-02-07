@@ -22,6 +22,7 @@
     "html-react-parser": "^5.1.1",
     "i18next": "^23.7.18",
     "jsdom": "^24.0.0",
+    "jwt-decode": "^4.0.0",
     "mock-aws-s3": "^4.0.2",
     "nock": "^13.1.4",
     "node-pre-gyp": "^0.17.0",
