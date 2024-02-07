@@ -46,7 +46,6 @@ class AuthService {
   async getCurrentUser(): Promise<IUser | null> {
     const token: string | null = this.getUserToken();
     if (!token) {
-      console.error("User email not found in local storage");
       return null;
     }
     const email = (jwtDecode(token) as { email: string }).email;
