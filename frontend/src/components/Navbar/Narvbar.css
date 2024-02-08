@@ -11,6 +11,9 @@
     top: 0;
     background-color: #ffffff00; /* Change background color when sticky */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow when sticky */
+    display:flex;
+    justify-content: space-evenly;
+    align-items: center;
   }
   
   .navbar-brand {
@@ -52,3 +55,6 @@
     text-decoration: underline;
   }
   
+  .navbar-nav.mr-auto{
+    margin-top: 2%;
+  }
