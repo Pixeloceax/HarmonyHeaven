@@ -76,7 +76,7 @@ class cartService {
         headers: authHeader(),
       }
     );
-
+    console.log(response.status);
     if (response.status === 200) {
       localStorage.removeItem("cart");
     }
