@@ -90,6 +90,23 @@ class Navbar extends React.Component<object, State> {
                 </li>
               </>
             )}
+
+            <li className="nav-item">
+              <a href="/products" className="nav-link">
+                Products
+              </a>
+            </li>
+
+            <li className="nav-item">
+              <a href="/cart">
+                <img
+                  src="https://img.icons8.com/material-outlined/24/000000/shopping-cart.png"
+                  alt="cart"
+                  className="cart-icon"
+                  style={{ filter: "invert(100%)" }}
+                />
+              </a>
+            </li>
           </div>
         </nav>
       </header>
