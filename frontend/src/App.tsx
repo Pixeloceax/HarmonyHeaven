@@ -1,17 +1,14 @@
 import { Component } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
 import AuthService from "./services/auth.service";
 import IUser from "./types/use.type";
-
-import Login from "./components/login.component";
-import Register from "./components/register.component";
+import Login from "./components/Login/login.component";
+import Register from "./components/Register/register.component";
 import Home from "./pages/home/Home";
 import BoardUser from "./components/board-user.component";
 import Product from "./pages/product/Product.page";
 import Navbar from "./components/Navbar/Navbar.component";
-
-import ForgotPassword from "./components/forgot-password.component";
+import ForgotPassword from "./components/Password Reset/forgot-password.component";
 import ResetPassword from "./pages/reset-password/reset-password.page";
 
 type Props = object;

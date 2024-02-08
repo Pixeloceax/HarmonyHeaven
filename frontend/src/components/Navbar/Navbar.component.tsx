@@ -1,28 +1,35 @@
-import React from "react";
-import AuthService from "../../services/auth.service";
-import IUser from "../../types/use.type";
+import React from 'react';
+import AuthService from '../../services/auth.service';
+import IUser from '../../types/use.type';
+import "./Narvbar.css"
 
-class Navbar extends React.Component<
-  object,
-  {
-    error: string | null;
-    currentUser: IUser | null;
-  }
-> {
+interface State {
+  error: string | null;
+  currentUser: IUser | null;
+  isSticky: boolean;
+}
+
+class Navbar extends React.Component<object, State> {
   constructor(props: object) {
     super(props);
     this.state = {
       error: null,
       currentUser: null,
+      isSticky: false,
     };
+    this.handleScroll = this.handleScroll.bind(this);
   }
 
-  logout() {
-    AuthService.logout();
-    this.setState({ currentUser: null });
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+    this.fetchCurrentUser();
   }
 
-  async componentDidMount() {
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  async fetchCurrentUser() {
     try {
       const user = await AuthService.getCurrentUser();
       if (user) {
@@ -33,12 +40,25 @@ class Navbar extends React.Component<
     }
   }
 
+  handleScroll() {
+    if (window.scrollY > 0 && !this.state.isSticky) {
+      this.setState({ isSticky: true });
+    } else if (window.scrollY === 0 && this.state.isSticky) {
+      this.setState({ isSticky: false });
+    }
+  }
+
+  logout() {
+    AuthService.logout();
+    this.setState({ currentUser: null });
+  }
+
   render() {
-    const { currentUser } = this.state;
+    const { currentUser, isSticky } = this.state;
 
     return (
       <header>
-        <nav className="navbar">
+        <nav className={`navbar ${isSticky ? 'sticky' : ''}`}>
           <a href="/" className="navbar-brand">
             Home
           </a>
