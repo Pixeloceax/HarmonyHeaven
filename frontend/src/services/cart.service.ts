@@ -1,6 +1,6 @@
 import IProduct from "../types/product.type";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
+import authHeader from "./auth-header";
 
 interface ICartItem {
   product: IProduct;
@@ -61,25 +61,19 @@ class cartService {
   }
 
   async confirmCart() {
-    interface JwtPayload {
-      id: string;
-    }
-
     const cart = this.getCart();
-
     const products = cart.map((item) => ({
       productId: item.product.id,
       quantity: item.quantity,
     }));
 
-    const userId = (
-      jwtDecode(localStorage.getItem("user") as string) as JwtPayload
-    ).id;
     const response = await axios.post(
       `${this.BACKEND_URL}${this.SUBMIT_CART}`,
       {
         products,
-        userId,
+      },
+      {
+        headers: authHeader(),
       }
     );
 
