@@ -66,6 +66,10 @@ class AuthService {
     }
   }
 
+  public isLoggedIn(): boolean {
+    return !!this.getUserToken();
+  }
+
   private getUserToken(): string | null {
     return localStorage.getItem("user");
   }
