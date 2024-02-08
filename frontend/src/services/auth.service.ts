@@ -46,7 +46,6 @@ class AuthService {
   async getCurrentUser(): Promise<IUser | null> {
     const token: string | null = this.getUserToken();
     if (!token) {
-      console.error("User email not found in local storage");
       return null;
     }
     const email = (jwtDecode(token) as { email: string }).email;
@@ -65,6 +64,10 @@ class AuthService {
       console.error(error);
       return null;
     }
+  }
+
+  public isLoggedIn(): boolean {
+    return !!this.getUserToken();
   }
 
   private getUserToken(): string | null {

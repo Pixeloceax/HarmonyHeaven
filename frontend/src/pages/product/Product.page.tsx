@@ -1,10 +1,11 @@
-import  { Component } from "react";
-import axios from 'axios';
+import { Component } from "react";
+import axios from "axios";
 import IProduct from "../../types/product.type";
-import "./product.css"
-import parse from 'html-react-parser';
+import "./product.css";
+import parse from "html-react-parser";
 import { CiHeart } from "react-icons/ci";
 import { IoMdCart } from "react-icons/io";
+import cartService from "../../services/cart.service";
 
 // tout les arguments de ma classe seront des objets
 type Props = object;
@@ -29,10 +30,12 @@ export default class Products extends Component<Props, State> {
 
   async fetchProducts() {
     try {
-      const response = await axios.get<IProduct[]>('http://127.0.0.1:8000/products-list');
+      const response = await axios.get<IProduct[]>(
+        "http://127.0.0.1:8000/products-list"
+      );
       this.setState({ products: response.data });
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
     }
   }
 
@@ -43,7 +46,8 @@ export default class Products extends Component<Props, State> {
       <div>
         <h1>Product List</h1>
         <div className="products-container">
-            {products && products.map((product) => (
+          {products &&
+            products.map((product) => (
               <div key={product.id} className="single-product-card">
                 <div className="product-img">
                   <img src={product.image} alt={product.name} />
@@ -52,13 +56,22 @@ export default class Products extends Component<Props, State> {
                   <h2>{product.name}</h2>
                   <h3>{product.artist} - Out of stock</h3>
                   <h3>{product.price} €</h3>
-                  <h3>{parse(product.description || '')}</h3>
+                  <h3>{parse(product.description || "")}</h3>
                 </div>
                 <div className="add-to-cart">
                   <button>
                     <CiHeart />
                   </button>
-                  <button>
+                  <button
+                    onClick={() =>
+                      cartService.addToCart(
+                        product.id,
+                        product.name as string,
+                        product.image,
+                        product.price as number
+                      )
+                    }
+                  >
                     <IoMdCart />
                   </button>
                 </div>
