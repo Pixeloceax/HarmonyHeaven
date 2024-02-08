@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import cartService from "../../services/cart.service";
 import IProduct from "../../types/product.type";
+import "./cart.css";
 
 interface CartItem {
   product: IProduct;
@@ -34,7 +35,6 @@ const Cart = () => {
 
   const confirmCart = () => {
     if (!localStorage.getItem("user")) {
-      console.log("You need to be logged in to confirm your cart");
       window.location.href = "/login";
     } else {
       cartService.confirmCart();
@@ -50,47 +50,61 @@ const Cart = () => {
 
   return (
     <>
-      {userCart.length === 0 && <h1>Votre panier est vide</h1>}
-      {userCart.map((item: CartItem) => (
-        <div key={item.product.id}>
-          <div>
-            <img src={item.product.image} alt={item.product.name} />
-          </div>
-          <div>
-            <h2>{item.product.name}</h2>
-            <h3>{item.product.price}€/u</h3>
-          </div>
-          <div>
-            <label htmlFor="number-dd">Quantité :</label>
-            <select
-              className="quantity-dropdown"
-              value={item.quantity}
-              onChange={(e) =>
-                updateQuantity(item.product.id, Number(e.target.value))
-              }
-            >
-              {(() => {
-                const options = [];
-                for (let i = 1; i <= 10; i++) {
-                  options.push(
-                    <option key={i} value={i}>
-                      {i}
-                    </option>
-                  );
+      <div className="cart-container">
+        {" "}
+        {userCart.length === 0 && <h1>Votre panier est vide</h1>}
+        {userCart.map((item: CartItem) => (
+          <div key={item.product.id} className="cart-item">
+            {" "}
+            <div className="item-image">
+              <img src={item.product.image} alt={item.product.name} />
+            </div>
+            <div className="item-details">
+              <h2>{item.product.name}</h2>
+              <h3>{item.product.price}€/u</h3>
+            </div>
+            <div className="item-actions">
+              <label htmlFor={`quantity-dropdown-${item.product.id}`}>
+                Quantité :
+              </label>
+              <select
+                id={`quantity-dropdown-${item.product.id}`}
+                className="quantity-dropdown"
+                value={item.quantity}
+                onChange={(e) =>
+                  updateQuantity(item.product.id, Number(e.target.value))
                 }
-                return options;
-              })()}
-            </select>
-            <button onClick={() => removeFromCart(item.product.id)}>
-              Remove
-            </button>
+              >
+                {(() => {
+                  const options = [];
+                  for (let i = 1; i <= 10; i++) {
+                    options.push(
+                      <option key={i} value={i}>
+                        {i}
+                      </option>
+                    );
+                  }
+                  return options;
+                })()}
+              </select>
+              <button onClick={() => removeFromCart(item.product.id)}>
+                Remove
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
-      <h2>Total: {Math.round(totalPrice * 100) / 100}€</h2>
-      <button onClick={() => confirmCart()} disabled={userCart.length === 0}>
-        Submit command
-      </button>
+        ))}
+        <h2 className="total-price">
+          Total: {Math.round(totalPrice * 100) / 100}€
+        </h2>
+        <button
+          onClick={() => confirmCart()}
+          disabled={userCart.length === 0}
+          className="submit-button"
+        >
+          {" "}
+          Submit cart{" "}
+        </button>
+      </div>
     </>
   );
 };
