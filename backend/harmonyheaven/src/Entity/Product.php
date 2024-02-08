@@ -55,6 +55,9 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $artist = null;
 
+    #[ORM\Column]
+    private ?int $quantity = null;
+
     public function __construct()
     {
         $this->genre = new ArrayCollection();
@@ -242,6 +245,18 @@ class Product
     public function setArtist(string $artist): static
     {
         $this->artist = $artist;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

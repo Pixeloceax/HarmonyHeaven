@@ -30,7 +30,7 @@ class RegistrationController extends AbstractController
         // Check if the email is already used
         $userInDb = $userRepository->findOneBy(['email' => $email]);
         if ($userInDb) {
-            return new JsonResponse(['error' => 'This email is already in use.'], JsonResponse::HTTP_EMAIL_ALREADY_IN_USE);
+            return new JsonResponse(['message' => 'This email is already in use.'], JsonResponse::HTTP_CONFLICT);
         }
 
         $user = new User();
