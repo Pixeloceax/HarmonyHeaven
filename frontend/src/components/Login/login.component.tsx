@@ -2,6 +2,9 @@ import { Component } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
+import "./login.css";
+import Cat from "../../assets/images/cat.jpg";
+
 import AuthService from "../../services/auth.service";
 
 type Props = object;
@@ -70,14 +73,12 @@ export default class Login extends Component<Props, State> {
     };
 
     return (
-      <div className="col-md-12">
-        <div className="card card-container">
-          <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-            alt="profile-img"
-            className="profile-img-card"
-          />
-
+      <div className="login-container">
+        <div className="login-form-container">
+          <div className="title">
+            <h1>Log In</h1>
+            <p>Welcome to Harmony Heaven</p>
+          </div>
           <Formik
             initialValues={initialValues}
             validationSchema={this.validationSchema}
@@ -86,70 +87,64 @@ export default class Login extends Component<Props, State> {
             <Form>
               <div className="form-group">
                 <label htmlFor="email">Email</label>
-                <Field name="email" type="text" className="form-control" />
-                <ErrorMessage
-                  name="email"
-                  component="div"
-                  className="alert alert-danger"
-                />
+                <Field className="form-input" name="email" type="text" />
+                <ErrorMessage name="email" component="div" />
               </div>
 
               <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <Field
-                  name="password"
-                  type="password"
-                  className="form-control"
-                />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="alert alert-danger"
-                />
-              </div>
-
-              <div className="form-group">
-                <div className="custom-control custom-checkbox">
-                  <Field
-                    type="checkbox"
-                    name="rememberMe"
-                    id="rememberMe"
-                    className="custom-control-input"
-                  />
-                  <label htmlFor="rememberMe" className="custom-control-label">
-                    Remember Me
+                <div>
+                  <label className="form-label" htmlFor="password">
+                    Password
                   </label>
+                  <a className="forgot-password-link" href="/forgot-password">
+                    Forgot Password?
+                  </a>
+                </div>
+                <Field className="form-input" name="password" type="password" />
+                <ErrorMessage
+                  className="error-message"
+                  name="password"
+                  component="div"
+                />
+              </div>
+
+              <div>
+                <div>
+                  <Field type="checkbox" name="rememberMe" id="rememberMe" />
+                  <label htmlFor="rememberMe">Remember Me</label>
                 </div>
               </div>
 
-              <div className="form-group">
-                <button className="forgot-password">
-                  <a href="/forgot-password">Forgot Password?</a>
-                </button>
-              </div>
-
-              <div className="form-group">
+              <div>
                 <button
+                  className="login-submit-button"
                   type="submit"
-                  className="btn btn-primary btn-block"
                   disabled={loading}
                 >
-                  {loading && (
-                    <span className="spinner-border spinner-border-sm"></span>
-                  )}
+                  {loading && <span></span>}
                   <span>Login</span>
                 </button>
               </div>
 
+              <div className="redirect-to-register">
+                <p>
+                  Don't have an account ?{" "}
+                  <a className="sign-up-link" href="/register">
+                    Sign Up
+                  </a>
+                </p>
+              </div>
+
               {message && (
-                <div className="form-group">
-                  <div className="alert alert-danger" role="alert">
-                    {message}
-                  </div>
+                <div>
+                  <div role="alert">{message}</div>
                 </div>
               )}
             </Form>
           </Formik>
+        </div>
+        <div className="login-image-container">
+          <img src={Cat} className="login-image" alt="login-image" />
         </div>
       </div>
     );
