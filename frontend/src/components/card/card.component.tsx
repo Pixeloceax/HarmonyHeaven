@@ -7,7 +7,11 @@ interface CardProps {
   album: string;
 }
 
+<<<<<<< HEAD
 const Card = ({ image, price, artist, album }: CardProps) => {
+=======
+const card = ({ image, price, artist, album }: CardProps) => {
+>>>>>>> 0b7bb2bb562b560b332f0d1f1eed284290ed7944
   return (
     <>
       <div className="card-container">
@@ -24,4 +28,8 @@ const Card = ({ image, price, artist, album }: CardProps) => {
   );
 };
 
+<<<<<<< HEAD
 export default Card;
+=======
+export default card;
+>>>>>>> 0b7bb2bb562b560b332f0d1f1eed284290ed7944

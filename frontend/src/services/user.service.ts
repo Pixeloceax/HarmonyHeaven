@@ -9,7 +9,6 @@ class UserService {
   // }
 
   async updateUserBoard(userData: string) {
-    console.log(userData);
     try {
       const response = await axios.put(this.BACKEND_URL + "user", userData, {
         headers: this.getAuthHeaders(),

@@ -3,19 +3,34 @@
 skin rose
 !theme blueprint
 
-
 title Class Diagram - Harmony Heaven Ecommerce
 
 class User {
+    + UUID id
     + String name
     + String email
     + String password
     + String address
     + String phone
     + String role
+
+    + Register()
+    + Login()
+    + GetProfile()
+    + UpdateProfile()
+    + DeleteProfile()
+    + AddToCart()
+    + RemoveFromCart()
+    + AddCommand()
+    + CancelCommand()
+    + AddPayment()
+    + AddDelivery()
+    + GetReceipt()
+    + Logout()
 }
 
 class Product {
+    + Int id
     + String name
     + String description
     + Float price
@@ -25,105 +40,144 @@ class Product {
     + String year
     + String country
     + String format
-    + String slug
-    + List <Genre> genres
-    + List <Style> styles
+    + Genre genre
+    + Style style
+    + Int stock
+
+    + getProduct()
+    + createNewProduct()
+    + updateProduct()
+    + deleteProduct()
+    + updateStock()
+    + getStock()
 }
 
 class Genre {
+    + Int id
     + String name
     + String description
+
+    + getGenre()
+    + createNewGenre()
+    + updateGenre()
+    + deleteGenre()
+
 }
 
 class Style {
+    + Int id
     + String name
     + String description
+
+    + getStyle()
+    + createNewStyle()
+    + updateStyle()
+    + deleteStyle()
 }
 
 class Cart {
-    + User user
-    + List<CartItem> items
-}
+    + Int id
+    + User user_id
+    + Product product_id
+    + Quantity quantity
 
-class CartItem {
-    + Product product
-    + int quantity
+    + getCart()
+    + addProductToCart()
+    + updateCart()
+    + removeProductFromCart()
+    + setEmptyCart()
 }
 
 class Command {
-    + User user
-    + List<CommandItem> items
-    + Payment payment
-    + Delivery delivery
-}
+    + Int id
+    + User user_id
+    + Product product_id
+    + Payment payment_id
+    + Delivery delivery_id
+    + String Status
 
-class CommandItem {
-    + Product product
-    + int quantity
+    + getCommand()
+    + createCommandeFromCart()
+    + cancelCommand()
+    + getStatus
+    + updateStatus()
 }
 
 class Receipt {
-    + Command command
-    + String receiptNumber
+    + Int id
+    + Command command_id
+    + Product product_id
 
-}
-
-class PaymentMethod {
-    + String name
-    + String description
+    + getReceipt()
+    + sendEmailReceipt()
 }
 
 class Payment {
-    + PaymentMethod method
+    + Int id
+    + PaymentMethod paymentMethod
     + String status
+    + Float amountPaid
+
+    + getPaymentStatus()
+    + updatePaymentStatus()
+    + getAmountPaid()
+}
+
+class PaymentMethod {
+    + Int id
+    + String name
+    + String description
+
+    + getPaymentMethod()
+    + createNewPaymentMethod()
+    + updatePaymentMethod()
+    + deletePaymentMethod()
 }
 
 class Delivery {
+    + Int id
     + String address
     + String status
+    + Date deliveryDate
+    + String deliveryMethod
+    + Float deliveryCost
+
+    + getDeliveryStatus()
+    + updateDeliveryStatus()
+    + getDeliveryDate()
+    + updateDeliveryDate()
+    + getDeliveryMethod()
+    + updateDeliveryMethod()
+    + getDeliveryCost()
+    
 }
 
-class DeliveryInformation {
-    + Delivery delivery
-    + String trackingDetails
-}
+'Un User peut avoir plusieurs Cart et Command (OneToMany)
 
-User "1" *-- "1" Cart : has  
-'Un utilisateur a un panier (relation un-à-un)
+User "1" -- "0..*" Cart 
 
-Cart "1" *-- "*" CartItem : contains  
-'Un panier peut contenir plusieurs articles (relation un-à-plusieurs)
+User "1" -- "0..*" Command 
 
-User "1" *-- "*" Command : places 
-'Un utilisateur peut passer plusieurs commandes (relation un-à-plusieurs)
+'Un Product peut être dans plusieurs Cart et Command, et peut avoir plusieurs Genre et Style (ManyToMany)
 
-Command "1" *-- "*" CommandItem : contains 
-'Une commande peut contenir plusieurs articles (relation un-à-plusieurs)
+Product "*" -- "0..*" Cart 
 
-Command "1" -- "1" Delivery : is delivered by 
-'Une commande est livrée par une livraison (relation un-à-un)
+Product "*" -- "0..*" Command 
 
-Receipt "1" -- "1" Command : is for 
-'Un reçu est pour une commande (relation un-à-un)
+Product "*" -- "0..*" Genre 
 
-Command "1" -- "1" Payment : pays with 
-'Une commande est payée avec un paiement (relation un-à-un)
+Product "*" -- "0..*" Style 
 
-Payment "1" -- "1" PaymentMethod : uses  
-'Un paiement utilise une méthode de paiement (relation un-à-un)
+'Une Command a un Receipt, un Payment et un Delivery (OneToOne)
 
-Delivery "1" -- "1" DeliveryInformation : has  
- 'Une livraison a des informations de livraison (relation un-à-un)
+Command "1" -- "1" Receipt 
 
-CartItem "1" -- "1" Product : is for 
-'Un CartItem est pour un Product (relation un-à-un)
+Command "1" -- "1" Payment 
 
-CommandItem "1" -- "1" Product : is for 
-'Un commandItem est pour un Product (relation un-à-un)
+Command "1" -- "1" Delivery 
 
-Product "*" -- "*" Genre : has  
-'Un produit peut avoir plusieurs genres et un genre peut appartenir à plusieurs produits (relation plusieurs-à-plusieurs)
+'Un Payment a un PaymentMethod (OneToOne)
 
-Product "*" -- "*" Style : has  
-'Un produit peut avoir plusieurs styles et un style peut appartenir à plusieurs produits (relation plusieurs-à-plusieurs)
+Payment "1" -- "1" PaymentMethod 
+
 @enduml
