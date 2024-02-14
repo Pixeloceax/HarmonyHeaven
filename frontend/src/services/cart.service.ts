@@ -67,20 +67,31 @@ class cartService {
       quantity: item.quantity,
     }));
 
-    const response = await axios.post(
-      `${this.BACKEND_URL}${this.SUBMIT_CART}`,
-      {
+    try {
+      const response = await axios.post(
+        `${this.BACKEND_URL}${this.SUBMIT_CART}`,
         products,
-      },
-      {
-        headers: authHeader(),
+        {
+          headers: this.getAuthHeaders(),
+        }
+      );
+      if (response.status === 200) {
+        localStorage.removeItem("cart");
+        console.log("Cart confirmed");
+      } else if (response.status === 500) {
+        console.error("Error while confirming the cart");
+      } else {
+        console.error(`Unexpected status code: ${response.status}`);
       }
-    );
-
-    if (response.status === 200) {
-      localStorage.removeItem("cart");
+      return response;
+    } catch (error) {
+      console.error(`Error while confirming the cart: ${error}`);
+      throw error;
     }
-    return response;
+  }
+
+  private getAuthHeaders() {
+    return authHeader();
   }
 }
 
