@@ -1,7 +1,6 @@
-@startuml Ordering Diargram Activity
+@startuml cart checkout
 
 !theme blueprint
-title Ordering Diargram Activity
 
 start
 : User selects products;
