@@ -1,0 +1,25 @@
+.card-container {
+  border-bottom: 1px solid #ffffff;
+  height: 350px;
+  width: 300px;
+  margin: 2%;
+}
+.card-content {
+}
+
+.card-product-image {
+  width: 70%;
+  height: 70%;
+  margin: 0 auto;
+}
+.card-flex {
+  display: flex;
+  justify-content: space-between;
+}
+.card-artist {
+}
+.card-price {
+}
+.card-album {
+  padding-bottom: 3%;
+}

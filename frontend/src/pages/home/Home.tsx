@@ -4,12 +4,14 @@ import IGenre from "../../types/genre.type";
 import axios from "axios";
 import "./Home.css";
 import { FaSearch } from "react-icons/fa";
+import Vinyls from "../../components/Vinyls/Vinyls";
 
 type Props = object;
 type State = {
   searchQuery: string;
   selectedGenre: string | null;
   genres: IGenre[] | null;
+  divCount: 6;
 };
 
 export default class Home extends Component<Props, State> {
@@ -19,6 +21,7 @@ export default class Home extends Component<Props, State> {
       searchQuery: "",
       selectedGenre: null,
       genres: null,
+      divCount: 6,
     };
   }
 
@@ -85,10 +88,10 @@ export default class Home extends Component<Props, State> {
                       </option>
                     ))}
                 </select>
-                <form onSubmit={this.handleSubmit} >
+                <form onSubmit={this.handleSubmit}>
                   <label>
                     <input
-                    className="search-bar"
+                      className="search-bar"
                       type="text"
                       value={this.state.searchQuery}
                       onChange={(e) =>
@@ -104,6 +107,9 @@ export default class Home extends Component<Props, State> {
             </div>
           </section>
         </main>
+        <section>
+          <Vinyls />
+        </section>
         <Footer />
       </>
     );

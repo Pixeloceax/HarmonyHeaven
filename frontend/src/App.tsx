@@ -11,6 +11,7 @@ import Cart from "./components/cart/cart.component";
 import Navbar from "./components/Navbar/Navbar.component";
 import ForgotPassword from "./components/Password Reset/forgot-password.component";
 import ResetPassword from "./pages/reset-password/reset-password.page";
+import Debug from "./pages/debug/debug.page";
 
 type Props = object;
 
@@ -66,6 +67,7 @@ class App extends Component<Props, State> {
 
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/debug" element={<Debug />} />
           </Routes>
         </div>
       </BrowserRouter>
