@@ -32,14 +32,15 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleForgotPassword}>
-      <Form>
-        <p>email:</p>
+      <Form className='form-container'>
         <Field
           type="email"
           name="email"
+          placeholder="Email"
+          className="form-input-reset"
           required
         />
-        <button type="submit">Reset Password</button>
+        <button type="submit" className='login-submit-button'>Reset Password</button>
       </Form>
     </Formik>
   );
