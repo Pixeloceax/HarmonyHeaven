@@ -9,7 +9,7 @@ import BoardUser from "./components/board-user.component";
 import Product from "./pages/product/Product.page";
 import Cart from "./components/cart/cart.component";
 import Navbar from "./components/Navbar/Navbar.component";
-import ForgotPassword from "./components/Password Reset/forgot-password.component";
+import ForgotPassword from "./components/PasswordReset/forgot-password.component";
 import ResetPassword from "./pages/reset-password/reset-password.page";
 import Debug from "./pages/debug/debug.page";
 
