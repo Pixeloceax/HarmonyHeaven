@@ -16,6 +16,20 @@ body {
   background-color: var(--primary-bg-color);
 }
 
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+}
+
 @font-face {
   font-family: "Unbounded";
   src: url(./assets/font/Unbounded/Unbounded-VariableFont_wght.ttf);

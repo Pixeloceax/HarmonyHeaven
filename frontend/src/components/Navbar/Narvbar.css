@@ -1,15 +1,29 @@
-.navbar-container {
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1% 5%;
-  background-color: var(--primary-bg-color);
+  background-color: transparent;
   color: white;
   position: fixed;
   width: 100%;
 }
 
-.overlay {
+.navbar-logo > img {
+  height: 50px;
+  width: 50px;
+  filter: invert(10%);
+}
+
+.navbar-item {
+  margin-right: 20px;
+}
+
+.icon {
+  font-size: 50px;
+}
+
+.navbar-overlay {
   height: 100%;
   width: 0;
   position: fixed;
@@ -21,7 +35,7 @@
   transition: 0.5s;
 }
 
-.overlay-content {
+.navbar-overlay-content {
   position: relative;
   top: 25%;
   width: 100%;
@@ -29,7 +43,7 @@
   margin-top: 30px;
 }
 
-.overlay a {
+.navbar-overlay a {
   padding: 8px;
   text-decoration: none;
   font-size: 36px;
@@ -37,51 +51,49 @@
   transition: 0.3s;
 }
 
-.overlay a:hover,
-.overlay a:focus {
+.navbar-overlay a:hover,
+.navbar-overlay a:focus {
   color: #f1f1f1;
 }
 
-.closebtn,
-.openbtn {
+.navbar-close-button,
+.navbar-open-button {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   border: none;
   background-color: transparent;
   cursor: pointer;
+  filter: invert(100%);
+  font-size: 50px;
 }
 
-.overlay .closebtn {
+.navbar-overlay .navbar-close-button {
   position: absolute;
   top: 20px;
   right: 45px;
-  font-size: 60px;
-  filter: invert(100%);
 }
 
-.openbtn {
-  font-size: 30px;
-  filter: invert(100%);
+.navbar-cart-link {
 }
 
-.link-effect {
-  text-decoration: none;
-  color: white;
+.navbar-link-container {
+  display: flex;
+  justify-content: space-between;
 }
 
-.link-li {
+.navbar-link-container > ul {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar-overlay-link-item {
   list-style-type: none;
   margin: 0;
   padding: 0 1%;
 }
 
-.logo {
-  text-decoration: none;
-  color: white;
-}
-
-.link-li:hover {
+.navbar-overlay-link-item:hover {
   text-decoration: none;
   background: linear-gradient(90deg, white 50%, transparent 50%);
   background-size: 200% 100%;
@@ -90,9 +102,14 @@
   animation: slide 0.4s forwards;
 }
 
-.link-li:hover a {
+.navbar-overlay-link-item:hover a {
   color: var(--primary-bg-color);
   transition: all 0.4s ease;
+}
+
+.logo {
+  text-decoration: none;
+  color: white;
 }
 
 @keyframes slide {
@@ -102,10 +119,10 @@
 }
 
 @media screen and (max-height: 450px) {
-  .overlay a {
+  .navbar-overlay a {
     font-size: 20px;
   }
-  .overlay .closebtn {
+  .navbar-overlay .navbar-close-button {
     font-size: 40px;
     top: 15px;
     right: 35px;
