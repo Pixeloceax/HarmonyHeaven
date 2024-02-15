@@ -1,117 +1,62 @@
-import React from 'react';
-import AuthService from '../../services/auth.service';
-import IUser from '../../types/use.type';
-import "./Narvbar.css"
+import "./Narvbar.css";
+import { MdClose } from "react-icons/md";
+import { CgMenuMotion } from "react-icons/cg";
 
-interface State {
-  error: string | null;
-  currentUser: IUser | null;
-  isSticky: boolean;
-}
+const Navbar = () => {
+  const NavLink = [
+    "shop",
+    "orders",
+    "login",
+    "user",
+    "about",
+    "logout",
+    "register",
+  ];
 
-class Navbar extends React.Component<object, State> {
-  constructor(props: object) {
-    super(props);
-    this.state = {
-      error: null,
-      currentUser: null,
-      isSticky: false,
-    };
-    this.handleScroll = this.handleScroll.bind(this);
-  }
-
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
-    this.fetchCurrentUser();
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
-  }
-
-  async fetchCurrentUser() {
-    try {
-      const user = await AuthService.getCurrentUser();
-      if (user) {
-        this.setState({ currentUser: user });
-      }
-    } catch (err) {
-      this.setState({ error: "Error getting current user: " + err });
+  function openNav() {
+    const myNav = document.getElementById("myNav");
+    if (myNav) {
+      myNav.style.width = "100%";
     }
   }
 
-  handleScroll() {
-    if (window.scrollY > 0 && !this.state.isSticky) {
-      this.setState({ isSticky: true });
-    } else if (window.scrollY === 0 && this.state.isSticky) {
-      this.setState({ isSticky: false });
+  function closeNav() {
+    const myNav = document.getElementById("myNav");
+    if (myNav) {
+      myNav.style.width = "0%";
     }
   }
 
-  logout() {
-    AuthService.logout();
-    this.setState({ currentUser: null });
-  }
+  return (
+    <>
+      <div id="myNav" className="overlay">
+        <button className="closebtn" onClick={closeNav}>
+          <MdClose />
+        </button>
 
-  render() {
-    const { currentUser, isSticky } = this.state;
+        <div className="overlay-content">
+          {NavLink.map((link, index) => (
+            <li className="link-li" key={index}>
+              <a className="link-effect" href={`/${link}`}>
+                {link.toUpperCase()}
+              </a>
+            </li>
+          ))}
+        </div>
+      </div>
 
-    return (
-      <header>
-        <nav className={`navbar ${isSticky ? 'sticky' : ''}`}>
-          <a href="/" className="navbar-brand">
-            Home
+      <nav className="navbar-container">
+        <h1>
+          <a className="logo" href="/">
+            Navbar
           </a>
-          <div className="navbar-nav mr-auto">
-            {currentUser ? (
-              <>
-                <li className="nav-item">
-                  <a href="/user" className="nav-link">
-                    User
-                  </a>
-                </li>
-                <li>
-                  <button className="logout" onClick={() => this.logout()}>
-                    Logout
-                  </button>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className="nav-item">
-                  <a href="/login" className="nav-link">
-                    Login
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a href="/register" className="nav-link">
-                    Register
-                  </a>
-                </li>
-              </>
-            )}
-
-            <li className="nav-item">
-              <a href="/products" className="nav-link">
-                Products
-              </a>
-            </li>
-
-            <li className="nav-item">
-              <a href="/cart">
-                <img
-                  src="https://img.icons8.com/material-outlined/24/000000/shopping-cart.png"
-                  alt="cart"
-                  className="cart-icon"
-                  style={{ filter: "invert(100%)" }}
-                />
-              </a>
-            </li>
-          </div>
-        </nav>
-      </header>
-    );
-  }
-}
+        </h1>
+        <button className="openbtn" onClick={openNav}>
+          <CgMenuMotion />
+        </button>
+      </nav>
+    </>
+  );
+};
 
 export default Navbar;

@@ -1,5 +1,4 @@
 import { Component } from "react";
-import Footer from "../../components/Footer/footer.component";
 import IGenre from "../../types/genre.type";
 import axios from "axios";
 import "./Home.css";
@@ -107,10 +106,6 @@ export default class Home extends Component<Props, State> {
             </div>
           </section>
         </main>
-        <section>
-
-        </section>
-        <Footer />
       </>
     );
   }

@@ -1,60 +1,113 @@
-/* Navbar styles */
-.navbar {
-    position: fixed;
-    width: 100%;
-    top: -100px; /* Initial position above viewport */
-    transition: top 0.3s;
-    z-index: 1000; /* Ensures it's above other content */
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1% 5%;
+  background-color: var(--primary-bg-color);
+  color: white;
+  position: fixed;
+  width: 100%;
+}
+
+.overlay {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: var(--primary-bg-color);
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+
+.overlay-content {
+  position: relative;
+  top: 25%;
+  width: 100%;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.overlay a {
+  padding: 8px;
+  text-decoration: none;
+  font-size: 36px;
+  display: block;
+  transition: 0.3s;
+}
+
+.overlay a:hover,
+.overlay a:focus {
+  color: #f1f1f1;
+}
+
+.closebtn,
+.openbtn {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.overlay .closebtn {
+  position: absolute;
+  top: 20px;
+  right: 45px;
+  font-size: 60px;
+  filter: invert(100%);
+}
+
+.openbtn {
+  font-size: 30px;
+  filter: invert(100%);
+}
+
+.link-effect {
+  text-decoration: none;
+  color: white;
+}
+
+.link-li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0 1%;
+}
+
+.logo {
+  text-decoration: none;
+  color: white;
+}
+
+.link-li:hover {
+  text-decoration: none;
+  background: linear-gradient(90deg, white 50%, transparent 50%);
+  background-size: 200% 100%;
+  background-position: right;
+  transition: all 1s ease;
+  animation: slide 0.4s forwards;
+}
+
+.link-li:hover a {
+  color: var(--primary-bg-color);
+  transition: all 0.4s ease;
+}
+
+@keyframes slide {
+  100% {
+    background-position: left;
   }
-  
-  .navbar.sticky {
-    top: 0;
-    background-color: #ffffff00; /* Change background color when sticky */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow when sticky */
-    display:flex;
-    justify-content: space-evenly;
-    align-items: center;
+}
+
+@media screen and (max-height: 450px) {
+  .overlay a {
+    font-size: 20px;
   }
-  
-  .navbar-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #ffffff;
-    text-decoration: none;
-    margin-right: 20px;
+  .overlay .closebtn {
+    font-size: 40px;
+    top: 15px;
+    right: 35px;
   }
-  
-  .navbar-nav {
-    display: flex;
-    align-items: center;
-  }
-  
-  .nav-item {
-    list-style: none;
-    margin-right: 15px;
-  }
-  
-  .nav-link {
-    text-decoration: none;
-    color: #ffffff;
-    transition: color 0.3s;
-  }
-  
-  .nav-link:hover {
-    color: #007bff;
-  }
-  
-  .logout {
-    border: none;
-    background-color: transparent;
-    color: #007bff;
-    cursor: pointer;
-  }
-  
-  .logout:hover {
-    text-decoration: underline;
-  }
-  
-  .navbar-nav.mr-auto{
-    margin-top: 2%;
-  }
+}

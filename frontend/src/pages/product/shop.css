@@ -19,7 +19,7 @@
   flex-wrap: wrap;
   border: #ffffff 1px solid;
   min-height: 452px;
-  max-height: 452px;
+  max-height: 460px;
   max-width: 400px;
   min-width: 400px;
   margin-top: 2%;
@@ -30,7 +30,6 @@
   flex-wrap: wrap;
   max-width: 300px;
   margin-top: 2px;
-
 }
 
 .vinyl-cover {
