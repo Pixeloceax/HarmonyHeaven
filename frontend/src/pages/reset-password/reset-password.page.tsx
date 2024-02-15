@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
+import './reset-password.css'
 
 type State = {
   password: string;
@@ -68,20 +69,22 @@ const ResetPassword: React.FC = () => {
 
   return (
     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleResetPassword}>
-      <Form>
-      <p>password:</p>
+      <Form className="form-container">
       <Field
         type="password"
         name="password"
+        placeholder="Your password"
+        className="form-input-reset"
         required
       />
-      <p>confirm password:</p>
       <Field
         type="password"
         name="confirmPassword"
+        placeholder="Confirm your password"
+        className="form-input-reset"
         required
       />
-      <button type="submit">Submit</button>
+      <button type="submit" className="login-submit-button">Submit</button>
       </Form>
     </Formik>
   );
