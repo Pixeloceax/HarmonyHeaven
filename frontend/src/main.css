@@ -10,7 +10,13 @@
 }
 
 body {
+  font-family: "Unbounded", sans-serif;
   height: 100vh;
   color: var(--primary-test-color);
   background-color: var(--primary-bg-color);
+}
+
+@font-face {
+  font-family: "Unbounded";
+  src: url(./assets/font/Unbounded/Unbounded-VariableFont_wght.ttf);
 }
