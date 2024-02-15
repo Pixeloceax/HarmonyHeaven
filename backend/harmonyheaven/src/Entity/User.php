@@ -47,6 +47,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Command::class, cascade: ['persist'])]
     private Collection $commands;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $token = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $token_expires = null;
+
     public function __construct()
     {
         $this->commands = new ArrayCollection();
@@ -206,6 +212,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $command->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): static
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    public function getTokenExpires(): ?string
+    {
+        return $this->token_expires;
+    }
+
+    public function setTokenExpires(?string $token_expires): static
+    {
+        $this->token_expires = $token_expires;
 
         return $this;
     }
