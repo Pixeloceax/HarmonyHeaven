@@ -1,45 +1,89 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import AuthService from "../../services/auth.service";
+import axios from "axios";
+import { toast } from 'react-toastify';
+import { Field, Form, Formik } from "formik";
+import * as Yup from "yup";
 
-const ResetPassword = () => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
+type State = {
+  password: string;
+  confirmPassword: string;
+  token: string | null;
+};
+
+const ResetPassword: React.FC = () => {
   const { token } = useParams<{ token: string }>();
+  const BACKEND_URL = "http://localhost:8000";
+  console.log(token);
 
-  const handleResetPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      setMessage("Passwords do not match");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await axios.post(BACKEND_URL + "/check-token", { token });
+      } catch (error: any) {
+        toast.error(error.response.data.message, {
+          // Sans id le toast est rendu plusieurs fois.
+          toastId: 'error1',
+        });
+      }
+    };
+    fetchData();
+  }, [token]);
+
+  const handleResetPassword = async (values: State) => {
+    if (values.password !== values.confirmPassword) {
+      toast.error("Les mots de passe ne correspondent pas");
       return;
     }
-    if (!token) {
+    if (!token || token === null) {
       return;
     }
-    const response = await AuthService.resetPassword(token, password);
-    setMessage(response.data.message);
+    try {
+      const response = await AuthService.resetPassword(values.password, token);
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error: any) {
+      toast.error(error.response.data.message)
+      console.error('Erreur lors de la réinitialisation du mot de passe :', error);
+    }
   };
 
+  const validationSchema = () => {
+    return Yup.object().shape({
+      password: Yup.string().required("This field is required!"),
+      confirmPassword: Yup.string().required("This field is required!"),
+    });
+  };
+
+  const initialValues: State = {
+    password: "",
+    confirmPassword: "",
+    token: token || null,
+  };
+  
+
   return (
-    <form onSubmit={handleResetPassword}>
+    <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleResetPassword}>
+      <Form>
       <p>password:</p>
-      <input
+      <Field
         type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        name="password"
         required
       />
       <p>confirm password:</p>
-      <input
+      <Field
         type="password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
+        name="confirmPassword"
         required
       />
       <button type="submit">Submit</button>
-      {message && <p>{message}</p>}
-    </form>
+      </Form>
+    </Formik>
   );
 };
 

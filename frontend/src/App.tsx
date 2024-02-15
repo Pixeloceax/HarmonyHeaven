@@ -13,6 +13,9 @@ import ForgotPassword from "./components/Password Reset/forgot-password.componen
 import ResetPassword from "./pages/reset-password/reset-password.page";
 import Debug from "./pages/debug/debug.page";
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 type Props = object;
 
 type State = {
@@ -49,6 +52,7 @@ class App extends Component<Props, State> {
       <BrowserRouter>
         <div>
           <Navbar />
+          <ToastContainer />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="*" element={<Home />} />

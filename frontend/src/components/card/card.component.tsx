@@ -8,7 +8,6 @@ interface CardProps {
 }
 
 const Card = ({ image, price, artist, album }: CardProps) => {
-
   return (
     <>
       <div className="card-container">
@@ -26,4 +25,3 @@ const Card = ({ image, price, artist, album }: CardProps) => {
 };
 
 export default Card;
-
