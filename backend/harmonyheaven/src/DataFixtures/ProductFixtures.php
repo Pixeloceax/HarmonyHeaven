@@ -64,6 +64,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 $slug = $slugger->slug($result['basic_information']['title'])->lower();
                 $product->setSlug($slug);
 
+                $product->setQuantity(rand(0, 99));
                 $product->setPrice(rand(1500, 4000) / 100);
                 $product->setType('release');
 
