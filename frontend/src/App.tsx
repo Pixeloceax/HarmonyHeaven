@@ -6,7 +6,7 @@ import Login from "./components/Login/login.component";
 import Register from "./components/Register/register.component";
 import Home from "./pages/home/Home";
 import BoardUser from "./components/board-user.component";
-import Product from "./pages/product/Shop";
+import Product from "./pages/shop/Shop";
 import Cart from "./components/cart/cart.component";
 import Navbar from "./components/Navbar/Navbar.component";
 import ForgotPassword from "./components/PasswordReset/forgot-password.component";
