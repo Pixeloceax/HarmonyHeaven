@@ -1,28 +1,48 @@
-import React, { useState } from "react";
+import React from "react";
+import { toast } from 'react-toastify';
+import { Field, Form, Formik } from "formik";
+import * as Yup from "yup";
 import AuthService from "../services/auth.service";
 
-const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+type State = {
+  email: string;
+  message: string;
+};
 
-  const handleForgotPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const response = await AuthService.forgotPassword(email);
-    setMessage(response.data.message);
+const ForgotPassword: React.FC = () => {
+  const handleForgotPassword = async (values: State) => {
+    const response = await AuthService.forgotPassword(values.email);
+    console.log(response);
+    if (response.status === 200) {
+      toast.success(response.data.message);
+    } else if (response.status !== 200) {
+      toast.error(response.data.message);
+    }
+  };
+
+  const validationSchema = () => {
+    return Yup.object().shape({
+      email: Yup.string().required("This field is required!"),
+    });
+  };
+
+  const initialValues: State = {
+    email: "",
+    message: "",
   };
 
   return (
-    <form onSubmit={handleForgotPassword}>
-      <p>email:</p>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <button type="submit">Reset Password</button>
-      {message && <p>{message}</p>}
-    </form>
+    <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleForgotPassword}>
+      <Form>
+        <p>email:</p>
+        <Field
+          type="email"
+          name="email"
+          required
+        />
+        <button type="submit">Reset Password</button>
+      </Form>
+    </Formik>
   );
 };
 
