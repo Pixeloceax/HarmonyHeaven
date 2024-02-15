@@ -41,6 +41,23 @@ export default class Vinyls extends React.Component<Props, State> {
     }
   }
 
+  // Handle adding item to cart
+  handleAddToCart(productId: number) {
+    // Send request to add product to cart
+    axios.post('http://127.0.0.1:8000/cart', {
+      productId: productId,
+      quantity: 1, // You can adjust the quantity as needed
+    })
+    .then(response => {
+      console.log('Item added to cart:', response.data);
+      // Handle success if needed (e.g., show a message to the user)
+    })
+    .catch(error => {
+      console.error('Error adding item to cart:', error);
+      // Handle error if needed
+    });
+  }
+
   render() {
     const { products, currentPage, productsPerPage } = this.state;
 
@@ -65,8 +82,8 @@ export default class Vinyls extends React.Component<Props, State> {
                 <p>{product.artist}</p>
                 <p>{product.price}€</p>
                 <div className="buttons-div">
-                  <button>favorite</button>
-                  <button>card</button>
+                  <button >favorite</button>
+                   <button onClick={() => this.handleAddToCart(product.id)}>card</button>
                 </div>
               </div>
             ))}
