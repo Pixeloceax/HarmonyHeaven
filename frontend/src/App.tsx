@@ -12,6 +12,7 @@ import Navbar from "./components/Navbar/Navbar.component";
 import ForgotPassword from "./components/Password Reset/forgot-password.component";
 import ResetPassword from "./pages/reset-password/reset-password.page";
 import Debug from "./pages/debug/debug.page";
+import Footer from "./components/Footer/footer.component";
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -74,6 +75,7 @@ class App extends Component<Props, State> {
             <Route path="/debug" element={<Debug />} />
           </Routes>
         </div>
+        <Footer />
       </BrowserRouter>
     );
   }

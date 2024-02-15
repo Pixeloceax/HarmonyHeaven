@@ -4,8 +4,7 @@
   width: 300px;
   margin: 2%;
 }
-.card-content {
-}
+
 
 .card-product-image {
   width: 70%;
@@ -16,10 +15,7 @@
   display: flex;
   justify-content: space-between;
 }
-.card-artist {
-}
-.card-price {
-}
+
 .card-album {
   padding-bottom: 3%;
 }

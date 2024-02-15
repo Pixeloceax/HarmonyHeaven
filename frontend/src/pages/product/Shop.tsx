@@ -1,16 +1,21 @@
-import React, { Component } from "react";
+import * as React from 'react';
+import Pagination from '@mui/material/Pagination';
+import PaginationItem from '@mui/material/PaginationItem';
+import Stack from '@mui/material/Stack';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import IProduct from "../../types/product.type";
 import axios from "axios";
 import "./shop.css";
 
-type Props = object;
+type Props = object;  
 type State = {
   currentPage: number;
   productsPerPage: number;
   products: IProduct[] | null;
 };
 
-export default class Vinyls extends Component<Props, State> {
+export default class Vinyls extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -45,7 +50,9 @@ export default class Vinyls extends Component<Props, State> {
     const currentProducts = products ? products.slice(indexOfFirstProduct, indexOfLastProduct) : [];
 
     // Change page
-    const paginate = (pageNumber: number) => this.setState({ currentPage: pageNumber });
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+      this.setState({ currentPage: value });
+    };
 
     return (
       <>
@@ -66,12 +73,22 @@ export default class Vinyls extends Component<Props, State> {
           </div>
         </section>
         <div className="pagination">
-          {products &&
-            Array.from({ length: Math.ceil(products.length / productsPerPage) }).map((_, index) => (
-              <button key={index} onClick={() => paginate(index + 1)}>
-                {index + 1}
-              </button>
-            ))}
+          <Stack spacing={2}>
+            <Pagination
+              className='vinyls-pagination'
+              count={products ? Math.ceil(products.length / productsPerPage) : 1}
+              page={currentPage}
+              onChange={handleChange}
+              renderItem={(item) => (
+                <PaginationItem
+                  component="button"
+                  {...item}
+                />
+              )}
+              prevIcon={<ArrowBackIcon />}
+              nextIcon={<ArrowForwardIcon />}
+            />
+          </Stack>
         </div>
       </>
     );
