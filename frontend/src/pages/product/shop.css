@@ -1,0 +1,54 @@
+.vinyls-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.vinyls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+}
+
+.child-section {
+  padding: 20px;
+}
+
+.vinyl-cover {
+  width: 300px;
+  height: 300px;
+  margin: auto;
+}
+
+.buttons-div{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+  }
+  
+  .pagination button:hover {
+    background-color: #ffffff;
+  }
+  
+  .pagination button.active {
+    background-color: #ffffff;
+  }
+  

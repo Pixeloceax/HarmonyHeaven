@@ -2,16 +2,13 @@ import "./card.css";
 
 interface CardProps {
   image: string;
-  price: number;
-  artist: string;
-  album: string;
+  price: number | undefined;
+  artist: string | undefined;
+  album: string | undefined;
 }
 
-<<<<<<< HEAD
 const Card = ({ image, price, artist, album }: CardProps) => {
-=======
-const card = ({ image, price, artist, album }: CardProps) => {
->>>>>>> 0b7bb2bb562b560b332f0d1f1eed284290ed7944
+
   return (
     <>
       <div className="card-container">
@@ -28,8 +25,5 @@ const card = ({ image, price, artist, album }: CardProps) => {
   );
 };
 
-<<<<<<< HEAD
 export default Card;
-=======
-export default card;
->>>>>>> 0b7bb2bb562b560b332f0d1f1eed284290ed7944
+

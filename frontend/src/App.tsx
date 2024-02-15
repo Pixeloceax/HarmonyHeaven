@@ -6,7 +6,7 @@ import Login from "./components/Login/login.component";
 import Register from "./components/Register/register.component";
 import Home from "./pages/home/Home";
 import BoardUser from "./components/board-user.component";
-import Product from "./pages/product/Product.page";
+import Product from "./pages/product/Shop";
 import Cart from "./components/cart/cart.component";
 import Navbar from "./components/Navbar/Navbar.component";
 import ForgotPassword from "./components/Password Reset/forgot-password.component";
@@ -62,7 +62,7 @@ class App extends Component<Props, State> {
             />
             <Route path="/user" element={<BoardUser />} />
 
-            <Route path="/products" element={<Product />} />
+            <Route path="/shop" element={<Product />} />
             <Route path="/cart" element={<Cart />} />
 
             <Route path="/forgot-password" element={<ForgotPassword />} />
