@@ -30,6 +30,7 @@ class ProductController extends AbstractController
                 'slug' => $product->getSlug(),
                 'artist' => $product->getArtist(),
                 'image' => $product->getImage(),
+                'quantity' => $product->getQuantity(),
             ];
         }
         return new JsonResponse($productsArray, 200);
