@@ -1,0 +1,25 @@
+.vinyls-section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  border-radius: 20px;
+}
+
+.child-div {
+  margin: 20px;
+  width: 25%;
+  border: #d3d3d3 1px solid;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.child-div > img {
+  width: 100%;
+  border-radius: 20px;
+}

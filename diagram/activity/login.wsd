@@ -1,6 +1,5 @@
 @startuml activity login and register
 !theme blueprint
-title Login and Inscription Diargram Activity
 start
 :User browses the website;
 

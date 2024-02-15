@@ -3,12 +3,15 @@ import Footer from "../../components/Footer/footer.component";
 import IGenre from "../../types/genre.type";
 import axios from "axios";
 import "./Home.css";
+import { FaSearch } from "react-icons/fa";
+import Vinyls from "../../components/Vinyls/Vinyls";
 
 type Props = object;
 type State = {
   searchQuery: string;
   selectedGenre: string | null;
   genres: IGenre[] | null;
+  divCount: 6;
 };
 
 export default class Home extends Component<Props, State> {
@@ -18,6 +21,7 @@ export default class Home extends Component<Props, State> {
       searchQuery: "",
       selectedGenre: null,
       genres: null,
+      divCount: 6,
     };
   }
 
@@ -67,10 +71,10 @@ export default class Home extends Component<Props, State> {
           </section>
           <section className="secondSection">
             <div className="midSection">
-              <h1>NEWS & HOT</h1>
-
-              <div className="genre-buttons">
+              <h1 className="newsHeading">NEWS & HOT</h1>
+              <div className="inputSection">
                 <select
+                  className="genre-buttons"
                   value={this.state.selectedGenre || ""}
                   onChange={(e) => this.handleGenreSelect(e.target.value)}
                 >
@@ -84,23 +88,28 @@ export default class Home extends Component<Props, State> {
                       </option>
                     ))}
                 </select>
+                <form onSubmit={this.handleSubmit}>
+                  <label>
+                    <input
+                      className="search-bar"
+                      type="text"
+                      value={this.state.searchQuery}
+                      onChange={(e) =>
+                        this.setState({ searchQuery: e.target.value })
+                      }
+                    />
+                  </label>
+                  <button className="submit-search" type="submit">
+                    <FaSearch />
+                  </button>
+                </form>
               </div>
-
-              <form onSubmit={this.handleSubmit}>
-                <label>
-                  <input
-                    type="text"
-                    value={this.state.searchQuery}
-                    onChange={(e) =>
-                      this.setState({ searchQuery: e.target.value })
-                    }
-                  />
-                </label>
-                <button type="submit">Submit</button>
-              </form>
             </div>
           </section>
         </main>
+        <section>
+          <Vinyls />
+        </section>
         <Footer />
       </>
     );

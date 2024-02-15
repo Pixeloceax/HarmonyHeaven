@@ -1,18 +1,17 @@
 import { Component } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
 import AuthService from "./services/auth.service";
 import IUser from "./types/use.type";
-
-import Login from "./components/login.component";
-import Register from "./components/register.component";
+import Login from "./components/Login/login.component";
+import Register from "./components/Register/register.component";
 import Home from "./pages/home/Home";
 import BoardUser from "./components/board-user.component";
 import Product from "./pages/product/Product.page";
+import Cart from "./components/cart/cart.component";
 import Navbar from "./components/Navbar/Navbar.component";
-
-import ForgotPassword from "./components/forgot-password.component";
+import ForgotPassword from "./components/Password Reset/forgot-password.component";
 import ResetPassword from "./pages/reset-password/reset-password.page";
+import Debug from "./pages/debug/debug.page";
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -68,9 +67,11 @@ class App extends Component<Props, State> {
             <Route path="/user" element={<BoardUser />} />
 
             <Route path="/products" element={<Product />} />
+            <Route path="/cart" element={<Cart />} />
 
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/debug" element={<Debug />} />
           </Routes>
         </div>
       </BrowserRouter>

@@ -1,7 +1,8 @@
 import { Component } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import AuthService from "../services/auth.service";
+import AuthService from "../../services/auth.service";
+import bcrypt from "bcryptjs";
 
 type Props = object;
 
@@ -33,7 +34,6 @@ export default class Register extends Component<Props, State> {
         .test(
           "len",
           "The username must be between 3 and 20 characters.",
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (val: any) => val && val.length >= 3 && val.length <= 20
         )
         .required("This field is required!"),
@@ -51,10 +51,10 @@ export default class Register extends Component<Props, State> {
     });
   }
 
-  handleRegister(formValue: {
-    username: string;
-    email: string;
-    password: string;
+  async handleRegister(formValue: {
+    username: any;
+    email: any;
+    password: any;
   }) {
     const { username, email, password } = formValue;
 
@@ -63,29 +63,34 @@ export default class Register extends Component<Props, State> {
       successful: false,
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    AuthService.register(username, email, password).then(
-      (response) => {
-        this.setState({
-          message: response.data.message,
-          successful: true,
-        });
-        window.location.href = "/login";
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
 
-        this.setState({
-          successful: false,
-          message: resMessage,
-        });
-      }
-    );
+      AuthService.register(username, email, hashedPassword).then(
+        (response) => {
+          console.log("ici", hashedPassword);
+          this.setState({
+            message: response.data.message,
+            successful: true,
+          });
+          window.location.href = "/login";
+        },
+        (error) => {
+          let resMessage =
+            error.response?.data?.message || error.message || error.toString();
+          if (resMessage.includes("already in use")) {
+            resMessage = "Email already in use";
+          }
+
+          this.setState({
+            successful: false,
+            message: resMessage,
+          });
+        }
+      );
+    } catch (error) {
+      console.error("Error hashing password:", error);
+    }
   }
 
   render() {

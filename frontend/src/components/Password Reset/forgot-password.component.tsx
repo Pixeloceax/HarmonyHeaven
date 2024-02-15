@@ -1,8 +1,7 @@
-import React from "react";
 import { toast } from 'react-toastify';
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import AuthService from "../services/auth.service";
+import AuthService from "../../services/auth.service";
 
 type State = {
   email: string;

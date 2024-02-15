@@ -1,0 +1,90 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.login-image-container,
+.login-form-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-image {
+  height: 50%;
+  width: 50%;
+}
+
+.title {
+  text-align: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 4%;
+}
+
+.form-group > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-label {
+  order: 1;
+}
+
+.forgot-password-link {
+  order: 2;
+  text-decoration: underline;
+  color: white;
+  cursor: pointer;
+}
+
+.form-input {
+  order: 3;
+  background-color: white;
+  border: 1px solid #d3d3d3;
+  height: 48px;
+  width: 480px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.error-message {
+  order: 4;
+}
+
+.login-submit-button {
+  background-color: #ffffff;
+  height: 48px;
+  width: 480px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.redirect-to-register {
+  padding-top: 2%;
+  text-align: center;
+}
+
+.sign-up-link {
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -1,28 +1,28 @@
 controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+  resource:
+    path: ../src/Controller/
+    namespace: App\Controller
+  type: attribute
 
 login:
-    path: /login
-    controller: App\Controller\LoginController::login
-    methods: POST
+  path: /login
+  controller: App\Controller\LoginController::login
+  methods: POST
 
 get-current-user:
-    path: /get-current-user
-    controller: App\Controller\LoginController::getCurrentUser
-    methods: POST
-    
+  path: /get-current-user
+  controller: App\Controller\LoginController::getCurrentUser
+  methods: POST
+
 register:
-    path: /register
-    controller: App\Controller\RegistrationController::register
-    methods: POST
+  path: /register
+  controller: App\Controller\RegistrationController::register
+  methods: POST
 
 products-list:
-    path: /products-list
-    controller: App\Controller\ProductController::getProducts
-    methods: GET
+  path: /products-list
+  controller: App\Controller\ProductController::getProducts
+  methods: GET
 
 genres-list:
     path: /genres-list
@@ -43,3 +43,9 @@ reset-password:
     path: /reset-password
     controller: App\Controller\ResetPasswordController::resetPassword
     methods: POST
+
+cart:
+  path: /cart
+  controller: App\Controller\CartController::submitCart
+  methods: POST
+
