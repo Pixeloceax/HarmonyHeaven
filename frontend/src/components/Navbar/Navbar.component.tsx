@@ -1,7 +1,10 @@
-import React from 'react';
-import AuthService from '../../services/auth.service';
-import IUser from '../../types/use.type';
-import "./Narvbar.css"
+import { Component } from "react";
+import AuthService from "../../services/auth.service";
+import IUser from "../../types/use.type";
+import "./Narvbar.css";
+import logo from "../../assets/icons/png/LOGO sans texte.png";
+import cartService from "../../services/cart.service";
+import { ImCart } from "react-icons/im";
 
 interface State {
   error: string | null;
@@ -9,7 +12,9 @@ interface State {
   isSticky: boolean;
 }
 
-class Navbar extends React.Component<object, State> {
+class Navbar extends Component<object, State> {
+  navLinks = ["home", "shop", "orders", "user", "about"];
+
   constructor(props: object) {
     super(props);
     this.state = {
@@ -17,16 +22,10 @@ class Navbar extends React.Component<object, State> {
       currentUser: null,
       isSticky: false,
     };
-    this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
     this.fetchCurrentUser();
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
   }
 
   async fetchCurrentUser() {
@@ -40,76 +39,100 @@ class Navbar extends React.Component<object, State> {
     }
   }
 
-  handleScroll() {
-    if (window.scrollY > 0 && !this.state.isSticky) {
-      this.setState({ isSticky: true });
-    } else if (window.scrollY === 0 && this.state.isSticky) {
-      this.setState({ isSticky: false });
-    }
-  }
-
   logout() {
     AuthService.logout();
     this.setState({ currentUser: null });
   }
 
+  openNav() {
+    const navElement = document.getElementById("navElement");
+    if (navElement) {
+      navElement.style.width = "100%";
+    }
+  }
+
+  closeNav() {
+    const navElement = document.getElementById("navElement");
+    if (navElement) {
+      navElement.style.width = "0%";
+    }
+  }
   render() {
-    const { currentUser, isSticky } = this.state;
-
+    const { currentUser } = this.state;
     return (
-      <header>
-        <nav className={`navbar ${isSticky ? 'sticky' : ''}`}>
-          <a href="/" className="navbar-brand">
-            Home
-          </a>
-          <div className="navbar-nav mr-auto">
-            {currentUser ? (
-              <>
-                <li className="nav-item">
-                  <a href="/user" className="nav-link">
-                    User
-                  </a>
-                </li>
-                <li>
-                  <button className="logout" onClick={() => this.logout()}>
-                    Logout
-                  </button>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className="nav-item">
-                  <a href="/login" className="nav-link">
-                    Login
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a href="/register" className="nav-link">
-                    Register
-                  </a>
-                </li>
-              </>
-            )}
-
-            <li className="nav-item">
-              <a href="/products" className="nav-link">
-                Products
+      <>
+        <nav className="navbar">
+          <ul className="navbar-list">
+            <li>
+              <a className="navbar-cart" href="/cart">
+                <ImCart />
+                <p>{cartService.getCartTotalItems()}</p>
               </a>
             </li>
-
-            <li className="nav-item">
-              <a href="/cart">
-                <img
-                  src="https://img.icons8.com/material-outlined/24/000000/shopping-cart.png"
-                  alt="cart"
-                  className="cart-icon"
-                  style={{ filter: "invert(100%)" }}
-                />
+            <li>
+              <a className="navbar-logo" href="/">
+                <img src={logo} alt="logo" />
               </a>
             </li>
-          </div>
+            <li>
+              <button className="navbar-open-button" onClick={this.openNav}>
+                menu
+              </button>
+            </li>
+          </ul>
         </nav>
-      </header>
+
+        <div id="navElement" className="navbar-overlay">
+          <button className="navbar-close-button" onClick={this.closeNav}>
+            close
+          </button>
+
+          <div className="navbar-overlay-content">
+            <ul>
+              {this.navLinks
+                .filter(
+                  (link) => !["login", "register", "logout"].includes(link)
+                )
+                .map((link, index) => (
+                  <li className="navbar-overlay-link-item" key={index}>
+                    <a className="navbar-overlay-link" href={`/${link}`}>
+                      {link.toUpperCase()}
+                    </a>
+                  </li>
+                ))}
+              {currentUser ? (
+                <li className="navbar-overlay-link-item">
+                  <a
+                    className="navbar-overlay-link"
+                    href="/logout"
+                    onClick={this.logout}
+                  >
+                    LOGOUT
+                  </a>
+                </li>
+              ) : (
+                <>
+                  <li className="navbar-overlay-link-item">
+                    <a className="navbar-overlay-link" href="/login">
+                      LOGIN
+                    </a>
+                  </li>
+                  <li className="navbar-overlay-link-item">
+                    <a className="navbar-overlay-link" href="/register">
+                      REGISTER
+                    </a>
+                  </li>
+                </>
+              )}
+              <li className="navbar-overlay-link-item">
+                <a className="navbar-overlay-link" href="/contact">
+                  CONTACT
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </>
     );
   }
 }

@@ -1,0 +1,31 @@
+.footer{
+    background-color: white;
+    margin-top: 5%;
+    min-height:20%;
+    color:black;
+    display: flex;
+}
+
+.footer-top{
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.head-titles{
+    min-width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.privacy{
+    font-size: x-small;
+    font-weight: lighter;
+    margin-top: 3%;
+}
+
+.hh-logo{
+    max-width: 50px;
+    max-height: 50px;
+}

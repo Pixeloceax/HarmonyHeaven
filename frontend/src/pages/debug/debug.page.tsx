@@ -45,6 +45,13 @@ export default class Debug extends Component<Record<string, never>, State> {
     return (
       <div className="debug-container">
         <h1>DEBUG PAGE</h1>
+        <br />
+        <br />
+        <li className="link-li">
+          <a href="/debug" className="link-effect">
+            LINK
+          </a>
+        </li>
         <Loader />
         <Checkbox />
         <div className="debug-card">
