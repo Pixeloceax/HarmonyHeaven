@@ -25,20 +25,28 @@ const Footer: React.FC = () => {
   return (
     <footer className="footer">
       <div className="footer-top">
-        <div className="head-titles">
+        <div className="footer-titles">
           <img src={HHlogo} className="hh-logo" alt="logo" />
-
-          <div className="subscribe">
-            <h1>Subscribe</h1>
+          <div className="form-section">
+            <h2>Subscribe</h2>
             <form onSubmit={handleSubmit}>
               <input
+                className="newsForm"
                 type="email"
                 placeholder="Enter your email"
                 value={email}
                 onChange={handleEmailChange}
               />
-              <button type="submit">Subscribe</button>
+              <button className="newsButton" type="submit">
+                <p>Subscribe</p>
+              </button>
             </form>
+            <h3 className="privacy">
+              By subscribing you agree to with our&nbsp; 
+              <a href="policy" target="_blank">
+                Privacy Policy
+              </a>
+            </h3>
           </div>
         </div>
         <a href="/home">Home</a>
@@ -46,6 +54,22 @@ const Footer: React.FC = () => {
         <a href="/home">Home</a>
         <a href="/home">Home</a>
         <a href="/home">Home</a>
+      </div>
+      <div className="footer-bot">
+        <div className="about-us">
+          <div>
+            <a href="" target="_">
+              Privacy Policy
+            </a>
+            <a href="" target="_">
+              Term of Service
+            </a>
+            <a href="" target="_">
+              Cookie Settings
+            </a>
+          </div>
+          <p>© 2024 Harmony Heaven. All rights reserved.</p>
+        </div>
       </div>
     </footer>
   );

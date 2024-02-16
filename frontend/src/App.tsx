@@ -74,7 +74,7 @@ class App extends Component<Props, State> {
             <Route path="/debug" element={<Debug />} />
           </Routes>
         </div>
-        <Vinyls />
+
         <Footer />
       </BrowserRouter>
     );
