@@ -4,11 +4,28 @@
   top: 0;
   z-index: 5;
   background-color: #000000;
-
   justify-content: space-between;
   align-items: center;
   padding: 1% 5%;
   color: white;
+  width: 100%;
+}
+
+.navbar-cart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-cart > p {
+  padding-left: 10px;
+  font-size: 16px;
+}
+
+.navbar-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 
@@ -68,7 +85,7 @@
   background-color: transparent;
   cursor: pointer;
   filter: invert(100%);
-  font-size: 50px;
+  font-size: 16px;
 }
 
 .navbar-overlay .navbar-close-button {

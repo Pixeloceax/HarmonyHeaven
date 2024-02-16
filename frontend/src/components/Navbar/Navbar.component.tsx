@@ -1,12 +1,10 @@
 import { Component } from "react";
-
-import { MdClose } from "react-icons/md";
-import { IoMenu } from "react-icons/io5";
-import { IoCart } from "react-icons/io5";
 import AuthService from "../../services/auth.service";
 import IUser from "../../types/use.type";
 import "./Narvbar.css";
 import logo from "../../assets/icons/png/LOGO sans texte.png";
+import cartService from "../../services/cart.service";
+import { ImCart } from "react-icons/im";
 
 interface State {
   error: string | null;
@@ -64,30 +62,29 @@ class Navbar extends Component<object, State> {
     return (
       <>
         <nav className="navbar">
-          <h1>
-            <a className="navbar-logo" href="/">
-              <img src={logo} alt="logo" />
-            </a>
-          </h1>
-          <div className="navbar-link-container">
-            <ul className="navbar-list">
-              <li className="navbar-item">
-                <a href="/cart">
-                  <IoCart className="icon" />
-                </a>
-              </li>
-              <li className="navbar-item">
-                <button className="navbar-open-button" onClick={this.openNav}>
-                  <IoMenu className="icon" />
-                </button>
-              </li>
-            </ul>
-          </div>
+          <ul className="navbar-list">
+            <li>
+              <a className="navbar-cart" href="/cart">
+                <ImCart />
+                <p>{cartService.getCartTotalItems()}</p>
+              </a>
+            </li>
+            <li>
+              <a className="navbar-logo" href="/">
+                <img src={logo} alt="logo" />
+              </a>
+            </li>
+            <li>
+              <button className="navbar-open-button" onClick={this.openNav}>
+                menu
+              </button>
+            </li>
+          </ul>
         </nav>
 
         <div id="navElement" className="navbar-overlay">
           <button className="navbar-close-button" onClick={this.closeNav}>
-            <MdClose />
+            close
           </button>
 
           <div className="navbar-overlay-content">
