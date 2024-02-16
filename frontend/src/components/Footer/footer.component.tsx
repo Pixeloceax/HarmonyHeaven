@@ -1,6 +1,7 @@
 import newsService from "../../services/news.service";
 import "./footer.css";
 import { FormEvent, useState } from "react";
+import HHlogo from "../../assets/icons/png/LOGO sans texte.png";
 
 const Footer: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -25,11 +26,7 @@ const Footer: React.FC = () => {
     <footer className="footer">
       <div className="footer-top">
         <div className="head-titles">
-          <img
-            src="https://as2.ftcdn.net/v2/jpg/02/18/99/19/1000_F_218991944_B9ryzMcHfSSNVSXzHs891phcQOqlPoQR.jpg"
-            className="hh-logo"
-            alt="logo"
-          />
+          <img src={HHlogo} className="hh-logo" alt="logo" />
 
           <div className="subscribe">
             <h1>Subscribe</h1>
