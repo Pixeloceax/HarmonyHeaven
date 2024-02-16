@@ -3,8 +3,8 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services/auth.service";
 import { hashPassword } from "../../utils/hash-password.utils";
-import { emailValidator } from "../../utils/email-requirment.utils";
-import { passwordValidation } from "../../utils/password-requirment.utils";
+import { emailValidator } from "../../utils/email-requirement.utils";
+import { passwordValidation } from "../../utils/password-requirement.utils";
 
 type Props = object;
 
