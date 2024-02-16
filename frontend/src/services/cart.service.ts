@@ -19,6 +19,11 @@ class cartService {
     return JSON.parse(localStorage.getItem("cart") as string) || [];
   }
 
+  getCartTotalItems(): number {
+    const cart = this.getCart();
+    return cart.reduce((acc, item) => acc + item.quantity, 0);
+  }
+
   addToCart(
     productId: string,
     productName: string,

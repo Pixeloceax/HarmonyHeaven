@@ -1,60 +1,150 @@
-/* Navbar styles */
 .navbar {
-    position: fixed;
-    width: 100%;
-    top: -100px; /* Initial position above viewport */
-    transition: top 0.3s;
-    z-index: 1000; /* Ensures it's above other content */
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background-color: transparent;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1% 5%;
+  color: white;
+  width: 100%;
+}
+
+.navbar-cart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-cart > p {
+  padding-left: 10px;
+  font-size: 16px;
+}
+
+.navbar-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.navbar-logo > img {
+  height: 50px;
+  width: 50px;
+  filter: invert(10%);
+}
+
+.navbar-item {
+  margin-right: 20px;
+}
+
+.icon {
+  font-size: 50px;
+}
+
+.navbar-overlay {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 6;
+  top: 0;
+  left: 0;
+  background-color: var(--primary-bg-color);
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+
+.navbar-overlay-content {
+  position: relative;
+  top: 25%;
+  width: 100%;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.navbar-overlay a {
+  padding: 8px;
+  text-decoration: none;
+  font-size: 36px;
+  display: block;
+  transition: 0.3s;
+}
+
+.navbar-overlay a:hover,
+.navbar-overlay a:focus {
+  color: #f1f1f1;
+}
+
+.navbar-close-button,
+.navbar-open-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  filter: invert(100%);
+  font-size: 16px;
+}
+
+.navbar-overlay .navbar-close-button {
+  position: absolute;
+  top: 20px;
+  right: 45px;
+}
+
+.navbar-cart-link {
+}
+
+.navbar-link-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar-link-container > ul {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar-overlay-link-item {
+  list-style-type: none;
+  margin: 0;
+  padding: 0 1%;
+}
+
+.navbar-overlay-link-item:hover {
+  text-decoration: none;
+  background: linear-gradient(90deg, white 50%, transparent 50%);
+  background-size: 200% 100%;
+  background-position: right;
+  transition: all 1s ease;
+  animation: slide 0.4s forwards;
+}
+
+.navbar-overlay-link-item:hover a {
+  color: var(--primary-bg-color);
+  transition: all 0.4s ease;
+}
+
+.logo {
+  text-decoration: none;
+  color: white;
+}
+
+@keyframes slide {
+  100% {
+    background-position: left;
   }
-  
-  .navbar.sticky {
-    top: 0;
-    background-color: #ffffff00; /* Change background color when sticky */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow when sticky */
-    display:flex;
-    justify-content: space-evenly;
-    align-items: center;
+}
+
+@media screen and (max-height: 450px) {
+  .navbar-overlay a {
+    font-size: 20px;
   }
-  
-  .navbar-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #ffffff;
-    text-decoration: none;
-    margin-right: 20px;
+  .navbar-overlay .navbar-close-button {
+    font-size: 40px;
+    top: 15px;
+    right: 35px;
   }
-  
-  .navbar-nav {
-    display: flex;
-    align-items: center;
-  }
-  
-  .nav-item {
-    list-style: none;
-    margin-right: 15px;
-  }
-  
-  .nav-link {
-    text-decoration: none;
-    color: #ffffff;
-    transition: color 0.3s;
-  }
-  
-  .nav-link:hover {
-    color: #007bff;
-  }
-  
-  .logout {
-    border: none;
-    background-color: transparent;
-    color: #007bff;
-    cursor: pointer;
-  }
-  
-  .logout:hover {
-    text-decoration: underline;
-  }
-  
-  .navbar-nav.mr-auto{
-    margin-top: 2%;
-  }
+}

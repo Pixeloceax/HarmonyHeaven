@@ -14,3 +14,34 @@
   width: 100%;
   margin: 0 auto;
 }
+
+.link-effect {
+  text-decoration: none;
+  color: var(--primary-test-color);
+}
+
+.link-li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0 1%;
+}
+
+.link-li:hover {
+  text-decoration: none;
+  background: linear-gradient(90deg, white 50%, transparent 50%);
+  background-size: 200% 100%;
+  background-position: right;
+  transition: all 1s ease;
+  animation: slide 0.4s forwards;
+}
+
+.link-li:hover a {
+  color: var(--primary-bg-color);
+  transition: all 0.4s ease;
+}
+
+@keyframes slide {
+  100% {
+    background-position: left;
+  }
+}
