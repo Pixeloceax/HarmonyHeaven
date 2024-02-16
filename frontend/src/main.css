@@ -16,6 +16,10 @@ body {
   background-color: var(--primary-bg-color);
 }
 
+button {
+  font-family: "Unbounded", sans-serif;
+}
+
 ul {
   list-style: none;
 }
