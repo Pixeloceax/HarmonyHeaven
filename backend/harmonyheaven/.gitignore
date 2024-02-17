@@ -24,8 +24,6 @@
 /public/assets/
 ###< symfony/asset-mapper ###
 
-### Docker ###
-Dockerfile
 
 ### Composer ###
 compose.*
