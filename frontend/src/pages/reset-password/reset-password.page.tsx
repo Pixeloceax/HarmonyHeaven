@@ -2,10 +2,11 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import AuthService from "../../services/auth.service";
 import axios from "axios";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import './reset-password.css'
+import { passwordValidation } from "../../utils/password-requirement.utils";
+import "./reset-password.css";
 
 type State = {
   password: string;
@@ -25,7 +26,7 @@ const ResetPassword: React.FC = () => {
       } catch (error: any) {
         toast.error(error.response.data.message, {
           // Sans id le toast est rendu plusieurs fois.
-          toastId: 'error1',
+          toastId: "error1",
         });
       }
     };
@@ -48,15 +49,22 @@ const ResetPassword: React.FC = () => {
         toast.error(response.data.message);
       }
     } catch (error: any) {
-      toast.error(error.response.data.message)
-      console.error('Erreur lors de la réinitialisation du mot de passe :', error);
+      toast.error(error.response.data.message);
+      console.error(
+        "Erreur lors de la réinitialisation du mot de passe :",
+        error
+      );
     }
   };
 
   const validationSchema = () => {
     return Yup.object().shape({
-      password: Yup.string().required("This field is required!"),
-      confirmPassword: Yup.string().required("This field is required!"),
+      password: passwordValidation
+        .passwordValidation()
+        .required("This field is required!"),
+      confirmPassword: passwordValidation
+        .passwordValidation()
+        .required("This field is required!"),
     });
   };
 
@@ -65,26 +73,31 @@ const ResetPassword: React.FC = () => {
     confirmPassword: "",
     token: token || null,
   };
-  
 
   return (
-    <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleResetPassword}>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleResetPassword}
+    >
       <Form className="form-container">
-      <Field
-        type="password"
-        name="password"
-        placeholder="Your password"
-        className="form-input-reset"
-        required
-      />
-      <Field
-        type="password"
-        name="confirmPassword"
-        placeholder="Confirm your password"
-        className="form-input-reset"
-        required
-      />
-      <button type="submit" className="login-submit-button">Submit</button>
+        <Field
+          type="password"
+          name="password"
+          placeholder="Your password"
+          className="form-input-reset"
+          required
+        />
+        <Field
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm your password"
+          className="form-input-reset"
+          required
+        />
+        <button type="submit" className="login-submit-button">
+          Submit
+        </button>
       </Form>
     </Formik>
   );

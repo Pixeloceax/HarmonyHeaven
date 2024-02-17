@@ -1,60 +1,24 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import { Component } from "react";
 import AuthService from "../services/auth.service";
-import UserService from "../services/user.service";
 import IUser from "../types/use.type";
+import Loader from "./loader/loader.component";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { passwordValidation } from "../utils/password-requirement.utils";
+import { emailValidator } from "../utils/email-requirement.utils";
+import UserService from "../services/user.service";
 
-function getAutocompleteValue(fieldName: string): string {
-  switch (fieldName) {
-    case "email":
-      return "email";
-    case "password":
-      return "current-password";
-    default:
-      return "off";
-  }
-}
+type Props = object;
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string(),
-  user: Yup.string()
-    .email()
-    .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Invalid email address."),
-  password: Yup.string()
-    .min(12, "Password must be at least 12 characters long")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{13,}$/,
-      "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
-    ),
-  address: Yup.string(),
-  phone: Yup.string(),
-});
-
-type FormField = {
-  label: string;
-  name: keyof IUser;
+type State = {
+  redirect: string | null;
+  currentUser: IUser | null;
+  error: string | null;
+  message: string | null;
+  formData: Partial<IUser>;
 };
 
-const formFields: FormField[] = [
-  { label: "Name", name: "name" },
-  { label: "Email", name: "user" },
-  { label: "Password", name: "password" },
-  { label: "Address", name: "address" },
-  { label: "Phone", name: "phone" },
-];
-
-class BoardUser extends React.Component<
-  object,
-  {
-    redirect: string | null;
-    currentUser: IUser | null;
-    error: string | null;
-    message: string | null;
-    formData: Partial<IUser>;
-  }
-> {
+export default class Board extends Component<Props, State> {
   constructor(props: object) {
     super(props);
     this.state = {
@@ -72,13 +36,30 @@ class BoardUser extends React.Component<
     };
   }
 
+  validationSchema = Yup.object().shape({
+    name: Yup.string(),
+    user: emailValidator.emailValidation(),
+    password: passwordValidation.passwordValidation(),
+    address: Yup.string(),
+    phone: Yup.string(),
+  });
+
   async componentDidMount() {
     try {
       const user = await AuthService.getCurrentUser();
       if (!user) {
-        this.setState({ redirect: "/" });
+        this.setState({ redirect: "/login" });
       } else {
-        this.setState({ currentUser: user, formData: user });
+        this.setState({
+          currentUser: user,
+          formData: {
+            name: user.name || "",
+            user: user.user || "",
+            password: user.password || "",
+            address: user.address || "",
+            phone: user.phone || "",
+          },
+        });
       }
     } catch (err) {
       this.setState({ error: "Error getting current user: " + err });
@@ -103,7 +84,6 @@ class BoardUser extends React.Component<
       });
       if (Object.keys(updatedFields).length > 0) {
         await UserService.updateUserBoard(JSON.stringify(updatedFields));
-        console.log(updatedFields);
         this.setState({
           message: `Updated fields: ${updatedFieldNames.join(", ")}`,
         });
@@ -114,61 +94,170 @@ class BoardUser extends React.Component<
   };
 
   render() {
-    if (this.state.redirect) {
-      return <Navigate to={this.state.redirect} />;
-    }
-
-    if (this.state.error) {
-      return <div>Error: {this.state.error}</div>;
-    }
-
     const { currentUser } = this.state;
 
-    if (!currentUser) {
-      return <div>Loading...</div>;
-    }
-    delete currentUser.roles;
-
     return (
-      <Formik<IUser>
-        initialValues={{
-          ...currentUser,
-          password: "",
-        }}
-        validationSchema={validationSchema}
-        onSubmit={this.handleSubmit}
-      >
-        {({ errors, touched }) => (
-          <Form>
-            {formFields.map((field: FormField) => (
-              <div className="form-group" key={field.name}>
-                <label htmlFor={field.name}>{field.label}</label>
-                <Field
-                  id={field.name}
-                  type={field.label.toLowerCase()}
-                  name={field.name}
-                  className={`form-control ${
-                    errors[field.name as keyof IUser] &&
-                    touched[field.name as keyof IUser]
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  autoComplete={getAutocompleteValue(field.name)}
-                />
-                <ErrorMessage
-                  name={field.name}
-                  component="div"
-                  className="invalid-feedback"
-                />
-              </div>
-            ))}
-            <button type="submit">Update</button>
-            {this.state.message && <div>{this.state.message}</div>}
-          </Form>
+      <>
+        {currentUser ? (
+          <Formik
+            initialValues={this.state.formData}
+            validationSchema={this.validationSchema}
+            onSubmit={this.handleSubmit}
+          >
+            {({ errors, touched, setFieldValue }) => (
+              <Form>
+                <div className="form-group">
+                  <label htmlFor="name">Name</label>
+                  <Field
+                    type="text"
+                    name="name"
+                    className={
+                      "form-control" +
+                      (errors.name && touched.name ? " is-invalid" : "")
+                    }
+                    onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+                      if (e.target.value === "") {
+                        setFieldValue(
+                          "name",
+                          this.state.currentUser?.name || ""
+                        );
+                      }
+                    }}
+                  />
+                  <ErrorMessage
+                    name="name"
+                    component="div"
+                    className="invalid-feedback"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="user">Email</label>
+                  <Field
+                    type="text"
+                    name="user"
+                    className={
+                      "form-control" +
+                      (errors.user && touched.user ? " is-invalid" : "")
+                    }
+                    onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+                      if (e.target.value === "") {
+                        setFieldValue(
+                          "user",
+                          this.state.currentUser?.user || ""
+                        );
+                      }
+                    }}
+                  />
+                  <ErrorMessage
+                    name="user"
+                    component="div"
+                    className="invalid-feedback"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="password">Password</label>
+                  <Field
+                    type="password"
+                    name="password"
+                    className={
+                      "form-control" +
+                      (errors.password && touched.password ? " is-invalid" : "")
+                    }
+                    onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+                      if (e.target.value === "") {
+                        setFieldValue("password", "");
+                      }
+                    }}
+                  />
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    className="invalid-feedback"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="address">Address</label>
+                  <Field
+                    type="text"
+                    name="address"
+                    className={
+                      "form-control" +
+                      (errors.address && touched.address ? " is-invalid" : "")
+                    }
+                    onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+                      if (e.target.value === "") {
+                        setFieldValue(
+                          "address",
+                          this.state.currentUser?.address || ""
+                        );
+                      }
+                    }}
+                  />
+                  <ErrorMessage
+                    name="address"
+                    component="div"
+                    className="invalid-feedback"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="phone">Phone</label>
+                  <Field
+                    type="text"
+                    name="phone"
+                    className={
+                      "form-control" +
+                      (errors.phone && touched.phone ? " is-invalid" : "")
+                    }
+                    onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+                      if (e.target.value === "") {
+                        setFieldValue(
+                          "phone",
+                          this.state.currentUser?.phone || ""
+                        );
+                      }
+                    }}
+                  />
+                  <ErrorMessage
+                    name="phone"
+                    component="div"
+                    className="invalid-feedback"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <button type="submit" className="btn btn-primary">
+                    Update
+                  </button>
+                </div>
+
+                {this.state.message && (
+                  <div className="form-group">
+                    <div className="alert alert-success" role="alert">
+                      {this.state.message}
+                    </div>
+                  </div>
+                )}
+
+                {this.state.error && (
+                  <div className="form-group">
+                    <div className="alert alert-danger" role="alert">
+                      {this.state.error}
+                    </div>
+                  </div>
+                )}
+              </Form>
+            )}
+          </Formik>
+        ) : (
+          <>
+            <Loader />
+          </>
         )}
-      </Formik>
+      </>
     );
   }
 }
-
-export default BoardUser;

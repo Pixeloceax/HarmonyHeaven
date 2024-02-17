@@ -41,7 +41,9 @@ export default class Register extends Component<Props, State> {
         )
         .required("This field is required!"),
       email: emailValidator.emailValidation(),
-      password: passwordValidation.passwordValidation(),
+      password: passwordValidation
+        .passwordValidation()
+        .required("This field is required!"),
     });
   }
 

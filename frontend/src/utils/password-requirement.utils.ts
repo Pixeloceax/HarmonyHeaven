@@ -10,8 +10,7 @@ class passwordRequirment {
       .matches(
         this.regex,
         "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
-      )
-      .required("This field is required!");
+      );
   }
 }
 
