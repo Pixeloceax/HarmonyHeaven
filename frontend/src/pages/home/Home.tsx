@@ -1,6 +1,6 @@
 import { Component } from "react";
 import IGenre from "../../types/genre.type";
-import axios from "axios";
+import genreService from "../../services/genre.service";
 import "./Home.css";
 import { FaSearch } from "react-icons/fa";
 
@@ -23,19 +23,15 @@ export default class Home extends Component<Props, State> {
     };
   }
 
-  componentDidMount() {
-    this.fetchGenres();
-  }
-
-  async fetchGenres() {
+  async componentDidMount() {
     try {
-      const response = await axios.get<IGenre[]>(
-        "http://127.0.0.1:8000/genres-list"
-      );
-      console.log("ici", response);
-      this.setState({ genres: response.data });
-    } catch (error) {
-      console.error("Error fetching genres:", error);
+      const genre = await genreService.getGenres();
+      if (!genre) {
+        throw new Error("No genres found");
+      }
+      this.setState({ genres: genre });
+    } catch (err) {
+      throw new Error(err as string);
     }
   }
 
