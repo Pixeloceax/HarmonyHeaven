@@ -4,6 +4,7 @@ import PaginationItem from "@mui/material/PaginationItem";
 import Stack from "@mui/material/Stack";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IProduct from "../../types/product.type";
 import cartService from "../../services/cart.service";
 import shopService from "../../services/shop.service";
@@ -14,6 +15,7 @@ type State = {
   currentPage: number;
   productsPerPage: number;
   products: IProduct[] | null;
+  scrolledDown: boolean;
 };
 
 export default class Vinyls extends React.Component<Props, State> {
@@ -21,20 +23,48 @@ export default class Vinyls extends React.Component<Props, State> {
     super(props);
     this.state = {
       currentPage: 1,
-      productsPerPage: 6,
+      productsPerPage: 9,
       products: null,
+      scrolledDown: false,
     };
   }
 
   componentDidMount() {
     shopService
+      .getProducts()
+      .then((products) => {
+        this.setState({ products });
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+
+    window.addEventListener("scroll", this.handleScroll);
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
 
+  handleScroll = () => {
+    const { scrolledDown } = this.state;
+    const threshold = 100;
+    const isScrolled = window.scrollY > threshold;
 
+    if (isScrolled !== scrolledDown) {
+      this.setState({ scrolledDown: isScrolled });
+    }
+  };
+
+  scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   render() {
-    const { products, currentPage, productsPerPage } = this.state;
+    const { products, currentPage, productsPerPage, scrolledDown } = this.state;
 
     // Pagination Logic
     const indexOfLastProduct = currentPage * productsPerPage;
@@ -77,6 +107,11 @@ export default class Vinyls extends React.Component<Props, State> {
             ))}
           </div>
         </section>
+        {scrolledDown && (
+          <div className="scroll-to-top" onClick={this.scrollToTop}>
+            <KeyboardArrowUpIcon />
+          </div>
+        )}
         <div className="pagination">
           <Stack spacing={2}>
             <Pagination

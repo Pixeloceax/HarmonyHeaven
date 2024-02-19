@@ -10,6 +10,7 @@ type State = {
   username: string;
   email: string;
   password: string;
+  confirmPassword: string; 
   successful: boolean;
   message: string;
 };
@@ -23,6 +24,7 @@ export default class Register extends Component<Props, State> {
       username: "",
       email: "",
       password: "",
+      confirmPassword: "", 
       successful: false,
       message: "",
     };
@@ -47,6 +49,9 @@ export default class Register extends Component<Props, State> {
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{13,}$/,
           "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
         )
+        .required("This field is required!"),
+      confirmPassword: Yup.string() 
+        .oneOf([Yup.ref("password"), null], "Passwords must match") 
         .required("This field is required!"),
     });
   }
@@ -100,6 +105,7 @@ export default class Register extends Component<Props, State> {
       username: "",
       email: "",
       password: "",
+      confirmPassword: "", // Initialize confirmPassword in initialValues
     };
 
     return (
@@ -113,7 +119,7 @@ export default class Register extends Component<Props, State> {
 
           <Formik
             initialValues={initialValues}
-            validationSchema={this.validationSchema}
+            validationSchema={this.validationSchema()}
             onSubmit={this.handleRegister}
           >
             <Form>
@@ -152,6 +158,20 @@ export default class Register extends Component<Props, State> {
                     />
                     <ErrorMessage
                       name="password"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="confirmPassword"> Confirm Password </label>
+                    <Field
+                      name="confirmPassword"
+                      type="password"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="confirmPassword"
                       component="div"
                       className="alert alert-danger"
                     />

@@ -19,12 +19,8 @@
   flex-direction: column;
   flex-wrap: wrap;
   border: #ffffff 1px solid;
-<<<<<<< HEAD:frontend/src/pages/product/shop.css
-  min-height: 452px;
-=======
-  min-height: 460px;
->>>>>>> refs/remotes/origin/main:frontend/src/pages/shop/shop.css
-  max-height: 460px;
+  min-height: 472px;
+  /* max-height: 460px; */
   max-width: 400px;
   min-width: 400px;
   margin-top: 2%;
@@ -97,4 +93,26 @@
   & .MuiPaginationItem-ellipsis {
     color: white;
   }
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.scroll-to-top svg {
+  width: 24px;
+  height: 24px;
+  fill: black;
 }
