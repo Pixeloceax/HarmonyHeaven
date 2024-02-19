@@ -5,7 +5,7 @@ import Loader from "./loader/loader.component";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { passwordValidation } from "../utils/password-requirement.utils";
-import { emailValidator } from "../utils/email-requirement.utils";
+import { emailValidation } from "../utils/email-requirement.utils";
 import UserService from "../services/user.service";
 
 type Props = object;
@@ -38,7 +38,7 @@ export default class Board extends Component<Props, State> {
 
   validationSchema = Yup.object().shape({
     name: Yup.string(),
-    user: emailValidator.emailValidation(),
+    user: emailValidation.emailValidation(),
     password: passwordValidation.passwordValidation(),
     address: Yup.string(),
     phone: Yup.string(),
