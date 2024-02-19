@@ -21,9 +21,7 @@ export default class ForgotPassword extends Component<Props, State> {
     };
   }
   handleForgotPassword = async (values: State) => {
-    console.log(values);
     const response = await resetPasswordService.forgotPassword(values.email);
-    console.log(response);
     if (response.status === 200) {
       toast.success(response.data.message);
     } else if (response.status !== 200) {
