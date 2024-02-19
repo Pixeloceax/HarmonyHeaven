@@ -1,11 +1,6 @@
-import IProduct from "../types/product.type";
 import axios from "axios";
 import authHeader from "./auth-header";
-
-interface ICartItem {
-  product: IProduct;
-  quantity: number;
-}
+import ICartItem from "../types/cart-item.type";
 
 class cartService {
   private readonly BACKEND_URL = "http://localhost:8000";
