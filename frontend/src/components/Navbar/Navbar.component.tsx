@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import AuthService from "../../services/auth.service";
 import IUser from "../../types/use.type";
 import "./Narvbar.css";
@@ -10,6 +10,7 @@ interface State {
   error: string | null;
   currentUser: IUser | null;
   isSticky: boolean;
+  cartTotal: number;
 }
 
 class Navbar extends Component<object, State> {
@@ -20,12 +21,22 @@ class Navbar extends Component<object, State> {
     this.state = {
       error: null,
       currentUser: null,
-      isSticky: false,
+      isSticky: true,
+      cartTotal: cartService.getCartTotalItems(), // Initialize with current cart total
     };
+    this.handleScroll = this.handleScroll.bind(this);
+    this.updateCartTotal = this.updateCartTotal.bind(this);
   }
 
   componentDidMount() {
     this.fetchCurrentUser();
+    window.addEventListener('scroll', this.handleScroll);
+    cartService.subscribe(this.updateCartTotal); // Subscribe to cart changes
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+    cartService.unsubscribe(this.updateCartTotal); // Unsubscribe from cart changes
   }
 
   async fetchCurrentUser() {
@@ -57,16 +68,34 @@ class Navbar extends Component<object, State> {
       navElement.style.width = "0%";
     }
   }
+
+  handleScroll() {
+    const MIN_PAGE_HEIGHT = 20; // Adjust this value as needed
+    const { isSticky } = this.state;
+  
+    if (window.scrollY > 40 && !isSticky) {
+      this.setState({ isSticky: true });
+    } else if (window.scrollY <= 50 && isSticky && window.innerHeight > MIN_PAGE_HEIGHT) {
+      this.setState({ isSticky: false });
+    } else if (window.innerHeight <= MIN_PAGE_HEIGHT) {
+      this.setState({ isSticky: true });
+    }
+  }
+
+  updateCartTotal() {
+    this.setState({ cartTotal: cartService.getCartTotalItems() }); // Update cart total
+  }
+
   render() {
-    const { currentUser } = this.state;
+    const { currentUser, isSticky, cartTotal } = this.state;
     return (
       <>
-        <nav className="navbar">
+        <nav className={`navbar ${isSticky ? 'sticky' : ''}`}>
           <ul className="navbar-list">
             <li>
               <a className="navbar-cart" href="/cart">
                 <ImCart />
-                <p>{cartService.getCartTotalItems()}</p>
+                <p>{cartTotal}</p> {/* Display updated cart total */}
               </a>
             </li>
             <li>

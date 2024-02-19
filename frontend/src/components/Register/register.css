@@ -1,24 +1,11 @@
-.login {
+.register {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height:100vh;
 }
 
-.space{
-  display: flex;
-  flex:1;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.space >p{
-  margin-bottom: 2rem;
-}
-
-.login-form-container {
+.register-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,25 +13,21 @@
   border: #ffffff 2px solid;
   padding: 3rem;
   border-radius: 25px;
-
+  width: auto;
 }
 
-.login-image {
+.register-image {
   height: fit-content;
   max-width: 427px;
 }
 
-.title {
-  text-align: center;
-}
-
-.form-group {
+.register-group {
   display: flex;
   flex-direction: column;
   padding-bottom: 4%;
 }
 
-.form-group > div {
+.register-group > div {
   display: flex;
   justify-content: space-between;
 }
@@ -53,14 +36,7 @@
   order: 1;
 }
 
-.forgot-password-link {
-  order: 2;
-  text-decoration: underline;
-  color: white;
-  cursor: pointer;
-}
-
-.form-input {
+.form-control {
   order: 3;
   background-color: white;
   border: 1px solid #d3d3d3;
@@ -72,13 +48,13 @@
   padding-bottom: 12px;
 }
 
-.error-message {
+.error-danger {
   order: 4;
   color: #ff0000;
   font-weight: lighter;
 }
 
-.login-submit-button {
+.signup {
   background-color: #ffffff;
   height: 48px;
   width: 480px;
@@ -94,20 +70,6 @@
   position: relative;
 }
 
-.redirect-to-register {
-  padding-top: 2%;
-  text-align: center;
-}
-
-.sign-up-link {
-  color: white;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.space {
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
+label{
+    margin-bottom: 0.4rem;
 }

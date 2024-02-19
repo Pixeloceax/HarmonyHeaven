@@ -1,5 +1,3 @@
-import "./card.css";
-
 interface CardProps {
   image: string;
   price: number | undefined;
