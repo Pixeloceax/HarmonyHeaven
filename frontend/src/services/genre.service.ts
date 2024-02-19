@@ -3,12 +3,12 @@ import IGenre from "../types/genre.type";
 
 class genreService {
   private readonly BACKEND_URL = "http://localhost:8000";
-  private readonly PRODUCTS_LIST = "/genres-list";
+  private readonly GENRES_LIST = "/genres-list";
 
   async getGenres() {
     try {
       const response = await axios.get<IGenre[]>(
-        `${this.BACKEND_URL}${this.PRODUCTS_LIST}`
+        `${this.BACKEND_URL}${this.GENRES_LIST}`
       );
       return response.data;
     } catch (err) {
