@@ -3,7 +3,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services/auth.service";
 import { hashPassword } from "../../utils/hash-password.utils";
-import { emailValidator } from "../../utils/email-requirement.utils";
+import { emailValidation } from "../../utils/email-requirement.utils";
 import { passwordValidation } from "../../utils/password-requirement.utils";
 
 type Props = object;
@@ -40,7 +40,7 @@ export default class Register extends Component<Props, State> {
           (val: any) => val && val.length >= 3 && val.length <= 20
         )
         .required("This field is required!"),
-      email: emailValidator.emailValidation(),
+      email: emailValidation.emailValidation(),
       password: passwordValidation
         .passwordValidation()
         .required("This field is required!"),

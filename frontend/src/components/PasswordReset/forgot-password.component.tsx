@@ -1,7 +1,8 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services/auth.service";
+import { emailValidation } from "../../utils/email-requirement.utils";
 
 type State = {
   email: string;
@@ -21,7 +22,9 @@ const ForgotPassword: React.FC = () => {
 
   const validationSchema = () => {
     return Yup.object().shape({
-      email: Yup.string().required("This field is required!"),
+      email: emailValidation
+        .emailValidation()
+        .required("This field is required!"),
     });
   };
 
@@ -31,8 +34,12 @@ const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleForgotPassword}>
-      <Form className='form-container'>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleForgotPassword}
+    >
+      <Form className="form-container">
         <Field
           type="email"
           name="email"
@@ -40,7 +47,9 @@ const ForgotPassword: React.FC = () => {
           className="form-input-reset"
           required
         />
-        <button type="submit" className='login-submit-button'>Reset Password</button>
+        <button type="submit" className="login-submit-button">
+          Reset Password
+        </button>
       </Form>
     </Formik>
   );

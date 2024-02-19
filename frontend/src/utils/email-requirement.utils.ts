@@ -9,4 +9,4 @@ class emailRequirment {
   }
 }
 
-export const emailValidator = new emailRequirment();
+export const emailValidation = new emailRequirment();
