@@ -1,7 +1,6 @@
 import axios from "axios";
 import IUser from "../types/use.type";
 import authHeader from "./auth-header";
-import { jwtDecode } from "jwt-decode";
 class AuthService {
   private readonly BACKEND_URL = "http://localhost:8000";
   private readonly LOGIN = "/login";
@@ -48,13 +47,9 @@ class AuthService {
     if (!token) {
       return null;
     }
-    const email = (jwtDecode(token) as { email: string }).email;
     try {
-      const response = await axios.post(
+      const response = await axios.get(
         `${this.BACKEND_URL}${this.GET_USER_DATA}`,
-        {
-          email: email,
-        },
         {
           headers: this.getAuthHeaders(),
         }

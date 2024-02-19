@@ -9,12 +9,13 @@ import BoardUser from "./components/board-user.component";
 import Vinyls from "./pages/shop/Shop";
 import Cart from "./components/cart/cart.component";
 import Navbar from "./components/Navbar/Navbar.component";
-import ForgotPassword from "./components/PasswordReset/forgot-password.component";
+import ForgotPassword from "./components/forgot-password/forgot-password.component";
 import ResetPassword from "./pages/reset-password/reset-password.page";
 import Debug from "./pages/debug/debug.page";
 import Footer from "./components/Footer/footer.component";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Props = object;
 
@@ -50,31 +51,28 @@ class App extends Component<Props, State> {
 
     return (
       <BrowserRouter>
-        <div>
-          <Navbar />
-          <ToastContainer />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="*" element={<Home />} />
-            <Route
-              path="/login"
-              element={currentUser ? <Navigate to="/" /> : <Login />}
-            />
-            <Route
-              path="/register"
-              element={currentUser ? <Navigate to="/" /> : <Register />}
-            />
-            <Route path="/user" element={<BoardUser />} />
+        <Navbar />
+        <ToastContainer />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<Home />} />
+          <Route
+            path="/login"
+            element={currentUser ? <Navigate to="/" /> : <Login />}
+          />
+          <Route
+            path="/register"
+            element={currentUser ? <Navigate to="/" /> : <Register />}
+          />
+          <Route path="/user" element={<BoardUser />} />
 
-            <Route path="/shop" element={<Vinyls />} />
-            <Route path="/cart" element={<Cart />} />
+          <Route path="/shop" element={<Vinyls />} />
+          <Route path="/cart" element={<Cart />} />
 
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password/:token" element={<ResetPassword />} />
-            <Route path="/debug" element={<Debug />} />
-          </Routes>
-        </div>
-
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/debug" element={<Debug />} />
+        </Routes>
         <Footer />
       </BrowserRouter>
     );

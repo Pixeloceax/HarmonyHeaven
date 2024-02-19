@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\DeliveryRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DeliveryRepository::class)]
@@ -24,6 +25,15 @@ class Delivery
 
     #[ORM\OneToOne(mappedBy: 'delivery', cascade: ['persist', 'remove'])]
     private ?Command $command = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $deliveryDate = null;
+
+    #[ORM\Column]
+    private ?float $deliveryCost = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $deliveryMethod = null;
 
     public function getId(): ?int
     {
@@ -84,6 +94,42 @@ class Delivery
         }
 
         $this->command = $command;
+
+        return $this;
+    }
+
+    public function getDeliveryDate(): ?\DateTimeInterface
+    {
+        return $this->deliveryDate;
+    }
+
+    public function setDeliveryDate(\DateTimeInterface $deliveryDate): static
+    {
+        $this->deliveryDate = $deliveryDate;
+
+        return $this;
+    }
+
+    public function getDeliveryCost(): ?float
+    {
+        return $this->deliveryCost;
+    }
+
+    public function setDeliveryCost(float $deliveryCost): static
+    {
+        $this->deliveryCost = $deliveryCost;
+
+        return $this;
+    }
+
+    public function getDeliveryMethod(): ?string
+    {
+        return $this->deliveryMethod;
+    }
+
+    public function setDeliveryMethod(string $deliveryMethod): static
+    {
+        $this->deliveryMethod = $deliveryMethod;
 
         return $this;
     }

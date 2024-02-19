@@ -2,7 +2,9 @@ import { Component } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services/auth.service";
-import bcrypt from "bcryptjs";
+import { hashPassword } from "../../utils/hash-password.utils";
+import { emailValidation } from "../../utils/email-requirement.utils";
+import { passwordValidation } from "../../utils/password-requirement.utils";
 
 type Props = object;
 
@@ -36,19 +38,13 @@ export default class Register extends Component<Props, State> {
         .test(
           "len",
           "The username must be between 3 and 20 characters.",
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (val: any) => val && val.length >= 3 && val.length <= 20
         )
         .required("This field is required!"),
-      email: Yup.string()
-        .email("This is not a valid email.")
-        .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Invalid email address.")
-        .required("This field is required!"),
-      password: Yup.string()
-        .min(12, "Password must be at least 12 characters long")
-        .matches(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{13,}$/,
-          "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
-        )
+      email: emailValidation.emailValidation(),
+      password: passwordValidation
+        .passwordValidation()
         .required("This field is required!"),
       confirmPassword: Yup.string() 
         .oneOf([Yup.ref("password"), null], "Passwords must match") 
@@ -57,9 +53,9 @@ export default class Register extends Component<Props, State> {
   }
 
   async handleRegister(formValue: {
-    username: any;
-    email: any;
-    password: any;
+    username: string;
+    email: string;
+    password: string;
   }) {
     const { username, email, password } = formValue;
 
@@ -69,11 +65,9 @@ export default class Register extends Component<Props, State> {
     });
 
     try {
-      const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
-
+      const hashedPassword = await hashPassword.hashPassword(password);
       AuthService.register(username, email, hashedPassword).then(
         (response) => {
-          console.log("ici", hashedPassword);
           this.setState({
             message: response.data.message,
             successful: true,
