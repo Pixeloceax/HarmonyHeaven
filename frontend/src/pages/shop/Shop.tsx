@@ -6,7 +6,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import IProduct from "../../types/product.type";
 import cartService from "../../services/cart.service";
-import axios from "axios";
+import shopService from "../../services/shop.service";
 import "./shop.css";
 
 type Props = object;
@@ -27,38 +27,11 @@ export default class Vinyls extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.fetchProducts();
+    shopService
   }
 
-  async fetchProducts() {
-    try {
-      const response = await axios.get<IProduct[]>(
-        "http://127.0.0.1:8000/products-list"
-      );
 
-      this.setState({ products: response.data });
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  }
 
-  // Handle adding item to cart
-  handleAddToCart(productId: number) {
-    // Send request to add product to cart
-    axios
-      .post("http://127.0.0.1:8000/cart", {
-        productId: productId,
-        quantity: 1, // You can adjust the quantity as needed
-      })
-      .then((response) => {
-        console.log("Item added to cart:", response.data);
-        // Handle success if needed (e.g., show a message to the user)
-      })
-      .catch((error) => {
-        console.error("Error adding item to cart:", error);
-        // Handle error if needed
-      });
-  }
 
   render() {
     const { products, currentPage, productsPerPage } = this.state;

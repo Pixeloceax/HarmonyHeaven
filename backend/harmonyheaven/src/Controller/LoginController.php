@@ -15,15 +15,16 @@ class LoginController extends AbstractController
     /**
      * @Route("/login", name="login", methods={"POST"})
      */
-    public function login(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher,
-    JWTTokenManagerInterface $jwtManager): JsonResponse
+    public function login(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher, JWTTokenManagerInterface $jwtManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-
+    
         $email = $data['email'];
         $password = $data['password'];
         $user = $userRepository->findOneBy(['email' => $email]);
-
+    
+    
+        // Initialize $token with a default value
         if ($user && $passwordHasher->isPasswordValid($user, $password)) {
             $payload = [
                 'email'=> $user->getEmail(),
@@ -31,11 +32,12 @@ class LoginController extends AbstractController
             ];
             $token = $jwtManager->createFromPayload($user, $payload);
         }
-
+    
         return new JsonResponse([
             'user' => $token,
         ]);
     }
+    
 
     /**
      * @Route("/get-current-user", name="get-current-user", methods={"POST"})

@@ -1,0 +1,103 @@
+.footer {
+  background-color: white;
+  margin-top: 5%;
+  min-height: 20%;
+  color: black;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-top {
+  min-width: 100%;
+  max-width: 100%;
+  border-bottom: 1px dashed black;
+  padding-bottom: 2%;
+}
+
+.footer-top > a {
+  margin: 0.5rem;
+  font-size:small;
+  font-weight:300;
+}
+
+.footer-titles {
+  min-width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-titles > div > h2 {
+  margin: 1rem 0rem 1rem 0rem;
+}
+
+.form-section{
+    width: 16%;
+}
+
+.privacy {
+  font-size: x-small;
+  font-weight: lighter;
+  margin-top: 3%;
+  margin-right: 3%;
+  display: flex;
+  flex-wrap: wrap;
+  width: auto;
+}
+
+.hh-logo {
+  max-width: 50px;
+  max-height: 50px;
+  margin: 1%;
+}
+
+.footer-bot {
+  margin-top: 1%;
+}
+
+.about-us {
+  display: flex;
+  justify-content: space-between;
+}
+
+.about-us > div {
+  margin: 0.5rem;
+}
+
+.about-us > div > a {
+  margin: 0.5rem;
+  font-size:small;
+  font-weight:300;
+}
+
+.about-us > p {
+  margin-right: 1rem;
+  font-size:x-small;
+  font-weight:300;
+}
+
+.newsForm {
+  height: 3rem;
+  max-width: 60%;
+  min-width: 60%;
+}
+
+.newsForm::placeholder {
+    padding-left:0.3rem ;
+  }
+
+.newsButton {
+  height: 3rem;
+  background-color: transparent;
+  margin-left: 1rem;
+  border: 1px solid #000000;
+  padding: 0.5rem;
+  max-width: 30%;
+  min-width: 30%;
+}
+
+.newsButton > p {
+    font-size:x-small;
+    font-weight:300;
+  }

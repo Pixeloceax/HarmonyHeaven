@@ -19,7 +19,6 @@
     "@mui/styled-engine-sc": "^6.0.0-alpha.16",
     "aws-sdk": "^2.1012.0",
     "axios": "^1.6.5",
-    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "formik": "^2.4.5",
     "html-react-parser": "^5.1.1",
