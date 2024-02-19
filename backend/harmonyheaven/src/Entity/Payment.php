@@ -23,6 +23,9 @@ class Payment
     #[ORM\OneToOne(mappedBy: 'payment', cascade: ['persist', 'remove'])]
     private ?Command $command = null;
 
+    #[ORM\Column]
+    private ?float $amountPaid = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -65,6 +68,18 @@ class Payment
         }
 
         $this->command = $command;
+
+        return $this;
+    }
+
+    public function getAmountPaid(): ?float
+    {
+        return $this->amountPaid;
+    }
+
+    public function setAmountPaid(float $amountPaid): static
+    {
+        $this->amountPaid = $amountPaid;
 
         return $this;
     }
