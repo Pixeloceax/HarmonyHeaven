@@ -13,7 +13,6 @@ import ForgotPassword from "./components/forgot-password/forgot-password.compone
 import ResetPassword from "./pages/reset-password/reset-password.page";
 import Debug from "./pages/debug/debug.page";
 import Footer from "./components/Footer/footer.component";
-
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
