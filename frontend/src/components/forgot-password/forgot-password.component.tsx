@@ -1,17 +1,28 @@
+import { Component } from "react";
 import { toast } from "react-toastify";
-import { Field, Form, Formik } from "formik";
+import resetPasswordService from "../../services/resetPassword.service";
+import { Field, Form, Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import AuthService from "../../services/auth.service";
 import { emailValidation } from "../../utils/email-requirement.utils";
+
+type Props = object;
 
 type State = {
   email: string;
   message: string;
 };
 
-const ForgotPassword: React.FC = () => {
-  const handleForgotPassword = async (values: State) => {
-    const response = await AuthService.forgotPassword(values.email);
+export default class ForgotPassword extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      email: "",
+      message: "",
+    };
+  }
+  handleForgotPassword = async (values: State) => {
+    console.log(values);
+    const response = await resetPasswordService.forgotPassword(values.email);
     console.log(response);
     if (response.status === 200) {
       toast.success(response.data.message);
@@ -20,7 +31,7 @@ const ForgotPassword: React.FC = () => {
     }
   };
 
-  const validationSchema = () => {
+  validationSchema = () => {
     return Yup.object().shape({
       email: emailValidation
         .emailValidation()
@@ -28,31 +39,32 @@ const ForgotPassword: React.FC = () => {
     });
   };
 
-  const initialValues: State = {
+  initialValues: State = {
     email: "",
     message: "",
   };
+  render() {
+    return (
+      <Formik
+        initialValues={this.initialValues}
+        validationSchema={this.validationSchema}
+        onSubmit={this.handleForgotPassword}
+      >
+        <Form className="form-container">
+          <Field
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="reset-form-input"
+            required
+          />
+          <ErrorMessage name="email" component="div" className="error" />
 
-  return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={handleForgotPassword}
-    >
-      <Form className="form-container">
-        <Field
-          type="email"
-          name="email"
-          placeholder="Email"
-          className="form-input-reset"
-          required
-        />
-        <button type="submit" className="login-submit-button">
-          Reset Password
-        </button>
-      </Form>
-    </Formik>
-  );
-};
-
-export default ForgotPassword;
+          <button type="submit" className="login-submit-button">
+            Reset Password
+          </button>
+        </Form>
+      </Formik>
+    );
+  }
+}
