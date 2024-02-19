@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import AuthService from "../../services/auth.service";
-import axios from "axios";
+import resetPasswordService from "../../services/resetPassword.service";
 import { toast } from "react-toastify";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { passwordValidation } from "../../utils/password-requirement.utils";
 import "./reset-password.css";
@@ -16,46 +16,6 @@ type State = {
 
 const ResetPassword: React.FC = () => {
   const { token } = useParams<{ token: string }>();
-  const BACKEND_URL = "http://localhost:8000";
-  console.log(token);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await axios.post(BACKEND_URL + "/check-token", { token });
-      } catch (error: any) {
-        toast.error(error.response.data.message, {
-          // Sans id le toast est rendu plusieurs fois.
-          toastId: "error1",
-        });
-      }
-    };
-    fetchData();
-  }, [token]);
-
-  const handleResetPassword = async (values: State) => {
-    if (values.password !== values.confirmPassword) {
-      toast.error("Les mots de passe ne correspondent pas");
-      return;
-    }
-    if (!token || token === null) {
-      return;
-    }
-    try {
-      const response = await AuthService.resetPassword(values.password, token);
-      if (response.status === 200) {
-        toast.success(response.data.message);
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error: any) {
-      toast.error(error.response.data.message);
-      console.error(
-        "Erreur lors de la réinitialisation du mot de passe :",
-        error
-      );
-    }
-  };
 
   const validationSchema = () => {
     return Yup.object().shape({
@@ -74,6 +34,52 @@ const ResetPassword: React.FC = () => {
     token: token || null,
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (token) {
+        try {
+          await resetPasswordService.checkToken(token);
+          if ((await resetPasswordService.checkToken(token)).status != 200) {
+            toast.error("Invalid token!");
+          }
+        } catch (error: any) {
+          toast.error(error.response.data.message, {
+            // Sans id le toast est rendu plusieurs fois.
+            toastId: "error1",
+          });
+        }
+      }
+    };
+    fetchData();
+  }, [token]);
+
+  const handleResetPassword = async (values: State) => {
+    if (values.password !== values.confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
+    if (!token || token === null) {
+      return;
+    }
+    try {
+      const response = await resetPasswordService.resetPassword(
+        values.password,
+        token
+      );
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+      console.error(
+        "There was an error while trying to reset the password:",
+        error
+      );
+    }
+  };
+
   return (
     <Formik
       initialValues={initialValues}
@@ -81,20 +87,30 @@ const ResetPassword: React.FC = () => {
       onSubmit={handleResetPassword}
     >
       <Form className="form-container">
-        <Field
-          type="password"
-          name="password"
-          placeholder="Your password"
-          className="form-input-reset"
-          required
-        />
-        <Field
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm your password"
-          className="form-input-reset"
-          required
-        />
+        <div className="reset-form-group">
+          <Field
+            type="password"
+            name="password"
+            placeholder="Your password"
+            className="reset-form-input"
+            required
+          />
+          <ErrorMessage name="password" component="div" className="error" />
+        </div>
+        <div className="reset-form-group">
+          <Field
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm your password"
+            className="reset-form-input"
+            required
+          />
+          <ErrorMessage
+            name="confirmPassword"
+            component="div"
+            className="error"
+          />
+        </div>
         <button type="submit" className="login-submit-button">
           Submit
         </button>

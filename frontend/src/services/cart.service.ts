@@ -1,16 +1,11 @@
 import axios from "axios";
 import authHeader from "./auth-header";
-import IProduct from "../types/product.type";
-
-interface ICartItem {
-  product: IProduct;
-  quantity: number;
-}
+import ICartItem from "../types/cart-item.type";
 
 class CartService {
   private readonly BACKEND_URL = "http://localhost:8000";
   private readonly SUBMIT_CART = "/cart";
-  private subscribers: Function[] = []; // Array to hold subscriber functions
+  private subscribers: Function[] = [];
 
   private setCart(cart: ICartItem[]) {
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -105,12 +100,14 @@ class CartService {
 
   // Unsubscribe from cart changes
   unsubscribe(callback: Function) {
-    this.subscribers = this.subscribers.filter(subscriber => subscriber !== callback);
+    this.subscribers = this.subscribers.filter(
+      (subscriber) => subscriber !== callback
+    );
   }
 
   // Notify all subscribers whenever cart is updated
   private notifySubscribers() {
-    this.subscribers.forEach(subscriber => subscriber());
+    this.subscribers.forEach((subscriber) => subscriber());
   }
 
   private getAuthHeaders() {
