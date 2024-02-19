@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CommandRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommandRepository::class)]
@@ -31,6 +32,12 @@ class Command
     #[ORM\OneToOne(inversedBy: 'command', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Delivery $delivery = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $statut = null;
+
+    #[ORM\Column]
+    private ?int $quantity = null;
 
     public function __construct()
     {
@@ -121,6 +128,30 @@ class Command
     public function setDelivery(Delivery $delivery): static
     {
         $this->delivery = $delivery;
+
+        return $this;
+    }
+
+    public function getStatut(): ?int
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(int $statut): static
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }
