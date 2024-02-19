@@ -80,58 +80,58 @@ class Navbar extends Component<object, State> {
               </button>
             </li>
           </ul>
-        </nav>
 
-        <div id="navElement" className="navbar-overlay">
-          <button className="navbar-close-button" onClick={this.closeNav}>
-            close
-          </button>
+          <div id="navElement" className="navbar-overlay">
+            <button className="navbar-close-button" onClick={this.closeNav}>
+              close
+            </button>
 
-          <div className="navbar-overlay-content">
-            <ul>
-              {this.navLinks
-                .filter(
-                  (link) => !["login", "register", "logout"].includes(link)
-                )
-                .map((link, index) => (
-                  <li className="navbar-overlay-link-item" key={index}>
-                    <a className="navbar-overlay-link" href={`/${link}`}>
-                      {link.toUpperCase()}
+            <div className="navbar-overlay-content">
+              <ul>
+                {this.navLinks
+                  .filter(
+                    (link) => !["login", "register", "logout"].includes(link)
+                  )
+                  .map((link, index) => (
+                    <li className="navbar-overlay-link-item" key={index}>
+                      <a className="navbar-overlay-link" href={`/${link}`}>
+                        {link.toUpperCase()}
+                      </a>
+                    </li>
+                  ))}
+                {currentUser ? (
+                  <li className="navbar-overlay-link-item">
+                    <a
+                      className="navbar-overlay-link"
+                      href="/logout"
+                      onClick={this.logout}
+                    >
+                      LOGOUT
                     </a>
                   </li>
-                ))}
-              {currentUser ? (
+                ) : (
+                  <>
+                    <li className="navbar-overlay-link-item">
+                      <a className="navbar-overlay-link" href="/login">
+                        LOGIN
+                      </a>
+                    </li>
+                    <li className="navbar-overlay-link-item">
+                      <a className="navbar-overlay-link" href="/register">
+                        REGISTER
+                      </a>
+                    </li>
+                  </>
+                )}
                 <li className="navbar-overlay-link-item">
-                  <a
-                    className="navbar-overlay-link"
-                    href="/logout"
-                    onClick={this.logout}
-                  >
-                    LOGOUT
+                  <a className="navbar-overlay-link" href="/contact">
+                    CONTACT
                   </a>
                 </li>
-              ) : (
-                <>
-                  <li className="navbar-overlay-link-item">
-                    <a className="navbar-overlay-link" href="/login">
-                      LOGIN
-                    </a>
-                  </li>
-                  <li className="navbar-overlay-link-item">
-                    <a className="navbar-overlay-link" href="/register">
-                      REGISTER
-                    </a>
-                  </li>
-                </>
-              )}
-              <li className="navbar-overlay-link-item">
-                <a className="navbar-overlay-link" href="/contact">
-                  CONTACT
-                </a>
-              </li>
-            </ul>
+              </ul>
+            </div>
           </div>
-        </div>
+        </nav>
       </>
     );
   }
