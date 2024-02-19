@@ -12,7 +12,7 @@ login:
 get-current-user:
   path: /get-current-user
   controller: App\Controller\LoginController::getCurrentUser
-  methods: POST
+  methods: GET
 
 register:
   path: /register
@@ -25,24 +25,24 @@ products-list:
   methods: GET
 
 genres-list:
-    path: /genres-list
-    controller: App\Controller\GenreController::getGenres
-    methods: GET
+  path: /genres-list
+  controller: App\Controller\GenreController::getGenres
+  methods: GET
 
 forgot-password:
-    path: /forgot-password
-    controller: App\Controller\ResetPasswordController::forgotPassword
-    methods: POST
+  path: /forgot-password
+  controller: App\Controller\ResetPasswordController::forgotPassword
+  methods: POST
 
 check-token:
-    path: /check-token
-    controller: App\Controller\ResetPasswordController::checkToken
-    methods: POST
+  path: /check-token
+  controller: App\Controller\ResetPasswordController::checkToken
+  methods: POST
 
 reset-password:
-    path: /reset-password
-    controller: App\Controller\ResetPasswordController::resetPassword
-    methods: POST
+  path: /reset-password
+  controller: App\Controller\ResetPasswordController::resetPassword
+  methods: POST
 
 cart:
   path: /cart
