@@ -8,6 +8,7 @@ import Home from "./pages/home/Home";
 import BoardUser from "./components/board-user.component";
 import Vinyls from "./pages/shop/Shop";
 import Cart from "./components/cart/cart.component";
+import Wishlist from "./pages/wishlist/Wishlist";
 import Navbar from "./components/Navbar/Navbar.component";
 import ForgotPassword from "./components/forgot-password/forgot-password.component";
 import ResetPassword from "./pages/reset-password/reset-password.page";
@@ -70,6 +71,7 @@ class App extends Component<Props, State> {
 
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/debug" element={<Debug />} />
         </Routes>
         <Footer />
