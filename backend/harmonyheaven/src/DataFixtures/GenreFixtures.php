@@ -18,7 +18,7 @@ class GenreFixtures extends Fixture
             "Children's",
             'Classical',
             'Electronic',
-            'Country',
+            'Folk, World, & Country',
             'Funk / Soul',
             'Hip Hop',
             'Jazz',

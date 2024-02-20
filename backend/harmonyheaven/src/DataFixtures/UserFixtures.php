@@ -12,6 +12,7 @@ use App\Entity\Delivery;
 use App\Entity\CommandItem;
 use App\Entity\PaymentMethod;
 use App\Entity\DeliveryInformation;
+use DateTime;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -75,6 +76,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         $payment = new Payment();
         $payment->setPaymentMethod($paymentMethod)
+            ->setAmountPaid(50)
             ->setStatus(0);
 
         return $payment;
@@ -84,6 +86,9 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         $delivery = new Delivery();
         $delivery->setAddress($address)
+            ->setDeliveryCost(50)
+            ->setDeliveryDate(new DateTime())
+            ->setDeliveryMethod("credit card")
             ->setStatus(0);
 
         return $delivery;
@@ -101,6 +106,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         $command = new Command();
         $command->setPayment($payment)
+            ->setStatut(0)
+            ->setQuantity(0)
             ->setDelivery($delivery);
         $admin->addCommand($command);
 
