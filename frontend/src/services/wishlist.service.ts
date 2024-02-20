@@ -17,6 +17,7 @@ class WishlistService {
     return JSON.parse(localStorage.getItem("wishlist") as string) || [];
   }
 
+
   addToWishlist(
     productId: string,
     productName: string,
