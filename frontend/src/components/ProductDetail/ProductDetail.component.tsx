@@ -43,7 +43,50 @@ const ProductDetail = () => {
     <React.Fragment>
       <div className="product-detail-container">
         <div className="product-detail-images">
-          <img src={thisProduct.image} alt={thisProduct.name} />
+          <img
+            className="PlaceholderImage"
+            src={
+              (thisProduct.image =
+                thisProduct.image || "https://via.placeholder.com/648x624")
+            }
+          />
+          <div className="Column">
+            <div className="Row">
+              <img
+                className="PlaceholderImage"
+                src={
+                  (thisProduct.image =
+                    thisProduct.image || "https://via.placeholder.com/316x304")
+                }
+              />
+              <img
+                className="PlaceholderImage"
+                src={
+                  (thisProduct.image =
+                    thisProduct.image || "https://via.placeholder.com/316x304")
+                }
+              />
+            </div>
+            <div className="Row">
+              <img
+                className="PlaceholderImage"
+                src={
+                  (thisProduct.image =
+                    thisProduct.image || "https://via.placeholder.com/316x304")
+                }
+              />
+              <div className="Container">
+                <img
+                  className="PlaceholderImage"
+                  src={
+                    (thisProduct.image =
+                      thisProduct.image ||
+                      "https://via.placeholder.com/316x304")
+                  }
+                />
+              </div>
+            </div>
+          </div>
         </div>
         <div className="product-detail-informations">
           <p className="product-name">{thisProduct.name}</p>
