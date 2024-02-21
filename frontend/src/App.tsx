@@ -13,6 +13,7 @@ import ForgotPassword from "./components/forgot-password/forgot-password.compone
 import ResetPassword from "./pages/reset-password/reset-password.page";
 import Debug from "./pages/debug/debug.page";
 import Footer from "./components/Footer/footer.component";
+import ProductDetail from "./components/ProductDetail/ProductDetail.component";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -66,6 +67,7 @@ class App extends Component<Props, State> {
           <Route path="/user" element={<BoardUser />} />
 
           <Route path="/shop" element={<Vinyls />} />
+          <Route path="/shop/:productId" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
 
           <Route path="/forgot-password" element={<ForgotPassword />} />

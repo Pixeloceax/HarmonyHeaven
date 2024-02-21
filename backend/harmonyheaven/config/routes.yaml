@@ -24,6 +24,11 @@ products-list:
   controller: App\Controller\ProductController::getProducts
   methods: GET
 
+product-details:
+  path: /product/{id}
+  controller: App\Controller\ProductController::getProductById
+  methods: GET
+
 genres-list:
   path: /genres-list
   controller: App\Controller\GenreController::getGenres
