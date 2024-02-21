@@ -27,7 +27,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/(login|get-current-user|register|products-list), roles: PUBLIC_ACCESS }
-
+        # - { path: ^/(order), roles: ROLE_USER }
 
 when@test:
     security:
