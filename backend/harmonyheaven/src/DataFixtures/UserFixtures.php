@@ -12,6 +12,7 @@ use App\Entity\Delivery;
 use App\Entity\CommandItem;
 use App\Entity\PaymentMethod;
 use App\Entity\DeliveryInformation;
+use DateTime;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -75,6 +76,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         $payment = new Payment();
         $payment->setPaymentMethod($paymentMethod)
+            ->setAmountPaid(50)
             ->setStatus(0);
 
         return $payment;
@@ -84,6 +86,9 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         $delivery = new Delivery();
         $delivery->setAddress($address)
+            ->setDeliveryCost(50)
+            ->setDeliveryDate(new DateTime())
+            ->setDeliveryMethod("credit card")
             ->setStatus(0);
 
         return $delivery;
@@ -101,6 +106,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         $command = new Command();
         $command->setPayment($payment)
+            ->setStatut(0)
+            ->setQuantity(0)
             ->setDelivery($delivery);
         $admin->addCommand($command);
 
@@ -123,16 +130,27 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
     private function addRandomCommandItems(Command $command, ObjectManager $manager): void
     {
+        $existingCommandItems = $command->getCommandItem()->toArray();
         $products = $manager->getRepository(Product::class)->findAll();
 
-        for ($j = 0; $j < 5; $j++) {
-            $commandItem = new CommandItem();
-            $product = $products[array_rand($products)]; // Select a random product
-            $commandItem->setProduct($product)
-                ->setQuantity(mt_rand(1, 5));
+    for ($j = 0; $j < 5; $j++) {
+        $product = $products[array_rand($products)]; // Select a random product
+        
+        // Check if a command item for this product already exists
+        $existingItem = array_filter($existingCommandItems, function ($item) use ($product) {
+            return $item->getProduct() === $product;
+        });
 
-            $command->addCommandItem($commandItem);
+        if (!empty($existingItem)) {
+            continue; // Skip adding duplicate items
         }
+
+        $commandItem = new CommandItem();
+        $commandItem->setProduct($product)
+            ->setQuantity(mt_rand(1, 5));
+
+        $command->addCommandItem($commandItem);
+    }
     }
 
     private function loadRandomUsers(ObjectManager $manager): void

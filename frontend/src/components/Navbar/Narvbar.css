@@ -1,15 +1,25 @@
 .navbar {
   display: flex;
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 5;
-  background-color: transparent;
+  background-color: #0000007a;
   justify-content: space-between;
   align-items: center;
   padding: 1% 5%;
   color: white;
   width: 100%;
+  transition: top 0.3s ease; /* Add transition for smoother animation */
+  visibility: hidden; /* Initially hide the navbar */
 }
+
+.sticky {
+  top: 0; /* Bring the navbar back to the top when sticky */
+  visibility: visible; /* Make the navbar visible when sticky */
+}
+
+/* Your other styles remain the same */
+
 
 .navbar-cart {
   display: flex;
@@ -76,8 +86,8 @@
   color: #f1f1f1;
 }
 
-.navbar-close-button,
-.navbar-open-button {
+.navbar-open-button,
+.navbar-close-button {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -86,6 +96,10 @@
   cursor: pointer;
   filter: invert(100%);
   font-size: 16px;
+  padding: 0; /* Remove padding to ensure consistent button size */
+  margin: 0; /* Remove margin to ensure consistent button position */
+  display: flex;
+  align-items: center; /* Align text vertically */
 }
 
 .navbar-overlay .navbar-close-button {
@@ -93,6 +107,7 @@
   top: 20px;
   right: 45px;
 }
+
 
 .navbar-cart-link {
 }

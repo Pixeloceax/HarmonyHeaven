@@ -1,10 +1,12 @@
 import { Component } from "react";
+import "./register.css";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services/auth.service";
 import { hashPassword } from "../../utils/hash-password.utils";
 import { emailValidation } from "../../utils/email-requirement.utils";
 import { passwordValidation } from "../../utils/password-requirement.utils";
+import Cat from "../../assets/images/cat.jpg";
 
 type Props = object;
 
@@ -12,6 +14,7 @@ type State = {
   username: string;
   email: string;
   password: string;
+  passwordConfirmation: string;
   successful: boolean;
   message: string;
 };
@@ -25,6 +28,7 @@ export default class Register extends Component<Props, State> {
       username: "",
       email: "",
       password: "",
+      passwordConfirmation: "",
       successful: false,
       message: "",
     };
@@ -36,13 +40,15 @@ export default class Register extends Component<Props, State> {
         .test(
           "len",
           "The username must be between 3 and 20 characters.",
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (val: any) => val && val.length >= 3 && val.length <= 20
+          (val) => val && val.length >= 3 && val.length <= 20
         )
         .required("This field is required!"),
       email: emailValidation.emailValidation(),
       password: passwordValidation
         .passwordValidation()
+        .required("This field is required!"),
+      passwordConfirmation: Yup.string()
+        .oneOf([Yup.ref("password"), null], "Passwords must match")
         .required("This field is required!"),
     });
   }
@@ -51,6 +57,7 @@ export default class Register extends Component<Props, State> {
     username: string;
     email: string;
     password: string;
+    passwordConfirmation: string;
   }) {
     const { username, email, password } = formValue;
 
@@ -94,85 +101,110 @@ export default class Register extends Component<Props, State> {
       username: "",
       email: "",
       password: "",
+      passwordConfirmation: "",
     };
 
     return (
-      <div className="col-md-12">
-        <div className="card card-container">
-          <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-            alt="profile-img"
-            className="profile-img-card"
-          />
+      <div className="register">
+        <div className="space">
+        <h1>Sign Up</h1>
+              <p>Welcome to Harmony Heaven</p>
+          <div className="register-container">
+            <Formik
+              initialValues={initialValues}
+              validationSchema={this.validationSchema()}
+              onSubmit={this.handleRegister}
+            >
+              <Form>
+                {!successful && (
+                  <div>
+                    <div className="form-group">
+                      <label htmlFor="username"> Username </label>
+                      <Field
+                        name="username"
+                        type="text"
+                        className="form-control"
+                      />
+                      <ErrorMessage
+                        name="username"
+                        component="div"
+                        className="error-danger"
+                      />
+                    </div>
 
-          <Formik
-            initialValues={initialValues}
-            validationSchema={this.validationSchema}
-            onSubmit={this.handleRegister}
-          >
-            <Form>
-              {!successful && (
-                <div>
+                    <div className="register-group">
+                      <label htmlFor="email"> Email </label>
+                      <Field
+                        name="email"
+                        type="email"
+                        className="form-control"
+                      />
+                      <ErrorMessage
+                        name="email"
+                        component="div"
+                        className="error-danger"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="password"> Password </label>
+                      <Field
+                        name="password"
+                        type="password"
+                        className="form-control"
+                      />
+                      <ErrorMessage
+                        name="password"
+                        component="div"
+                        className="error-danger"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="passwordConfirmation">
+                        {" "}
+                        Confirm Password{" "}
+                      </label>
+                      <Field
+                        name="passwordConfirmation"
+                        type="password"
+                        className="form-control"
+                      />
+                      <ErrorMessage
+                        name="passwordConfirmation"
+                        component="div"
+                        className="error-danger"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <button type="submit" className="signup">
+                        <span>Sign Up</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {message && (
                   <div className="form-group">
-                    <label htmlFor="username"> Username </label>
-                    <Field
-                      name="username"
-                      type="text"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="username"
-                      component="div"
-                      className="alert alert-danger"
-                    />
+                    <div
+                      className={
+                        successful
+                          ? "alert alert-success"
+                          : "alert alert-danger"
+                      }
+                      role="alert"
+                    >
+                      {message}
+                    </div>
                   </div>
-
-                  <div className="form-group">
-                    <label htmlFor="email"> Email </label>
-                    <Field name="email" type="email" className="form-control" />
-                    <ErrorMessage
-                      name="email"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="password"> Password </label>
-                    <Field
-                      name="password"
-                      type="password"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="password"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <button type="submit" className="btn btn-primary btn-block">
-                      Sign Up
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {message && (
-                <div className="form-group">
-                  <div
-                    className={
-                      successful ? "alert alert-success" : "alert alert-danger"
-                    }
-                    role="alert"
-                  >
-                    {message}
-                  </div>
-                </div>
-              )}
-            </Form>
-          </Formik>
+                )}
+              </Form>
+            </Formik>
+          </div>
+        </div>
+        <div className="register-image-container">
+          <img src={Cat} className="register-image" alt="register" />
         </div>
       </div>
     );

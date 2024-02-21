@@ -2,12 +2,15 @@ import axios from "axios";
 import authHeader from "./auth-header";
 import ICartItem from "../types/cart-item.type";
 
-class cartService {
+class CartService {
   private readonly BACKEND_URL = "http://localhost:8000";
   private readonly SUBMIT_CART = "/cart";
+  private subscribers: Function[] = [];
 
   private setCart(cart: ICartItem[]) {
     localStorage.setItem("cart", JSON.stringify(cart));
+    // Notify subscribers whenever cart is updated
+    this.notifySubscribers();
   }
 
   getCart(): ICartItem[] {
@@ -90,9 +93,26 @@ class cartService {
     }
   }
 
+  // Subscribe to cart changes
+  subscribe(callback: Function) {
+    this.subscribers.push(callback);
+  }
+
+  // Unsubscribe from cart changes
+  unsubscribe(callback: Function) {
+    this.subscribers = this.subscribers.filter(
+      (subscriber) => subscriber !== callback
+    );
+  }
+
+  // Notify all subscribers whenever cart is updated
+  private notifySubscribers() {
+    this.subscribers.forEach((subscriber) => subscriber());
+  }
+
   private getAuthHeaders() {
     return authHeader();
   }
 }
 
-export default new cartService();
+export default new CartService();

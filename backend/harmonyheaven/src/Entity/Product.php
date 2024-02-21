@@ -58,10 +58,14 @@ class Product
     #[ORM\Column]
     private ?int $quantity = null;
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Wishlist::class)]
+    private Collection $wishlists;
+
     public function __construct()
     {
         $this->genre = new ArrayCollection();
         $this->style = new ArrayCollection();
+        $this->wishlists = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -257,6 +261,36 @@ class Product
     public function setQuantity(int $quantity): static
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Wishlist>
+     */
+    public function getWishlists(): Collection
+    {
+        return $this->wishlists;
+    }
+
+    public function addWishlist(Wishlist $wishlist): static
+    {
+        if (!$this->wishlists->contains($wishlist)) {
+            $this->wishlists->add($wishlist);
+            $wishlist->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWishlist(Wishlist $wishlist): static
+    {
+        if ($this->wishlists->removeElement($wishlist)) {
+            // set the owning side to null (unless already changed)
+            if ($wishlist->getProduct() === $this) {
+                $wishlist->setProduct(null);
+            }
+        }
 
         return $this;
     }

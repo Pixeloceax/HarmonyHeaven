@@ -73,77 +73,88 @@ export default class Login extends Component<Props, State> {
     };
 
     return (
-      <div className="login-container">
-        <div className="login-form-container">
-          <div className="title">
-            <h1>Log In</h1>
-            <p>Welcome to Harmony Heaven</p>
+      <div className="login">
+        <div className="space">
+        <h1>Log In</h1>
+              <p>Welcome to Harmony Heaven</p>
+          <div className="login-form-container">
+            <div className="title">
+              
+            </div>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={this.validationSchema}
+              onSubmit={this.handleLogin}
+            >
+              <Form>
+                <div className="form-group">
+                  <label htmlFor="email">Email</label>
+                  <Field className="form-input" name="email" type="text" />
+                  <ErrorMessage
+                    name="email"
+                    component="div"
+                    className="error-message"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <div>
+                    <label className="form-label" htmlFor="password">
+                      Password
+                    </label>
+                    <a className="forgot-password-link" href="/forgot-password">
+                      Forgot Password?
+                    </a>
+                  </div>
+                  <Field
+                    className="form-input"
+                    name="password"
+                    type="password"
+                  />
+                  <ErrorMessage
+                    className="error-message"
+                    name="password"
+                    component="div"
+                  />
+                </div>
+
+                <div>
+                  <div>
+                    <Field type="checkbox" name="rememberMe" id="rememberMe" />
+                    <label htmlFor="rememberMe">Remember Me</label>
+                  </div>
+                </div>
+
+                <div>
+                  <button
+                    className="login-submit-button"
+                    type="submit"
+                    disabled={loading}
+                  >
+                    {loading && <span></span>}
+                    <span>Login</span>
+                  </button>
+                </div>
+
+                <div className="redirect-to-register">
+                  <p>
+                    Don't have an account ?{" "}
+                    <a className="sign-up-link" href="/register">
+                      Sign Up
+                    </a>
+                  </p>
+                </div>
+
+                {message && (
+                  <div>
+                    <div role="alert">{message}</div>
+                  </div>
+                )}
+              </Form>
+            </Formik>
           </div>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={this.validationSchema}
-            onSubmit={this.handleLogin}
-          >
-            <Form>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <Field className="form-input" name="email" type="text" />
-                <ErrorMessage name="email" component="div" />
-              </div>
-
-              <div className="form-group">
-                <div>
-                  <label className="form-label" htmlFor="password">
-                    Password
-                  </label>
-                  <a className="forgot-password-link" href="/forgot-password">
-                    Forgot Password?
-                  </a>
-                </div>
-                <Field className="form-input" name="password" type="password" />
-                <ErrorMessage
-                  className="error-message"
-                  name="password"
-                  component="div"
-                />
-              </div>
-
-              <div>
-                <div>
-                  <Field type="checkbox" name="rememberMe" id="rememberMe" />
-                  <label htmlFor="rememberMe">Remember Me</label>
-                </div>
-              </div>
-
-              <div>
-                <button
-                  className="login-submit-button"
-                  type="submit"
-                  disabled={loading}
-                >
-                  {loading && <span></span>}
-                  <span>Login</span>
-                </button>
-              </div>
-
-              <div className="redirect-to-register">
-                <p>
-                  Don't have an account ?{" "}
-                  <a className="sign-up-link" href="/register">
-                    Sign Up
-                  </a>
-                </p>
-              </div>
-
-              {message && (
-                <div>
-                  <div role="alert">{message}</div>
-                </div>
-              )}
-            </Form>
-          </Formik>
         </div>
-        <div className="login-image-container">
+        <div className="login-img">
           <img src={Cat} className="login-image" alt="login-image" />
         </div>
       </div>
