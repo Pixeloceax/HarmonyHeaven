@@ -48,3 +48,8 @@ cart:
   path: /cart
   controller: App\Controller\CartController::submitCart
   methods: POST
+
+order:
+  path: /order
+  controller: App\Controller\CartController::order
+  methods: POST
