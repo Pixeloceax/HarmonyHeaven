@@ -51,18 +51,22 @@ export default class UserBoardComponent extends Component<Props, State> {
       {
         title: "Personal Information",
         component: <PersonalInformationComponent />,
+        desc: "Update your personal information",
       },
       {
         title: "Orders",
         component: <OrderComponent />,
+        desc: "Check your orders",
       },
       {
         title: "Payment Methods",
         component: <PaymentMethodsComponent />,
+        desc: "Add or remove payment methods",
       },
       {
         title: "Print bill",
         component: <PrintBillComponent />,
+        desc: "Print your bill",
       },
     ];
 
@@ -71,9 +75,9 @@ export default class UserBoardComponent extends Component<Props, State> {
         {currentUser ? (
           <div className="user-board-container">
             <div className="user-board-nav">
-              <h2>User Board</h2>
+              <h2>My Profile</h2>
               <nav>
-                <ul>
+                <ul className="user-board-nav-items">
                   {nav.map((item, index) => {
                     return (
                       <li
@@ -83,6 +87,7 @@ export default class UserBoardComponent extends Component<Props, State> {
                         }
                       >
                         {item.title}
+                        <p className="user-board-nav-desc">{item.desc}</p>
                       </li>
                     );
                   })}

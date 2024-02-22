@@ -11,3 +11,23 @@
 
 .user-board-information-container {
 }
+
+.user-board-nav-items {
+}
+
+.user-board-nav-items li {
+  font-weight: bold;
+  cursor: pointer;
+  padding-top: 8%;
+}
+
+.user-board-nav-items li p {
+  margin: 0;
+  padding: 0;
+  font-size: small;
+  font-weight: normal;
+  cursor: auto;
+}
+
+.user-board-nav-desc {
+}
