@@ -6,8 +6,8 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IProduct from "../../types/product.type";
-import cartService from "../../services/cart.service";
-import wishlistService from "../../services/wishlist.service";
+import cartService from "../../services/cart.service.ts";
+import wishlistService from "../../services/wishlist.service.ts";
 import shopService from "../../services/shop.service";
 import { ImCart } from "react-icons/im";
 import { GoHeartFill } from "react-icons/go";
@@ -94,27 +94,13 @@ export default class Vinyls extends React.Component<Props, State> {
                 <p>{product.price}€</p>
                 <div className="buttons-div">
                   <button
-                    onClick={() =>
-                      wishlistService.addToWishlist(
-                        product.id,
-                        product.name as string,
-                        product.image,
-                        product.price as number
-                      )
-                    }
+                    onClick={() => wishlistService.addToWishlist(product)}
                     className="wishlist-button"
                   >
                     <GoHeartFill />
                   </button>
                   <button
-                    onClick={() =>
-                      cartService.addToCart(
-                        product.id,
-                        product.name as string,
-                        product.image,
-                        product.price as number
-                      )
-                    }
+                    onClick={() => cartService.addToCart(product)}
                     className="cart-button"
                   >
                     <ImCart />

@@ -3,26 +3,30 @@ import { useState, useEffect } from "react";
 import cartService from "../../services/cart.service";
 import wishlistService from "../../services/wishlist.service";
 import IProduct from "../../types/product.type";
+import IWishlistItem from "../../types/wishlist.type";
 import "./wishlist.css";
 
-interface WishlistItem {
-  product: IProduct;
-  quantity: number;
-}
-
 const Wishlist: React.FC = () => {
-  const [userWishlist, setUserWishlist] = useState<WishlistItem[]>([]);
+  const [userWishlist, setUserWishlist] = useState<IWishlistItem[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
   useEffect(() => {
-    const wishlist = wishlistService.getWishlist();
-    setUserWishlist(wishlist);
-    calculateTotalPrice(wishlist);
+    const fetchWishlist = async () => {
+      try {
+        const wishlist = await wishlistService.getWishlist();
+        setUserWishlist(wishlist);
+        calculateTotalPrice(wishlist);
+      } catch (error) {
+        console.error("Error fetching wishlist:", error);
+      }
+    };
+
+    fetchWishlist();
   }, []);
 
-  const calculateTotalPrice = (wishlist: WishlistItem[]) => {
+  const calculateTotalPrice = (wishlist: IWishlistItem[]) => {
     const total = wishlist.reduce(
-      (acc, item) => acc + (item.product.price ?? 0) * item.quantity,
+      (acc, item) => acc + (item.product.price ?? 0) * (item.quantity ?? 1),
       0
     );
     setTotalPrice(total);
@@ -30,32 +34,35 @@ const Wishlist: React.FC = () => {
 
   const updateQuantity = (id: string, newQuantity: number) => {
     wishlistService.updateWishlistQuantityItem(id, newQuantity);
-    const wishlist = wishlistService.getWishlist();
-    setUserWishlist(wishlist);
-    calculateTotalPrice(wishlist);
+    const updatedWishlist = userWishlist.map((item) =>
+      item.product.id === id ? { ...item, quantity: newQuantity } : item
+    );
+    setUserWishlist(updatedWishlist);
+    calculateTotalPrice(updatedWishlist);
   };
 
-  const removeFromWishlist = (id: string) => {
-    wishlistService.removeFromWishlist(id);
-    const wishlist = wishlistService.getWishlist();
-    setUserWishlist(wishlist);
-    calculateTotalPrice(wishlist);
+  const removeFromWishlist = async (id: string) => {
+    await wishlistService.removeFromWishlist(id);
+    const updatedWishlist = userWishlist.filter(
+      (item) => item.product.id !== id
+    );
+    setUserWishlist(updatedWishlist);
+    calculateTotalPrice(updatedWishlist);
   };
 
-  const addToCart = (
-    id: string,
-    name: string,
-    image: string,
-    price: number
-  ) => {
-    cartService.addToCart(id, name, image, price);
-    removeFromWishlist(id); // Remove the product from the wishlist after adding to cart
+  const addToCart = async (product: IProduct) => {
+    try {
+      cartService.addToCart(product.id, product.name, product.image, product.price);
+      await removeFromWishlist(product.id);
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
   };
 
   return (
     <div className="wishlist-container">
       {userWishlist.length === 0 && <h1>Your wishlist is empty</h1>}
-      {userWishlist.map((item: WishlistItem) => (
+      {userWishlist.map((item: IWishlistItem) => (
         <div key={item.product.id} className="wishlist-item">
           <div className="item-image">
             <img src={item.product.image} alt={item.product.name} />
@@ -85,18 +92,7 @@ const Wishlist: React.FC = () => {
             <button onClick={() => removeFromWishlist(item.product.id)}>
               Remove
             </button>
-            <button
-              onClick={() =>
-                addToCart(
-                  item.product.id,
-                  item.product.name,
-                  item.product.image,
-                  item.product.price
-                )
-              }
-            >
-              Add to Cart
-            </button>
+            <button onClick={() => addToCart(item.product)}>Add to Cart</button>
           </div>
         </div>
       ))}

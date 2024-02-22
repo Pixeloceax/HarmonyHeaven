@@ -1,81 +1,98 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import authHeader from "./auth-header";
-import ICartItem from "../types/cart-item.type";
+import axios, { AxiosError } from "axios"; // Import AxiosError
+import IProduct from "../types/product.type";
+import IWishlistItem from "../types/wishlist.type.ts";
 
 class WishlistService {
   private readonly BACKEND_URL = "http://localhost:8000";
   private readonly WISHLIST_ENDPOINT = "/wishlist";
-  private subscribers: Function[] = [];
 
-  private setWishlist(wishlist: ICartItem[]) {
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-    // Notify subscribers whenever wishlist is updated
-    this.notifySubscribers();
-  }
-
-  getWishlist(): ICartItem[] {
-    return JSON.parse(localStorage.getItem("wishlist") as string) || [];
-  }
-
-
-  addToWishlist(
-    productId: string,
-    productName: string,
-    productImage: string,
-    productPrice: number
-  ) {
-    const wishlist = this.getWishlist();
-
-    const foundSameProduct = wishlist.find((p) => p.product.id === productId);
-
-    if (!foundSameProduct) {
-      wishlist.push({
-        product: {
-          id: productId,
-          name: productName,
-          image: productImage,
-          price: productPrice,
-        },
-        quantity: 1,
-      });
-
-      this.setWishlist(wishlist);
+  async getWishlist(): Promise<IWishlistItem[]> {
+    try {
+      const response = await axios.get<IWishlistItem[]>(
+        `${this.BACKEND_URL}${this.WISHLIST_ENDPOINT}`,
+        {
+          headers: this.getAuthHeaders()
+        }
+      );
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // Handle Axios error
+        console.error("Axios error:", error.response); // Log the response data
+      } else {
+        // Handle other errors
+        console.error("Error adding to wishlist:", error);
+      }
+      throw error; // Re-throw the error if needed
     }
   }
 
-  removeFromWishlist(productId: string) {
-    const wishlist = this.getWishlist();
-    const updatedWishlist = wishlist.filter((item) => item.product.id !== productId);
-    this.setWishlist(updatedWishlist);
+  async addToWishlist(product: IProduct): Promise<void> {
+    try {
+      await axios.post(
+        `${this.BACKEND_URL}${this.WISHLIST_ENDPOINT}/add`,
+        product,
+        {
+          headers: this.getAuthHeaders()
+        }
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // Handle Axios error
+        console.error("Axios error:", error.response); // Log the response data
+      } else {
+        // Handle other errors
+        console.error("Error adding to wishlist:", error);
+      }
+      throw error; // Re-throw the error if needed
+    }
   }
 
-  updateWishlistQuantityItem(productId: string, quantity: number) {
-    const wishlist = this.getWishlist();
-    const updatedWishlist = wishlist.map((item) =>
-      item.product.id === productId ? { ...item, quantity } : item
-    );
-    this.setWishlist(updatedWishlist);
+  async removeFromWishlist(productId: string): Promise<void> {
+    try {
+      await axios.delete(
+        `${this.BACKEND_URL}${this.WISHLIST_ENDPOINT}/remove/${productId}`,
+        {
+          headers: this.getAuthHeaders()
+        }
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // Handle Axios error
+        console.error("Axios error:", error.response); // Log the response data
+      } else {
+        // Handle other errors
+        console.error("Error adding to wishlist:", error);
+      }
+      throw error; // Re-throw the error if needed
+    }
   }
 
-  // Subscribe to wishlist changes
-  subscribe(callback: Function) {
-    this.subscribers.push(callback);
-  }
-
-  // Unsubscribe from wishlist changes
-  unsubscribe(callback: Function) {
-    this.subscribers = this.subscribers.filter(
-      (subscriber) => subscriber !== callback
-    );
-  }
-
-  // Notify all subscribers whenever wishlist is updated
-  private notifySubscribers() {
-    this.subscribers.forEach((subscriber) => subscriber());
+  async updateWishlistQuantityItem(_productId: string, _quantity: number): Promise<void> {
+    try {
+      // Implement your logic to update the quantity of an item in the wishlist
+    } catch (error) {
+      console.error("Error updating wishlist item quantity:", error);
+      throw error;
+    }
   }
 
   private getAuthHeaders() {
-    return authHeader();
+    // Implement your authentication logic here
+    return {}; // Example: return authHeader();
+  }
+
+  private handleAxiosError(error: AxiosError) {
+    console.error("Axios error:", error);
+    if (error.response) {
+      console.error("Response data:", error.response.data);
+      console.error("Response status:", error.response.status);
+      console.error("Response headers:", error.response.headers);
+    } else if (error.request) {
+      console.error("Request:", error.request);
+    } else {
+      console.error("Error message:", error.message);
+    }
   }
 }
 
