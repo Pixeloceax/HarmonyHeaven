@@ -12,6 +12,6 @@ export default class PaymentMethodsComponent extends Component<Props, State> {
   };
 
   render() {
-    return <div>PaymentMethodsComponent</div>;
+    return <React.Fragment>PaymentMethodsComponent</React.Fragment>;
   }
 }

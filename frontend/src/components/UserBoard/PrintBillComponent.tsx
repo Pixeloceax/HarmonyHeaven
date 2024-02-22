@@ -12,6 +12,6 @@ export default class PrintBillComponent extends Component<Props, State> {
   };
 
   render() {
-    return <div>PrintBillComponent</div>;
+    return <React.Fragment>PrintBillComponent</React.Fragment>;
   }
 }
