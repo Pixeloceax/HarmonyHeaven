@@ -58,3 +58,8 @@ order:
   path: /order
   controller: App\Controller\CartController::order
   methods: POST
+
+UpdateUserBoardInformation:
+  path: /user/board
+  controller: App\Controller\UserBoardController::UpdateUserBoardInformation
+  methods: PUT
