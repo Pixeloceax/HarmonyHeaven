@@ -8,6 +8,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IProduct from "../../types/product.type";
 import cartService from "../../services/cart.service";
 import shopService from "../../services/shop.service";
+import { Link } from "react-router-dom";
 import "./shop.css";
 
 type Props = object;
@@ -85,7 +86,9 @@ export default class Vinyls extends React.Component<Props, State> {
             {currentProducts.map((product, index) => (
               <div key={index} className="child-section">
                 <img src={product.image} className="vinyl-cover" alt="cover" />
-                <p>{product.name}</p>
+                <Link to={`/shop/${product.id}`}>
+                  <p>{product.name}</p>
+                </Link>
                 <p>{product.artist}</p>
                 <p>{product.price}€</p>
                 <div className="buttons-div">

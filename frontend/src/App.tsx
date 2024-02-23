@@ -5,7 +5,7 @@ import IUser from "./types/use.type";
 import Login from "./components/Login/login.component";
 import Register from "./components/Register/register.component";
 import Home from "./pages/home/Home";
-import BoardUser from "./components/board-user.component";
+import UserBoardComponent from "./components/UserBoard/UserBoardComponent";
 import Vinyls from "./pages/shop/Shop";
 import Cart from "./components/cart/cart.component";
 import Navbar from "./components/Navbar/Navbar.component";
@@ -13,6 +13,7 @@ import ForgotPassword from "./components/forgot-password/forgot-password.compone
 import ResetPassword from "./pages/reset-password/reset-password.page";
 import Debug from "./pages/debug/debug.page";
 import Footer from "./components/Footer/footer.component";
+import ProductDetail from "./components/ProductDetail/ProductDetail.component";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -63,9 +64,10 @@ class App extends Component<Props, State> {
             path="/register"
             element={currentUser ? <Navigate to="/" /> : <Register />}
           />
-          <Route path="/user" element={<BoardUser />} />
+          <Route path="/user" element={<UserBoardComponent />} />
 
           <Route path="/shop" element={<Vinyls />} />
+          <Route path="/shop/:productId" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
 
           <Route path="/forgot-password" element={<ForgotPassword />} />
