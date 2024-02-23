@@ -48,12 +48,12 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $cart = $this->createCart($manager);
         $admin->setCart($cart);
 
-        $paymentMethod = $manager->getRepository(PaymentMethod::class)->findOneBy(['name' => 'Credit Card']);
-        $payment = $this->createPayment($paymentMethod);
+        /* $paymentMethod = $manager->getRepository(PaymentMethod::class)->findOneBy(['name' => 'Credit Card']); */
+        $payment = $this->createPayment();
         $delivery = $this->createDelivery($admin->getAddress());
-        $deliveryInformation = $this->createDeliveryInformation($delivery);
+        /* $deliveryInformation = $this->createDeliveryInformation($delivery);
 
-        $manager->persist($deliveryInformation);
+        $manager->persist($deliveryInformation); */
 
         $command = $this->createCommand($admin, $payment, $delivery);
         $admin->addCommand($command);
@@ -72,10 +72,10 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         return $cart;
     }
 
-    private function createPayment(PaymentMethod $paymentMethod): Payment
+    private function createPayment(): Payment
     {
         $payment = new Payment();
-        $payment->setPaymentMethod($paymentMethod)
+        $payment->setMethod('Credit Card')
             ->setAmountPaid(50)
             ->setStatus(0);
 
@@ -89,25 +89,25 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             ->setDeliveryCost(50)
             ->setDeliveryDate(new DateTime())
             ->setDeliveryMethod("credit card")
+            ->setTrackingDetails('ghdfkgljkfd')
             ->setStatus(0);
 
         return $delivery;
     }
 
-    private function createDeliveryInformation(Delivery $delivery): DeliveryInformation
+   /*  private function createDeliveryInformation(Delivery $delivery): DeliveryInformation
     {
         $deliveryInformation = new DeliveryInformation();
         $deliveryInformation->setDelivery($delivery);
 
         return $deliveryInformation;
-    }
+    } */
 
     private function createCommand(User $admin, Payment $payment, Delivery $delivery): Command
     {
         $command = new Command();
         $command->setPayment($payment)
             ->setStatut(0)
-            ->setQuantity(0)
             ->setDelivery($delivery);
         $admin->addCommand($command);
 
@@ -189,7 +189,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             ProductFixtures::class,
-            PaymentMethodFixtures::class,
         ];
     }
 }

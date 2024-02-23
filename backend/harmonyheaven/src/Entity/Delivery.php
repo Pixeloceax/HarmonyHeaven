@@ -21,19 +21,19 @@ class Delivery
     private ?string $status = null;
 
     #[ORM\OneToOne(mappedBy: 'delivery', cascade: ['persist', 'remove'])]
-    private ?DeliveryInformation $deliveryInformation = null;
-
-    #[ORM\OneToOne(mappedBy: 'delivery', cascade: ['persist', 'remove'])]
     private ?Command $command = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable:true)]
     private ?\DateTimeInterface $deliveryDate = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable:true)]
     private ?float $deliveryCost = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable:true)]
     private ?string $deliveryMethod = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $tracking_details = null;
 
     public function getId(): ?int
     {
@@ -60,23 +60,6 @@ class Delivery
     public function setStatus(string $status): static
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getDeliveryInformation(): ?DeliveryInformation
-    {
-        return $this->deliveryInformation;
-    }
-
-    public function setDeliveryInformation(DeliveryInformation $deliveryInformation): static
-    {
-        // set the owning side of the relation if necessary
-        if ($deliveryInformation->getDelivery() !== $this) {
-            $deliveryInformation->setDelivery($this);
-        }
-
-        $this->deliveryInformation = $deliveryInformation;
 
         return $this;
     }
@@ -133,4 +116,17 @@ class Delivery
 
         return $this;
     }
+
+    public function getTrackingDetails(): ?string
+    {
+        return $this->tracking_details;
+    }
+
+    public function setTrackingDetails(string $tracking_details): static
+    {
+        $this->tracking_details = $tracking_details;
+
+        return $this;
+    }
+
 }

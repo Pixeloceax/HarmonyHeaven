@@ -16,15 +16,14 @@ class Payment
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?PaymentMethod $payment_method = null;
-
     #[ORM\OneToOne(mappedBy: 'payment', cascade: ['persist', 'remove'])]
     private ?Command $command = null;
 
     #[ORM\Column]
     private ?float $amountPaid = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $method = null;
 
     public function getId(): ?int
     {
@@ -39,18 +38,6 @@ class Payment
     public function setStatus(string $status): static
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getPaymentMethod(): ?PaymentMethod
-    {
-        return $this->payment_method;
-    }
-
-    public function setPaymentMethod(PaymentMethod $payment_method): static
-    {
-        $this->payment_method = $payment_method;
 
         return $this;
     }
@@ -80,6 +67,18 @@ class Payment
     public function setAmountPaid(float $amountPaid): static
     {
         $this->amountPaid = $amountPaid;
+
+        return $this;
+    }
+
+    public function getMethod(): ?string
+    {
+        return $this->method;
+    }
+
+    public function setMethod(string $method): static
+    {
+        $this->method = $method;
 
         return $this;
     }
