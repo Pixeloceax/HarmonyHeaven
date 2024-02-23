@@ -2,22 +2,33 @@
 
 namespace App\Controller;
 
-use App\Repository\CartItemRepository;
-use App\Repository\CartRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use App\Repository\UserRepository;
+use DateTime;
 use App\Entity\Cart;
-use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
-use App\Repository\ProductRepository;
+use App\Entity\Command;
 use App\Entity\CartItem;
+use App\Entity\Delivery;
+use App\Entity\CommandItem;
+use App\Repository\CartRepository;
+use App\Repository\UserRepository;
+use App\Entity\DeliveryInformation;
+use App\Entity\Payment;
+use App\Repository\CommandRepository;
+use App\Repository\PaymentRepository;
+use App\Repository\ProductRepository;
+use App\Repository\CartItemRepository;
+use App\Repository\CommandItemRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 
 class CartController extends AbstractController
 {
-    /**
+    
+/**
  * @Route("/cart", name="cart", methods={"POST"})
  */
 public function submitCart(
@@ -70,4 +81,119 @@ EntityManagerInterface $entityManager, Request $request, JWTEncoderInterface $jw
     return new JsonResponse($cart, 200);
 }
 
+
+/**
+ * @Route("/order", name="order", methods={"POST"})
+ */
+public function order(CartRepository $cartRepository, UserRepository $userRepository, EntityManagerInterface $entityManager,
+Request $request, JWTEncoderInterface $jwtEncoder, CommandRepository $commandRepository, CommandItemRepository $commandItemRepository,
+): JsonResponse {
+    // Récupérer l'User connecté
+    $authHeader = $request->headers->get('Authorization');
+    $authToken = str_replace('Bearer ', '', $authHeader);
+    $decodedJwtToken = $jwtEncoder->decode($authToken);
+    $userId = $decodedJwtToken['id'];
+    $user = $userRepository->findOneBy(['id' => $userId]);
+
+    // Vérifier si l'utilisateur possède déjà un panier
+    $existingCart = $cartRepository->findOneBy(['user' => $user]);
+
+    // Si l'utilisateur n'a pas de panier, retourner une erreur
+    if (!$existingCart) {
+        return new JsonResponse(['message' => 'Votre panier est vide.'], 400);
+    } else {
+        //Vérifier si une Commande existe déjà pour l'utilisateur associé.
+        $existingCommand = $commandRepository->findOneBy(['user' => $user, 'statut' => 0]);
+
+        // Si la commande n'existe pas, on en crée une nouvelle
+        if (!$existingCommand) {
+            $this->createNewCommand($user, $existingCart, $entityManager);
+        // Si une commande existe 
+        } elseif ($existingCommand) {
+            $this->updateExistingCommand($user, $existingCommand, $existingCart, $commandItemRepository, $entityManager);
+        }
+    }
+
+    return new JsonResponse(['message' => 'Commande enregistrée avec succès.'], 200);
+}
+
+private function createNewCommand($user, $existingCart, $entityManager)
+{
+    // Livraison
+    $delivery = $this->createDelivery($user, $entityManager);
+
+    // Main Command entity
+    $command = new Command();
+    $cartItems = $existingCart->getCartItem();
+    foreach ($cartItems as $item) {
+        $commandItem = $this->createCommandItem($item, $command, $entityManager);
+    }
+    $command->setStatut(0);
+
+    $payment = $this->createPayment($entityManager);
+    $command->setStatut(0);
+    $command->setPayment($payment);
+    $command->setDelivery($delivery);
+    $command->setUser($user);
+    $entityManager->persist($command);
+    $entityManager->flush();
+}
+
+private function updateExistingCommand($user, $existingCommand, $existingCart, $commandItemRepository, $entityManager)
+{
+    $delivery = $this->createDelivery($user, $entityManager);
+
+    // Main Command entity
+    $command = $existingCommand;
+    $cartItems = $existingCart->getCartItem();
+    foreach ($cartItems as $item) {
+        $existingCommandItem = $commandItemRepository->findOneBy(['product' => $item->getProduct(), 'command' => $existingCommand]);
+        if ($existingCommandItem) {
+            $existingCommandItem->setQuantity($existingCommandItem->getQuantity() + $item->getQuantity());
+        } else {
+            $commandItem = $this->createCommandItem($item, $command, $entityManager);
+        }
+    }
+
+    $command->setStatut(0);
+    $payment = $this->createPayment($entityManager);
+    $command->setStatut(0);
+    $command->setPayment($payment);
+    $command->setDelivery($delivery);
+    $command->setUser($user);
+    $entityManager->persist($command);
+    $entityManager->flush();
+}
+
+private function createDelivery($user, $entityManager)
+{
+    $delivery = new Delivery();
+    $delivery->setAddress($user->getAddress());
+    $delivery->setStatus(0);
+    $delivery->setDeliveryDate(new DateTime());
+    $delivery->setDeliveryCost(100);
+    $delivery->setTrackingDetails('jhjhhhbdj');
+    $entityManager->persist($delivery);
+    return $delivery;
+}
+
+private function createCommandItem($item, $command, $entityManager)
+{
+    $commandItem = new CommandItem();
+    $commandItem->setProduct($item->getProduct());
+    $commandItem->setQuantity($item->getQuantity());
+    $command->addCommandItem($commandItem);
+    $entityManager->persist($commandItem);
+    return $commandItem;
+}
+
+private function createPayment($entityManager)
+{
+    $payment = new Payment();
+    $payment->setStatus(0);
+    $payment->setAmountPaid(100);
+    $payment->setMethod('Credit card');
+    $entityManager->persist($payment);
+    return $payment;
+}
 }
