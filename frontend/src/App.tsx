@@ -5,7 +5,7 @@ import IUser from "./types/use.type";
 import Login from "./components/Login/login.component";
 import Register from "./components/Register/register.component";
 import Home from "./pages/home/Home";
-import BoardUser from "./components/board-user.component";
+import UserBoardComponent from "./components/UserBoard/UserBoardComponent";
 import Vinyls from "./pages/shop/Shop";
 import Cart from "./components/cart/cart.component";
 import Navbar from "./components/Navbar/Navbar.component";
@@ -64,7 +64,7 @@ class App extends Component<Props, State> {
             path="/register"
             element={currentUser ? <Navigate to="/" /> : <Register />}
           />
-          <Route path="/user" element={<BoardUser />} />
+          <Route path="/user" element={<UserBoardComponent />} />
 
           <Route path="/shop" element={<Vinyls />} />
           <Route path="/shop/:productId" element={<ProductDetail />} />
