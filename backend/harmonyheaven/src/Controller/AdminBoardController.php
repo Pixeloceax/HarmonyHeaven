@@ -13,13 +13,13 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_USER', message: 'You do not have permission to access this route')]
-class UserBoardController extends AbstractController
+#[IsGranted('ROLE_ADMIN', message: 'Only admin can access this route')]
+class AdminBoardController extends AbstractController
 {
     /**
-     * @Route("/user/board", name="userBoard", methods={"PUT"})
+     * @Route("/admin/board", name="adminBoard", methods={"PUT"})
      */
-    public function UpdateUserBoardInformation(
+    public function ManageUsersInformations(
         Request $request,
         JWTEncoderInterface $jwtEncoder,
         EntityManagerInterface $entityManager,
@@ -47,6 +47,7 @@ class UserBoardController extends AbstractController
         return new JsonResponse(['message' => 'User board updated',], 200);
     }
 
+
     private function updateUserInformation(
         $user,
         $data,
@@ -68,5 +69,4 @@ class UserBoardController extends AbstractController
             $user->setPhone($data['phone']);
         }
     }
-
 }
