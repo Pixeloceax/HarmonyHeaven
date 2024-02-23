@@ -18,7 +18,7 @@ class Wishlist
     #[ORM\ManyToOne(inversedBy: 'wishlists')]
     private ?Product $product = null;
 
-    #[ORM\OneToOne(inversedBy: 'wishlist', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'wishLists')]
     private ?User $user = null;
 
     public function getId(): ?int

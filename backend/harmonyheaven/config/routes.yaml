@@ -49,8 +49,8 @@ cart:
   controller: App\Controller\CartController::submitCart
   methods: POST
 
-wishlist_add:
-    path: /wishlist/add
+wishlist:
+    path: /wishlist
     controller: 'App\Controller\WishlistController::addToWishlist'
     methods: POST
 
@@ -59,8 +59,8 @@ wishlist_remove:
     controller: 'App\Controller\WishlistController::removeFromWishlist'
     methods: DELETE
 
-wishlist_get:
-    path: /wishlist
+get_wishlist:
+    path: /get_wishlist
     controller: 'App\Controller\WishlistController::getWishlist'
     methods: GET
 

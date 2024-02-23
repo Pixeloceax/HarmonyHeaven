@@ -53,12 +53,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $token_expires = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Wishlist $wishlist = null;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: WishList::class)]
+    private Collection $wishLists;
 
     public function __construct()
     {
         $this->commands = new ArrayCollection();
+        $this->wishlists = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -243,24 +244,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getWishlist(): ?Wishlist
+    /**
+     * @return Collection<int, WishList>
+     */
+    public function getWishLists(): Collection
     {
-        return $this->wishlist;
+        return $this->wishLists;
     }
 
-    public function setWishlist(?Wishlist $wishlist): static
+    public function addWishList(WishList $wishList): static
     {
-        // unset the owning side of the relation if necessary
-        if ($wishlist === null && $this->wishlist !== null) {
-            $this->wishlist->setUser(null);
+        if (!$this->wishLists->contains($wishList)) {
+            $this->wishLists->add($wishList);
+            $wishList->setUser($this);
         }
 
-        // set the owning side of the relation if necessary
-        if ($wishlist !== null && $wishlist->getUser() !== $this) {
-            $wishlist->setUser($this);
-        }
+        return $this;
+    }
 
-        $this->wishlist = $wishlist;
+    public function removeWishList(WishList $wishList): static
+    {
+        if ($this->wishLists->removeElement($wishList)) {
+            // set the owning side to null (unless already changed)
+            if ($wishList->getUser() === $this) {
+                $wishList->setUser(null);
+            }
+        }
 
         return $this;
     }

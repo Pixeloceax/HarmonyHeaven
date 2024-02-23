@@ -1,106 +1,104 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
+import React from "react";
 import cartService from "../../services/cart.service";
-import wishlistService from "../../services/wishlist.service";
+import WishlistService from "../../services/wishlist.service";
 import IProduct from "../../types/product.type";
 import IWishlistItem from "../../types/wishlist.type";
 import "./wishlist.css";
 
-const Wishlist: React.FC = () => {
-  const [userWishlist, setUserWishlist] = useState<IWishlistItem[]>([]);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
+type Props = object;
+type State = {
+  userWishlist: IWishlistItem[] | null;
+  totalPrice: number;
+};
 
-  useEffect(() => {
-    const fetchWishlist = async () => {
-      try {
-        const wishlist = await wishlistService.getWishlist();
-        setUserWishlist(wishlist);
-        calculateTotalPrice(wishlist);
-      } catch (error) {
-        console.error("Error fetching wishlist:", error);
-      }
+export default class Wishlist extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      userWishlist: null,
+      totalPrice: 0,
     };
+  }
 
-    fetchWishlist();
-  }, []);
+  componentDidMount() {
+    this.fetchWishlist();
+  }
 
-  const calculateTotalPrice = (wishlist: IWishlistItem[]) => {
-    const total = wishlist.reduce(
-      (acc, item) => acc + (item.product.price ?? 0) * (item.quantity ?? 1),
-      0
-    );
-    setTotalPrice(total);
-  };
+  async fetchWishlist() {
+    try {
+      const wishlist = WishlistService.getWishlist();
+      this.setState({ userWishlist: await wishlist });
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+    }
+  }
 
-  const updateQuantity = (id: string, newQuantity: number) => {
-    wishlistService.updateWishlistQuantityItem(id, newQuantity);
-    const updatedWishlist = userWishlist.map((item) =>
-      item.product.id === id ? { ...item, quantity: newQuantity } : item
-    );
-    setUserWishlist(updatedWishlist);
-    calculateTotalPrice(updatedWishlist);
-  };
-
-  const removeFromWishlist = async (id: string) => {
-    await wishlistService.removeFromWishlist(id);
-    const updatedWishlist = userWishlist.filter(
+  removeFromWishlist = async (id: string) => {
+    await WishlistService.removeFromWishlist(id);
+    const updatedWishlist = this.state.userWishlist?.filter(
       (item) => item.product.id !== id
     );
-    setUserWishlist(updatedWishlist);
-    calculateTotalPrice(updatedWishlist);
+    this.setState({ userWishlist: updatedWishlist });
   };
 
-  const addToCart = async (product: IProduct) => {
+  addToCart = async (product: IProduct) => {
     try {
-      cartService.addToCart(product.id, product.name, product.image, product.price);
-      await removeFromWishlist(product.id);
+      cartService.addToCart(
+        product.id,
+        product.name,
+        product.image,
+        product.price
+      );
+      await this.removeFromWishlist(product.id);
     } catch (error) {
       console.error("Error adding product to cart:", error);
     }
   };
 
-  return (
-    <div className="wishlist-container">
-      {userWishlist.length === 0 && <h1>Your wishlist is empty</h1>}
-      {userWishlist.map((item: IWishlistItem) => (
-        <div key={item.product.id} className="wishlist-item">
-          <div className="item-image">
-            <img src={item.product.image} alt={item.product.name} />
-          </div>
-          <div className="item-details">
-            <h2>{item.product.name}</h2>
-            <h3>{item.product.price}€/unit</h3>
-          </div>
-          <div className="item-actions">
-            <label htmlFor={`quantity-dropdown-${item.product.id}`}>
-              Quantity:
-            </label>
-            <select
-              id={`quantity-dropdown-${item.product.id}`}
-              className="quantity-dropdown"
-              value={item.quantity}
-              onChange={(e) =>
-                updateQuantity(item.product.id, Number(e.target.value))
-              }
-            >
-              {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => (
-                <option key={value} value={value}>
-                  {value}
-                </option>
-              ))}
-            </select>
-            <button onClick={() => removeFromWishlist(item.product.id)}>
-              Remove
-            </button>
-            <button onClick={() => addToCart(item.product)}>Add to Cart</button>
-          </div>
-        </div>
-      ))}
-      <h2 className="total-price">
-        Total: {Math.round(totalPrice * 100) / 100}€
-      </h2>
-    </div>
-  );
-};
+  
 
-export default Wishlist;
+  render() {
+    const { userWishlist } = this.state;
+    console.log(userWishlist);
+    return (
+      <div className="wishlist-container">
+        {userWishlist?.map((item) => (
+          <div className="item-image">
+           {item.name}
+          </div>
+        ))}
+        {/*        
+        {userWishlist &&
+          userWishlist.map((item: IWishlistItem) => (
+            <div key={item.id} className="wishlist-item">
+              <div className="item-image">
+                {item.product && (
+                  <img src={item.product.image} alt={item.product.name} />
+                )}
+              </div>
+              <div className="item-details">
+                <h2>{item.product && item.product.name}</h2>
+                <h3>{item.product && item.product.price}€/unit</h3>
+              </div>
+              <div className="item-actions">
+                {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                ))}
+                <button onClick={() => this.removeFromWishlist(item.id)}>
+                  Remove
+                </button>
+                <button onClick={() => this.addToCart(item.product)}>
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          ))}
+        <h2 className="total-price">
+          Total: {Math.round(totalPrice * 100) / 100}€
+        </h2> */}
+      </div>
+    );
+  }
+}

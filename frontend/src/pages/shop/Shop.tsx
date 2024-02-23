@@ -7,12 +7,13 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IProduct from "../../types/product.type";
 import cartService from "../../services/cart.service.ts";
-import wishlistService from "../../services/wishlist.service.ts";
+import WishlistService from "../../services/wishlist.service.ts";
 import shopService from "../../services/shop.service";
 import { ImCart } from "react-icons/im";
 import { GoHeartFill } from "react-icons/go";
 
 import "./shop.css";
+import IWishlistItem from "../../types/wishlist.type.ts";
 
 type Props = object;
 type State = {
@@ -82,6 +83,17 @@ export default class Vinyls extends React.Component<Props, State> {
       this.setState({ currentPage: value });
     };
 
+    // Add product to wishlist
+    const addToWishlist = (product: IProduct) => {
+      const wishlistItem: IWishlistItem = {
+        product: product,
+        id: product.id, // Add additional properties if needed
+        price: product.price // Add additional properties if needed
+      };
+
+      WishlistService.addToWishlist(wishlistItem);
+    };
+
     return (
       <>
         <section className="vinyls-section">
@@ -93,14 +105,19 @@ export default class Vinyls extends React.Component<Props, State> {
                 <p>{product.artist}</p>
                 <p>{product.price}€</p>
                 <div className="buttons-div">
-                  <button
-                    onClick={() => wishlistService.addToWishlist(product)}
-                    className="wishlist-button"
-                  >
+                    <button
+                      onClick={() => addToWishlist(product)}
+                      className="wishlist-button"
+                    >
                     <GoHeartFill />
                   </button>
                   <button
-                    onClick={() => cartService.addToCart(product)}
+                    onClick={() => cartService.addToCart(
+                      product.id,
+                      product.name,
+                      product.image,
+                      product.price
+                    )}
                     className="cart-button"
                   >
                     <ImCart />

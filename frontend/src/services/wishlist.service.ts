@@ -1,17 +1,17 @@
-import axios, { AxiosError } from "axios"; // Import AxiosError
-import IProduct from "../types/product.type";
+import axios from "axios";
 import IWishlistItem from "../types/wishlist.type.ts";
+import authHeader from "./auth-header.ts";
 
 class WishlistService {
-  private readonly BACKEND_URL = "http://localhost:8000";
-  private readonly WISHLIST_ENDPOINT = "/wishlist";
+  private readonly BACKEND_URL = "http://localhost:8000/";
+  private readonly WISHLIST_ENDPOINT = "wishlist";
 
-  async getWishlist(): Promise<IWishlistItem[]> {
+  async getWishlist() {
     try {
-      const response = await axios.get<IWishlistItem[]>(
-        `${this.BACKEND_URL}${this.WISHLIST_ENDPOINT}`,
+      const response = await axios.get(
+        `${this.BACKEND_URL}get_${this.WISHLIST_ENDPOINT}`,
         {
-          headers: this.getAuthHeaders()
+          headers: authHeader(),
         }
       );
       return response.data;
@@ -27,13 +27,13 @@ class WishlistService {
     }
   }
 
-  async addToWishlist(product: IProduct): Promise<void> {
+  async addToWishlist(product: IWishlistItem): Promise<void> {
     try {
       await axios.post(
-        `${this.BACKEND_URL}${this.WISHLIST_ENDPOINT}/add`,
+        `${this.BACKEND_URL}${this.WISHLIST_ENDPOINT}`,
         product,
         {
-          headers: this.getAuthHeaders()
+          headers: authHeader(), // Assuming authHeader is defined somewhere
         }
       );
     } catch (error) {
@@ -48,12 +48,13 @@ class WishlistService {
     }
   }
 
-  async removeFromWishlist(productId: string): Promise<void> {
+
+  async removeFromWishlist(productId: IWishlistItem): Promise<void> {
     try {
       await axios.delete(
         `${this.BACKEND_URL}${this.WISHLIST_ENDPOINT}/remove/${productId}`,
         {
-          headers: this.getAuthHeaders()
+          headers: authHeader(),
         }
       );
     } catch (error) {
@@ -68,30 +69,15 @@ class WishlistService {
     }
   }
 
-  async updateWishlistQuantityItem(_productId: string, _quantity: number): Promise<void> {
+  async updateWishlistQuantityItem(
+    _productId: string,
+    _quantity: number
+  ): Promise<void> {
     try {
       // Implement your logic to update the quantity of an item in the wishlist
     } catch (error) {
       console.error("Error updating wishlist item quantity:", error);
       throw error;
-    }
-  }
-
-  private getAuthHeaders() {
-    // Implement your authentication logic here
-    return {}; // Example: return authHeader();
-  }
-
-  private handleAxiosError(error: AxiosError) {
-    console.error("Axios error:", error);
-    if (error.response) {
-      console.error("Response data:", error.response.data);
-      console.error("Response status:", error.response.status);
-      console.error("Response headers:", error.response.headers);
-    } else if (error.request) {
-      console.error("Request:", error.request);
-    } else {
-      console.error("Error message:", error.message);
     }
   }
 }
