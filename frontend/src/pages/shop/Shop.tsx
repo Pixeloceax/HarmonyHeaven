@@ -87,11 +87,11 @@ export default class Vinyls extends React.Component<Props, State> {
     const addToWishlist = (product: IProduct) => {
       const wishlistItem: IWishlistItem = {
         product: product,
-        id: product.id, // Add additional properties if needed
-        price: product.price // Add additional properties if needed
+        id: product.id,
+        price: product.price
       };
-
-      WishlistService.addToWishlist(wishlistItem);
+    
+      WishlistService.addToWishlist(wishlistItem.product.id); // Pass productId
     };
 
     return (
@@ -105,19 +105,21 @@ export default class Vinyls extends React.Component<Props, State> {
                 <p>{product.artist}</p>
                 <p>{product.price}€</p>
                 <div className="buttons-div">
-                    <button
-                      onClick={() => addToWishlist(product)}
-                      className="wishlist-button"
-                    >
+                  <button
+                    onClick={() => addToWishlist(product)}
+                    className="wishlist-button"
+                  >
                     <GoHeartFill />
                   </button>
                   <button
-                    onClick={() => cartService.addToCart(
-                      product.id,
-                      product.name,
-                      product.image,
-                      product.price
-                    )}
+                    onClick={() =>
+                      cartService.addToCart(
+                        product.id,
+                        product.name,
+                        product.image,
+                        product.price
+                      )
+                    }
                     className="cart-button"
                   >
                     <ImCart />

@@ -53,13 +53,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $token_expires = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: WishList::class)]
-    private Collection $wishLists;
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Wishlist $wishlist = null;
+
+    #[ORM\ManyToOne(inversedBy: 'user')]
+
 
     public function __construct()
     {
-        $this->commands = new ArrayCollection();
-        $this->wishlists = new ArrayCollection();
+        $this->commands = new ArrayCollection(); // Initialize commands property
     }
 
     public function getId(): ?Uuid
@@ -244,32 +246,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, WishList>
-     */
-    public function getWishLists(): Collection
+    public function getWishlist(): ?Wishlist
     {
-        return $this->wishLists;
+        return $this->wishlist;
     }
 
-    public function addWishList(WishList $wishList): static
+    public function setWishlist(?Wishlist $wishlist): static
     {
-        if (!$this->wishLists->contains($wishList)) {
-            $this->wishLists->add($wishList);
-            $wishList->setUser($this);
+        // unset the owning side of the relation if necessary
+        if ($wishlist === null && $this->wishlist !== null) {
+            $this->wishlist->setUser(null);
         }
 
-        return $this;
-    }
-
-    public function removeWishList(WishList $wishList): static
-    {
-        if ($this->wishLists->removeElement($wishList)) {
-            // set the owning side to null (unless already changed)
-            if ($wishList->getUser() === $this) {
-                $wishList->setUser(null);
-            }
+        // set the owning side of the relation if necessary
+        if ($wishlist !== null && $wishlist->getUser() !== $this) {
+            $wishlist->setUser($this);
         }
+
+        $this->wishlist = $wishlist;
 
         return $this;
     }

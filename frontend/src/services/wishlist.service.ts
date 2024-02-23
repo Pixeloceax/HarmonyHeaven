@@ -1,5 +1,4 @@
 import axios from "axios";
-import IWishlistItem from "../types/wishlist.type.ts";
 import authHeader from "./auth-header.ts";
 
 class WishlistService {
@@ -27,29 +26,26 @@ class WishlistService {
     }
   }
 
-  async addToWishlist(product: IWishlistItem): Promise<void> {
+  async addToWishlist(productId: string): Promise<void> {
     try {
+      console.log("here", productId);
       await axios.post(
         `${this.BACKEND_URL}${this.WISHLIST_ENDPOINT}`,
-        product,
+        { productId },
         {
-          headers: authHeader(), // Assuming authHeader is defined somewhere
+          headers: authHeader(),
         }
       );
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // Handle Axios error
-        console.error("Axios error:", error.response); // Log the response data
-      } else {
-        // Handle other errors
+        console.error("Axios error:", error.response);
         console.error("Error adding to wishlist:", error);
       }
-      throw error; // Re-throw the error if needed
+      throw error;
     }
   }
 
-
-  async removeFromWishlist(productId: IWishlistItem): Promise<void> {
+  async removeFromWishlist(productId: string): Promise<void> {
     try {
       await axios.delete(
         `${this.BACKEND_URL}${this.WISHLIST_ENDPOINT}/remove/${productId}`,
@@ -63,7 +59,7 @@ class WishlistService {
         console.error("Axios error:", error.response); // Log the response data
       } else {
         // Handle other errors
-        console.error("Error adding to wishlist:", error);
+        console.error("Error removing from wishlist:", error);
       }
       throw error; // Re-throw the error if needed
     }

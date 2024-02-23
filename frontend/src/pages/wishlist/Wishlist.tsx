@@ -1,17 +1,16 @@
 import React from "react";
-import cartService from "../../services/cart.service";
 import WishlistService from "../../services/wishlist.service";
-import IProduct from "../../types/product.type";
 import IWishlistItem from "../../types/wishlist.type";
 import "./wishlist.css";
 
-type Props = object;
-type State = {
+interface Props {}
+
+interface State {
   userWishlist: IWishlistItem[] | null;
   totalPrice: number;
-};
+}
 
-export default class Wishlist extends React.Component<Props, State> {
+class Wishlist extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -20,54 +19,58 @@ export default class Wishlist extends React.Component<Props, State> {
     };
   }
 
-  componentDidMount() {
-    this.fetchWishlist();
+  async componentDidMount() {
+    await this.fetchWishlist();
   }
 
-  async fetchWishlist() {
+  fetchWishlist = async () => {
     try {
-      const wishlist = WishlistService.getWishlist();
-      this.setState({ userWishlist: await wishlist });
+      const wishlist = await WishlistService.getWishlist();
+      console.log(wishlist)
+      this.setState({ userWishlist: wishlist });
+      this.calculateTotalPrice(wishlist);
     } catch (error) {
       console.error("Error fetching wishlist:", error);
     }
-  }
-
-  removeFromWishlist = async (id: string) => {
-    await WishlistService.removeFromWishlist(id);
-    const updatedWishlist = this.state.userWishlist?.filter(
-      (item) => item.product.id !== id
-    );
-    this.setState({ userWishlist: updatedWishlist });
   };
 
-  addToCart = async (product: IProduct) => {
+  removeFromWishlist = async (id: string) => {
     try {
-      cartService.addToCart(
-        product.id,
-        product.name,
-        product.image,
-        product.price
+      await WishlistService.removeFromWishlist(id);
+      const updatedWishlist = this.state.userWishlist?.filter(
+        (item) => item.id !== id
       );
-      await this.removeFromWishlist(product.id);
+      this.setState({ userWishlist: updatedWishlist ?? [] });
+      this.calculateTotalPrice(updatedWishlist ?? []);
+    } catch (error) {
+      console.error("Error removing from wishlist:", error);
+    }
+  };
+
+  addToCart = async (product: IWishlistItem) => {
+    try {
+      // Add logic to add the product to cart
     } catch (error) {
       console.error("Error adding product to cart:", error);
     }
   };
 
-  
+  calculateTotalPrice = (wishlist: IWishlistItem[] | null) => {
+    if (!wishlist) return;
+    let totalPrice = 0;
+    wishlist.forEach((item) => {
+      if (item.product && item.product.price) {
+        totalPrice += item.product.price;
+      }
+    });
+    this.setState({ totalPrice });
+  };
 
   render() {
-    const { userWishlist } = this.state;
-    console.log(userWishlist);
+    const { userWishlist, totalPrice } = this.state;
+
     return (
       <div className="wishlist-container">
-        {userWishlist?.map((item) => (
-          <div className="item-image">
-           {item.name}
-          </div>
-        ))}
-        {/*        
         {userWishlist &&
           userWishlist.map((item: IWishlistItem) => (
             <div key={item.id} className="wishlist-item">
@@ -81,15 +84,10 @@ export default class Wishlist extends React.Component<Props, State> {
                 <h3>{item.product && item.product.price}€/unit</h3>
               </div>
               <div className="item-actions">
-                {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => (
-                  <option key={value} value={value}>
-                    {value}
-                  </option>
-                ))}
                 <button onClick={() => this.removeFromWishlist(item.id)}>
                   Remove
                 </button>
-                <button onClick={() => this.addToCart(item.product)}>
+                <button onClick={() => this.addToCart(item)}>
                   Add to Cart
                 </button>
               </div>
@@ -97,8 +95,10 @@ export default class Wishlist extends React.Component<Props, State> {
           ))}
         <h2 className="total-price">
           Total: {Math.round(totalPrice * 100) / 100}€
-        </h2> */}
+        </h2>
       </div>
     );
   }
 }
+
+export default Wishlist;

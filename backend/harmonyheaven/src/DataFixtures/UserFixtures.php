@@ -107,7 +107,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $command = new Command();
         $command->setPayment($payment)
             ->setDelivery($delivery)
-            ->setStatut(0);
+            ->setStatut(0)
+            ->setQuantity(mt_rand(1, 5));
         $admin->addCommand($command);
 
         return $command;
