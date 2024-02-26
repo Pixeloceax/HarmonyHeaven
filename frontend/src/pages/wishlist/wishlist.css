@@ -1,20 +1,23 @@
 .wishlist-container {
   margin: 20px;
-  padding: 20px;
   background-color: #f9f9f9;
   height: 100vh;
+  margin: 3rem 5rem 0 3rem;
+  padding: 2rem;
+  max-width: 60%;
 }
 
 .wishlist-item {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  border-bottom: #333 2px dashed;
+  background-color: #c3c3c381;
+  padding: 1rem;
 }
 
 .item-image img {
   width: 100px;
   height: 100px;
-  object-fit: cover;
   margin-right: 20px;
 }
 

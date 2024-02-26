@@ -6,7 +6,7 @@ import logo from "../../assets/icons/png/LOGO sans texte.png";
 import cartService from "../../services/cart.service";
 import wishlistService from "../../services/wishlist.service";
 import { ImCart } from "react-icons/im";
-import { GoHeartFill } from "react-icons/go"; 
+import { GoHeartFill } from "react-icons/go";
 
 interface State {
   error: string | null;
@@ -39,7 +39,6 @@ class Navbar extends Component<object, State> {
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
     cartService.unsubscribe(this.updateCartTotal); // Unsubscribe from cart changes
-
   }
 
   async fetchCurrentUser() {
@@ -107,7 +106,6 @@ class Navbar extends Component<object, State> {
                 </a>
               </li>
               <li>
-                {/* Add wishlist icon */}
                 <a className="navbar-wishlist" href="/wishlist">
                   <GoHeartFill />
                 </a>
