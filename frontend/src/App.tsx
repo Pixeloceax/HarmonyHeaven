@@ -17,6 +17,7 @@ import ProductDetail from "./components/ProductDetail/ProductDetail.component";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AdminBoardComponent from "./components/AdminBoard/AdminBoardComponent";
+import AdminProduct from "./components/AdminBoard/AdminProduct";
 
 type Props = object;
 
@@ -72,6 +73,18 @@ class App extends Component<Props, State> {
               )
             }
           />
+
+          <Route
+            path="/admin/product/:productId"
+            element={
+              currentUser?.roles && currentUser.roles.includes("ROLE_ADMIN") ? (
+                <AdminProduct />
+              ) : (
+                <Home />
+              )
+            }
+          />
+
           <Route
             path="/user"
             element={isLogin ? <UserBoardComponent /> : <Login />}
