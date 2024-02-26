@@ -9,8 +9,11 @@ import IProduct from "../../types/product.type";
 import cartService from "../../services/cart.service.ts";
 import WishlistService from "../../services/wishlist.service.ts";
 import shopService from "../../services/shop.service";
+
 import { ImCart } from "react-icons/im";
 import { GoHeartFill } from "react-icons/go";
+
+import { Link } from "react-router-dom";
 
 import "./shop.css";
 import IWishlistItem from "../../types/wishlist.type.ts";
@@ -101,7 +104,9 @@ export default class Vinyls extends React.Component<Props, State> {
             {currentProducts.map((product, index) => (
               <div key={index} className="child-section">
                 <img src={product.image} className="vinyl-cover" alt="cover" />
-                <p>{product.name}</p>
+                <Link to={`/shop/${product.id}`}>
+                  <p>{product.name}</p>
+                </Link>
                 <p>{product.artist}</p>
                 <p>{product.price}€</p>
                 <div className="buttons-div">

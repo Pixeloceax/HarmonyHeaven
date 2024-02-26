@@ -26,7 +26,7 @@ class Command
     private ?Receipt $receipt = null;
 
     #[ORM\OneToOne(inversedBy: 'command', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, unique: false)]
     private ?Payment $payment = null;
 
     #[ORM\OneToOne(inversedBy: 'command', cascade: ['persist', 'remove'])]
@@ -35,9 +35,6 @@ class Command
 
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $statut = null;
-
-    #[ORM\Column]
-    private ?int $quantity = null;
 
     public function __construct()
     {
@@ -144,15 +141,4 @@ class Command
         return $this;
     }
 
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): static
-    {
-        $this->quantity = $quantity;
-
-        return $this;
-    }
 }

@@ -1,0 +1,21 @@
+.user-board-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100vh;
+  width: 100%;
+}
+
+.user-board-nav-items li {
+  font-weight: bold;
+  cursor: pointer;
+  padding-top: 8%;
+}
+
+.user-board-nav-desc {
+  margin: 0;
+  padding: 0;
+  font-size: small;
+  font-weight: normal;
+  cursor: auto;
+}

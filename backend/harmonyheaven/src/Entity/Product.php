@@ -63,11 +63,18 @@ class Product
 
     
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: CommandItem::class)]
+    private Collection $commandItems;
+
     public function __construct()
     {
 
         $this->genre = new ArrayCollection(); // Initialize genre property
         $this->style = new ArrayCollection();
+
+        $this->wishlists = new ArrayCollection();
+        $this->commandItems = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -288,6 +295,37 @@ class Product
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, CommandItem>
+     */
+    public function getCommandItems(): Collection
+    {
+        return $this->commandItems;
+    }
+
+    public function addCommandItem(CommandItem $commandItem): static
+    {
+        if (!$this->commandItems->contains($commandItem)) {
+            $this->commandItems->add($commandItem);
+            $commandItem->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandItem(CommandItem $commandItem): static
+    {
+        if ($this->commandItems->removeElement($commandItem)) {
+            // set the owning side to null (unless already changed)
+            if ($commandItem->getProduct() === $this) {
+                $commandItem->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
 
    

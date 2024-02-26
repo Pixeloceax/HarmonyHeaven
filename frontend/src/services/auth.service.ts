@@ -1,5 +1,5 @@
 import axios from "axios";
-import IUser from "../types/use.type";
+import IUser from "../types/user.type";
 import authHeader from "./auth-header";
 class AuthService {
   private readonly BACKEND_URL = "http://localhost:8000";

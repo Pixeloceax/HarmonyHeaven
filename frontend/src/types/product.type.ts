@@ -1,5 +1,5 @@
 export default interface IProduct {
-  // Define properties of a product
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   id?: any;
   name?: string;
   description?: string;
@@ -12,4 +12,7 @@ export default interface IProduct {
   format?: string;
   slug?: string;
   artist?: string;
+  quantity?: number;
+  genre?: string;
+  style?: string;
 }

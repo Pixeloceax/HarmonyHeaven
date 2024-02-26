@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import AuthService from "../../services/auth.service";
-import IUser from "../../types/use.type";
+import IUser from "../../types/user.type";
 import "./Narvbar.css";
 import logo from "../../assets/icons/png/LOGO sans texte.png";
 import cartService from "../../services/cart.service";
 import wishlistService from "../../services/wishlist.service";
 import { ImCart } from "react-icons/im";
-import { GoHeartFill } from "react-icons/go"; // Import the wishlist icon
+import { GoHeartFill } from "react-icons/go"; 
 
 interface State {
   error: string | null;
@@ -33,12 +33,13 @@ class Navbar extends Component<object, State> {
   componentDidMount() {
     this.fetchCurrentUser();
     window.addEventListener("scroll", this.handleScroll);
-    cartService.subscribe(this.updateCartTotal);
+    cartService.subscribe(this.updateCartTotal); // Subscribe to cart changes
   }
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
-    cartService.unsubscribe(this.updateCartTotal);
+    cartService.unsubscribe(this.updateCartTotal); // Unsubscribe from cart changes
+
   }
 
   async fetchCurrentUser() {
