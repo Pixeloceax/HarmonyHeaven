@@ -36,7 +36,7 @@ security:
   # Note: Only the *first* access control that matches will be used
   access_control:
     - { path: ^/admin/auth, roles: ROLE_ADMIN }
-    - { path: ^/user/board, roles: ROLE_USER }
+    - { path: ^/(user/board|get_wishlist), roles: ROLE_USER }
     - {
         path: ^/(login|get-current-user|register|products-list),
         roles: PUBLIC_ACCESS,

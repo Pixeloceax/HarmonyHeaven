@@ -129,7 +129,7 @@ class WishlistController extends AbstractController
     }
 
     /**
-     * @Route("/get_wishlist", name="get_wishlist", methods={"GET"})
+     * @Route("/get_wishlist  ", name="get_wishlist", methods={"GET"})
      */
     public function getWishlist(
         Request $request,
@@ -161,6 +161,7 @@ class WishlistController extends AbstractController
                 'artist' => $product->getArtist()
             ];
         }
+        
 
         return new JsonResponse($wishlistArray);
     }

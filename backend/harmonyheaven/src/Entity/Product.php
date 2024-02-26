@@ -61,7 +61,7 @@ class Product
     #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
     private ?WishlistItem $wishlistItem = null;
 
-    
+
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: CommandItem::class)]
     private Collection $commandItems;
@@ -71,10 +71,8 @@ class Product
 
         $this->genre = new ArrayCollection(); // Initialize genre property
         $this->style = new ArrayCollection();
-
-        $this->wishlists = new ArrayCollection();
+        $this->wishlistItem = new ArrayCollection();
         $this->commandItems = new ArrayCollection();
-
     }
 
     public function getId(): ?int
@@ -325,7 +323,4 @@ class Product
 
         return $this;
     }
-
 }
-
-   
