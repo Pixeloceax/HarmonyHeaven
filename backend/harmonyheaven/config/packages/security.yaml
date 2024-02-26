@@ -14,6 +14,9 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
     main:
+      pattern: ^/
+      stateless: true
+      entry_point: jwt
       lazy: true
       provider: app_user_provider
       json_login:
@@ -21,6 +24,7 @@ security:
         username_path: email
         password_path: password
         require_previous_session: false
+      jwt: ~
 
     # activate different ways to authenticate
     # https://symfony.com/doc/current/security.html#the-firewall
