@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use DateTime;
 use App\Entity\Cart;
 use App\Entity\User;
 use App\Entity\Command;
@@ -75,8 +76,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     private function createPayment(): Payment
     {
         $payment = new Payment();
-        $payment->setMethod('Credit Card')
-            ->setAmountPaid(50)
+        $payment->setPaymentMethod($paymentMethod)
+        ->setAmountPaid(100)
             ->setStatus(0);
 
         return $payment;
@@ -107,6 +108,9 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         $command = new Command();
         $command->setPayment($payment)
+            ->setDelivery($delivery)
+            ->setStatut(0)
+            ->setQuantity(mt_rand(1, 5));
             ->setStatut(0)
             ->setDelivery($delivery);
         $admin->addCommand($command);

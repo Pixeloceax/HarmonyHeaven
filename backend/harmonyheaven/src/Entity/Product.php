@@ -58,18 +58,23 @@ class Product
     #[ORM\Column]
     private ?int $quantity = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Wishlist::class)]
-    private Collection $wishlists;
+    #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
+    private ?WishlistItem $wishlistItem = null;
+
+    
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: CommandItem::class)]
     private Collection $commandItems;
 
     public function __construct()
     {
-        $this->genre = new ArrayCollection();
+
+        $this->genre = new ArrayCollection(); // Initialize genre property
         $this->style = new ArrayCollection();
+
         $this->wishlists = new ArrayCollection();
         $this->commandItems = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -269,32 +274,24 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection<int, Wishlist>
-     */
-    public function getWishlists(): Collection
+    public function getWishlistItem(): ?WishlistItem
     {
-        return $this->wishlists;
+        return $this->wishlistItem;
     }
 
-    public function addWishlist(Wishlist $wishlist): static
+    public function setWishlistItem(?WishlistItem $wishlistItem): static
     {
-        if (!$this->wishlists->contains($wishlist)) {
-            $this->wishlists->add($wishlist);
-            $wishlist->setProduct($this);
+        // unset the owning side of the relation if necessary
+        if ($wishlistItem === null && $this->wishlistItem !== null) {
+            $this->wishlistItem->setProduct(null);
         }
 
-        return $this;
-    }
-
-    public function removeWishlist(Wishlist $wishlist): static
-    {
-        if ($this->wishlists->removeElement($wishlist)) {
-            // set the owning side to null (unless already changed)
-            if ($wishlist->getProduct() === $this) {
-                $wishlist->setProduct(null);
-            }
+        // set the owning side of the relation if necessary
+        if ($wishlistItem !== null && $wishlistItem->getProduct() !== $this) {
+            $wishlistItem->setProduct($this);
         }
+
+        $this->wishlistItem = $wishlistItem;
 
         return $this;
     }
@@ -330,3 +327,5 @@ class Product
     }
 
 }
+
+   
