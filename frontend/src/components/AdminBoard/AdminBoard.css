@@ -1,21 +1,20 @@
-.user-board-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  height: 100vh;
+table {
+  display: inline-table;
+  border-collapse: collapse;
   width: 100%;
 }
 
-.user-board-nav-items li {
-  font-weight: bold;
-  cursor: pointer;
-  padding-top: 8%;
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
 }
 
-.user-board-nav-desc {
-  margin: 0;
-  padding: 0;
-  font-size: small;
-  font-weight: normal;
-  cursor: auto;
+.board-edit-button {
+  background-color: white;
+  color: black;
+  width: 100px;
+  height: 25px;
+  border: none;
 }

@@ -6,6 +6,7 @@ import OrderComponent from "./OrderComponent";
 import PersonalInformationComponent from "./PersonalInformationComponent";
 import PaymentMethodsComponent from "./PaymentMethodsComponent";
 import PrintBillComponent from "./PrintBillComponent";
+import ProductComponent from "./ProductComponent";
 import IUser from "../../types/user.type";
 
 type Props = object;
@@ -67,6 +68,11 @@ export default class AdminBoardComponent extends Component<Props, State> {
         title: "Print bill",
         component: <PrintBillComponent />,
         desc: "Print your bill",
+      },
+      {
+        title: "Products",
+        component: <ProductComponent />,
+        desc: "Add or remove products",
       },
     ];
 
