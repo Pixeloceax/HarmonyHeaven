@@ -55,8 +55,8 @@ class UserBoardController extends AbstractController
         if (isset($data['name'])) {
             $user->setName($data['name']);
         }
-        if (isset($data['email'])) {
-            $user->setEmail($data['email']);
+        if (isset($data['user'])) {
+            $user->setEmail($data['user']);
         }
         if (isset($data['password'])) {
             $user->setPassword($passwordHasher->hashPassword($user, $data['password']));
