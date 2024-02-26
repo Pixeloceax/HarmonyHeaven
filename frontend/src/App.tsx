@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthService from "./services/auth.service";
-import IUser from "./types/use.type";
+import IUser from "./types/user.type";
 import Login from "./components/Login/login.component";
 import Register from "./components/Register/register.component";
 import Home from "./pages/home/Home";

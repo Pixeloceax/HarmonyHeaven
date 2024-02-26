@@ -6,7 +6,7 @@ import OrderComponent from "./OrderComponent";
 import PersonalInformationComponent from "./PersonalInformationComponent";
 import PaymentMethodsComponent from "./PaymentMethodsComponent";
 import PrintBillComponent from "./PrintBillComponent";
-import IUser from "../../types/use.type";
+import IUser from "../../types/user.type";
 
 type Props = object;
 
