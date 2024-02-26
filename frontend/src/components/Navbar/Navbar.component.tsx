@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import AuthService from "../../services/auth.service";
-import IUser from "../../types/use.type";
+import IUser from "../../types/user.type";
 import "./Narvbar.css";
 import logo from "../../assets/icons/png/LOGO sans texte.png";
 import cartService from "../../services/cart.service";
@@ -30,12 +30,12 @@ class Navbar extends Component<object, State> {
 
   componentDidMount() {
     this.fetchCurrentUser();
-    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener("scroll", this.handleScroll);
     cartService.subscribe(this.updateCartTotal); // Subscribe to cart changes
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener("scroll", this.handleScroll);
     cartService.unsubscribe(this.updateCartTotal); // Unsubscribe from cart changes
   }
 
@@ -72,10 +72,14 @@ class Navbar extends Component<object, State> {
   handleScroll() {
     const MIN_PAGE_HEIGHT = 20; // Adjust this value as needed
     const { isSticky } = this.state;
-  
+
     if (window.scrollY > 40 && !isSticky) {
       this.setState({ isSticky: true });
-    } else if (window.scrollY <= 50 && isSticky && window.innerHeight > MIN_PAGE_HEIGHT) {
+    } else if (
+      window.scrollY <= 50 &&
+      isSticky &&
+      window.innerHeight > MIN_PAGE_HEIGHT
+    ) {
       this.setState({ isSticky: false });
     } else if (window.innerHeight <= MIN_PAGE_HEIGHT) {
       this.setState({ isSticky: true });
@@ -90,7 +94,7 @@ class Navbar extends Component<object, State> {
     const { currentUser, isSticky, cartTotal } = this.state;
     return (
       <>
-        <nav className={`navbar ${isSticky ? 'sticky' : ''}`}>
+        <nav className={`navbar ${isSticky ? "sticky" : ""}`}>
           <ul className="navbar-list">
             <li>
               <a className="navbar-cart" href="/cart">

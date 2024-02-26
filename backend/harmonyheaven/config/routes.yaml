@@ -63,3 +63,8 @@ UpdateUserBoardInformation:
   path: /user/board
   controller: App\Controller\UserBoardController::UpdateUserBoardInformation
   methods: PUT
+
+ManageUsersInformations:
+  path: /admin/board
+  controller: App\Controller\AdminBoardController::ManageUsersInformations
+  methods: PUT

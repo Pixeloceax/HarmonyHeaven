@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Loader from "../loader/loader.component";
 import AuthService from "../../services/auth.service";
-import "./UserBoard.css";
+import "./AdminBoard.css";
 import OrderComponent from "./OrderComponent";
 import PersonalInformationComponent from "./PersonalInformationComponent";
 import PaymentMethodsComponent from "./PaymentMethodsComponent";
@@ -18,7 +18,7 @@ type State = {
   selectedComponent: React.ReactNode | null;
 };
 
-export default class UserBoardComponent extends Component<Props, State> {
+export default class AdminBoardComponent extends Component<Props, State> {
   constructor(props: object) {
     super(props);
     this.state = {
@@ -49,14 +49,14 @@ export default class UserBoardComponent extends Component<Props, State> {
     const { currentUser, selectedComponent } = this.state;
     const nav = [
       {
-        title: "Personal Information",
+        title: "Users Informations",
         component: <PersonalInformationComponent />,
-        desc: "Update your personal information",
+        desc: "Add or remove users or users informations",
       },
       {
         title: "Orders",
         component: <OrderComponent />,
-        desc: "Check your orders",
+        desc: "Check users orders",
       },
       {
         title: "Payment Methods",
@@ -75,7 +75,7 @@ export default class UserBoardComponent extends Component<Props, State> {
         {currentUser ? (
           <div className="user-board-container">
             <div className="user-board-nav">
-              <h2>My Profile</h2>
+              <h2>Admin Board : {currentUser.name}</h2>
               <nav>
                 <ul className="user-board-nav-items">
                   {nav.map((item, index) => {

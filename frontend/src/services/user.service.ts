@@ -14,9 +14,10 @@ class UserService {
           headers: this.getAuthHeaders(),
         }
       );
-
+      console.log(response);
       return response.data;
     } catch (error) {
+      console.log("Error updating user: ", error);
       throw new Error("Error updating user: " + error);
     }
   }
