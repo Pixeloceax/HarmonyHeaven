@@ -64,7 +64,14 @@ UpdateUserBoardInformation:
   controller: App\Controller\UserBoardController::UpdateUserBoardInformation
   methods: PUT
 
-ManageUsersInformations:
-  path: /admin/board
-  controller: App\Controller\AdminBoardController::ManageUsersInformations
-  methods: PUT
+# ADMIN
+
+getAllUsers:
+  path: /admin/users
+  controller: App\Controller\AdminBoardController::getAllUsers
+  methods: GET
+
+getAllProducts:
+  path: /admin/products
+  controller: App\Controller\AdminBoardController::getAllProducts
+  methods: GET
