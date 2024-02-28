@@ -26,9 +26,8 @@ class WishlistService {
     }
   }
 
-  async addToWishlist(productId: string): Promise<void> {
+  async addToWishlist(productId: number): Promise<void> {
     try {
-      console.log("here", productId);
       await axios.post(
         `${this.BACKEND_URL}${this.WISHLIST_ENDPOINT}`,
         { productId },
@@ -45,20 +44,18 @@ class WishlistService {
     }
   }
 
-  async removeFromWishlist(productId: string): Promise<void> {
+  async removeFromWishlist(productId: number): Promise<void> {
     try {
       await axios.delete(
-        `${this.BACKEND_URL}${this.WISHLIST_ENDPOINT}/remove/${productId}`,
+        `${this.BACKEND_URL}${this.WISHLIST_ENDPOINT}/${productId}`,
         {
           headers: authHeader(),
         }
       );
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // Handle Axios error
         console.error("Axios error:", error.response); // Log the response data
       } else {
-        // Handle other errors
         console.error("Error removing from wishlist:", error);
       }
       throw error; // Re-throw the error if needed
