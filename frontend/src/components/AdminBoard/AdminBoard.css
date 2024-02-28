@@ -18,3 +18,16 @@ th {
   height: 25px;
   border: none;
 }
+
+.board-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board-container > form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

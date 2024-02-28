@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import IProduct from "../../types/product.type";
-import adminService from "../../services/admin.service";
-import Loader from "../loader/loader.component";
+import IProduct from "../../../types/product.type";
+import adminService from "../../../services/admin.service";
+import Loader from "../../loader/loader.component";
 import { Link } from "react-router-dom";
-import IGenre from "../../types/genreType";
-import IStyle from "../../types/styleType";
+import IGenre from "../../../types/genreType";
+import IStyle from "../../../types/styleType";
+import "../AdminBoard.css";
 
 type Props = object;
 
