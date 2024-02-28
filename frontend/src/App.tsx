@@ -18,6 +18,9 @@ import ProductDetail from "./components/ProductDetail/ProductDetail.component";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AdminBoardComponent from "./components/AdminBoard/AdminBoardComponent";
+import AdminUpdateProduct from "./components/AdminBoard/ProductCRUD/UpdateProduct";
+import CreateProduct from "./components/AdminBoard/ProductCRUD/CreateProduct";
+import UpdateUser from "./components/AdminBoard/UserCRUD/UpdateUser";
 
 type Props = object;
 
@@ -73,6 +76,40 @@ class App extends Component<Props, State> {
               )
             }
           />
+
+          <Route
+            path="/admin/product/:productId"
+            element={
+              currentUser?.roles && currentUser.roles.includes("ROLE_ADMIN") ? (
+                <AdminUpdateProduct />
+              ) : (
+                <Home />
+              )
+            }
+          />
+
+          <Route
+            path="/admin/new-product"
+            element={
+              currentUser?.roles && currentUser.roles.includes("ROLE_ADMIN") ? (
+                <CreateProduct />
+              ) : (
+                <Home />
+              )
+            }
+          />
+
+          <Route
+            path="/admin/user/:userId"
+            element={
+              currentUser?.roles && currentUser.roles.includes("ROLE_ADMIN") ? (
+                <UpdateUser />
+              ) : (
+                <Home />
+              )
+            }
+          />
+
           <Route
             path="/user"
             element={isLogin ? <UserBoardComponent /> : <Login />}

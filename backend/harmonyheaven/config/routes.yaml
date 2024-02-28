@@ -79,7 +79,44 @@ UpdateUserBoardInformation:
   controller: App\Controller\UserBoardController::UpdateUserBoardInformation
   methods: PUT
 
-ManageUsersInformations:
-  path: /admin/board
-  controller: App\Controller\AdminBoardController::ManageUsersInformations
+# ADMIN
+
+getAllProducts:
+  path: /admin/products
+  controller: App\Controller\AdminBoardController::getAllProducts
+  methods: GET
+
+updateProductsInformation:
+  path: /admin/products/{id}
+  controller: App\Controller\AdminBoardController::updateProductsInformation
   methods: PUT
+
+deleteProduct:
+  path: /admin/products/{id}
+  controller: App\Controller\AdminBoardController::deleteProduct
+  methods: DELETE
+
+createProduct:
+  path: /admin/products
+  controller: App\Controller\AdminBoardController::createProduct
+  methods: POST
+
+getAllUsers:
+  path: /admin/users
+  controller: App\Controller\AdminBoardController::getAllUsers
+  methods: GET
+
+getUserById:
+  path: /admin/users/{id}
+  controller: App\Controller\AdminBoardController::getUserById
+  methods: GET
+
+updateUserInformation:
+  path: /admin/users/{id}
+  controller: App\Controller\AdminBoardController::updateUserInformation
+  methods: PUT
+
+deleteUser:
+  path: /admin/users/{id}
+  controller: App\Controller\AdminBoardController::deleteUser
+  methods: DELETE
