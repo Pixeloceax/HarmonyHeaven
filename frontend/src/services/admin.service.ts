@@ -53,6 +53,29 @@ class AdminService {
     }
   }
 
+  createProduct(product: object) {
+    try {
+      return axios.post(`${this.BACKEND_URL}${this.PRODUCT_URL}`, product, {
+        headers: this.getAuthHeaders(),
+      });
+    } catch (error) {
+      throw new Error("Error creating product: " + error);
+    }
+  }
+
+  deleteProduct(productId: number) {
+    try {
+      return axios.delete(
+        `${this.BACKEND_URL}${this.PRODUCT_ID_URL}${productId}`,
+        {
+          headers: this.getAuthHeaders(),
+        }
+      );
+    } catch (error) {
+      throw new Error("Error deleting product: " + error);
+    }
+  }
+
   private getAuthHeaders() {
     return authHeader();
   }
