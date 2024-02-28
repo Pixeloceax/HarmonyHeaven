@@ -2,9 +2,9 @@ import IProduct from "./product.type";
 
 export default interface IWishlistItem {
   product: IProduct;
-  id: string;
+  id?: number;
   name: string;
-  price: number;
+  price?: number;
   image: string;
   artist: string;
 }
