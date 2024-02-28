@@ -1,22 +1,19 @@
-import * as React from "react";
-import Pagination from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
-import Stack from "@mui/material/Stack";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import IProduct from "../../types/product.type";
-import cartService from "../../services/cart.service.ts";
 import WishlistService from "../../services/wishlist.service.ts";
-import shopService from "../../services/shop.service";
-
-import { ImCart } from "react-icons/im";
-import { GoHeartFill } from "react-icons/go";
-
-import { Link } from "react-router-dom";
-
-import "./shop.css";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import PaginationItem from "@mui/material/PaginationItem";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import cartService from "../../services/cart.service.ts";
 import IWishlistItem from "../../types/wishlist.type.ts";
+import shopService from "../../services/shop.service";
+import Pagination from "@mui/material/Pagination";
+import IProduct from "../../types/product.type";
+import { GoHeartFill } from "react-icons/go";
+import Stack from "@mui/material/Stack";
+import { Link } from "react-router-dom";
+import { ImCart } from "react-icons/im";
+import * as React from "react";
+import "./shop.css";
 
 type Props = object;
 type State = {
@@ -89,11 +86,11 @@ export default class Vinyls extends React.Component<Props, State> {
     // Add product to wishlist
     const addToWishlist = (product: IProduct) => {
       const wishlistItem: IWishlistItem = {
-        product: product,
-        id: product.id,
-        price: product.price
+        product: product || 0,
+        id: product.id || 0,
+        price: product.price || 0,
       };
-    
+
       WishlistService.addToWishlist(wishlistItem.product.id); // Pass productId
     };
 
