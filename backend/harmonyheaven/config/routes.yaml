@@ -75,3 +75,8 @@ getAllProducts:
   path: /admin/products
   controller: App\Controller\AdminBoardController::getAllProducts
   methods: GET
+
+updateProductsInformation:
+  path: /admin/products/{id}
+  controller: App\Controller\AdminBoardController::updateProductsInformation
+  methods: PUT
