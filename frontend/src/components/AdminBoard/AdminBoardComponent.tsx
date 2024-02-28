@@ -3,7 +3,7 @@ import Loader from "../loader/loader.component";
 import AuthService from "../../services/auth.service";
 import "./AdminBoard.css";
 import OrderComponent from "./OrderComponent";
-import PersonalInformationComponent from "./PersonalInformationComponent";
+import PersonalInformationComponent from "./UserCRUD/UserInformationComponent";
 import PaymentMethodsComponent from "./PaymentMethodsComponent";
 import PrintBillComponent from "./PrintBillComponent";
 import ProductComponent from "./ProductCRUD/ProductComponent";

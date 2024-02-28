@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import * as Yup from "yup";
-import { passwordValidation } from "../../utils/password-requirement.utils";
-import { emailValidation } from "../../utils/email-requirement.utils";
-import adminService from "../../services/admin.service";
-import AuthService from "../../services/auth.service";
-import IUser from "../../types/user.type";
-import Loader from "../loader/loader.component";
-import "./AdminBoard.css";
+import adminService from "../../../services/admin.service";
+import AuthService from "../../../services/auth.service";
+import IUser from "../../../types/user.type";
+import Loader from "../../loader/loader.component";
+import "../AdminBoard.css";
+import { Link } from "react-router-dom";
 
 type Props = object;
 type State = {
@@ -15,13 +13,9 @@ type State = {
   error: string | null;
   message: string | null;
   getAllUsers: IUser[];
-  formData: Partial<IUser>;
 };
 
-export default class UsersInformationComponent extends Component<
-  Props,
-  State
-> {
+export default class UsersInformationComponent extends Component<Props, State> {
   constructor(props: object) {
     super(props);
     this.state = {
@@ -30,23 +24,8 @@ export default class UsersInformationComponent extends Component<
       error: null,
       message: null,
       getAllUsers: [],
-      formData: {
-        name: "",
-        user: "",
-        password: "",
-        address: "",
-        phone: "",
-      },
     };
   }
-
-  validationSchema = Yup.object().shape({
-    name: Yup.string(),
-    user: emailValidation.emailValidation(),
-    password: passwordValidation.passwordValidation(),
-    address: Yup.string(),
-    phone: Yup.string(),
-  });
 
   async componentDidMount() {
     try {
@@ -58,31 +37,12 @@ export default class UsersInformationComponent extends Component<
         this.setState({
           currentUser: user,
           getAllUsers: getAllUsers,
-          formData: {
-            name: user.name || "",
-            user: user.user || "",
-            password: user.password || "",
-            address: user.address || "",
-            phone: user.phone || "",
-          },
         });
       }
     } catch (err) {
       this.setState({ error: "Error getting current user: " + err });
     }
   }
-
-  handleEdit = (user: IUser) => {
-    this.setState({
-      formData: {
-        name: user.name || "",
-        user: user.user || "",
-        password: user.password || "",
-        address: user.address || "",
-        phone: user.phone || "",
-      },
-    });
-  };
 
   render() {
     const { currentUser, getAllUsers } = this.state;
@@ -98,6 +58,9 @@ export default class UsersInformationComponent extends Component<
                 <th>Email</th>
                 <th>Address</th>
                 <th>Phone</th>
+                <th>Roles</th>
+                <th>Edit</th>
+                <th>Delete</th>
               </tr>
               {getAllUsers.map((user) => (
                 <tr>
@@ -105,6 +68,22 @@ export default class UsersInformationComponent extends Component<
                   <td>{user.user}</td>
                   <td>{user.address}</td>
                   <td>{user.phone}</td>
+                  <td>{user.roles}</td>
+                  <td>
+                    <button className="board-edit-button">
+                      <Link to={`/admin/user/${user.id}`}>Edit</Link>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => {
+                        adminService.deleteUser(user.id);
+                      }}
+                      className="board-edit-button"
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </table>
