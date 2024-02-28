@@ -66,11 +66,6 @@ UpdateUserBoardInformation:
 
 # ADMIN
 
-getAllUsers:
-  path: /admin/users
-  controller: App\Controller\AdminBoardController::getAllUsers
-  methods: GET
-
 getAllProducts:
   path: /admin/products
   controller: App\Controller\AdminBoardController::getAllProducts
@@ -90,3 +85,23 @@ createProduct:
   path: /admin/products
   controller: App\Controller\AdminBoardController::createProduct
   methods: POST
+
+getAllUsers:
+  path: /admin/users
+  controller: App\Controller\AdminBoardController::getAllUsers
+  methods: GET
+
+getUserById:
+  path: /admin/users/{id}
+  controller: App\Controller\AdminBoardController::getUserById
+  methods: GET
+
+updateUserInformation:
+  path: /admin/users/{id}
+  controller: App\Controller\AdminBoardController::updateUserInformation
+  methods: PUT
+
+deleteUser:
+  path: /admin/users/{id}
+  controller: App\Controller\AdminBoardController::deleteUser
+  methods: DELETE
