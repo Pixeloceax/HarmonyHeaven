@@ -80,3 +80,13 @@ updateProductsInformation:
   path: /admin/products/{id}
   controller: App\Controller\AdminBoardController::updateProductsInformation
   methods: PUT
+
+deleteProduct:
+  path: /admin/products/{id}
+  controller: App\Controller\AdminBoardController::deleteProduct
+  methods: DELETE
+
+createProduct:
+  path: /admin/products
+  controller: App\Controller\AdminBoardController::createProduct
+  methods: POST
