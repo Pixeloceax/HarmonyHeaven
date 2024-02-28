@@ -39,6 +39,7 @@ class WishlistController extends AbstractController
         // Check if the user already has a wishlist
         $existingWishlist = $wishlistRepository->findOneBy(['user' => $user]);
         $itemData = json_decode($request->getContent(), true);
+        $productId = $itemData['productId']; // Access productId from the request data
 
         // If the user doesn't have a wishlist, create a new one
         if (!$existingWishlist) {
@@ -94,17 +95,17 @@ class WishlistController extends AbstractController
         WishlistItemRepository $wishlistItemRepository,
         EntityManagerInterface $entityManager,
         JWTEncoderInterface $jwtEncoder,
-        ProductRepository $productRepository // Inject the ProductRepository here
+        ProductRepository $productRepository
     ): JsonResponse {
-        // Get the authenticated user
         $authHeader = $request->headers->get('Authorization');
         $authToken = str_replace('Bearer ', '', $authHeader);
         $decodedJwtToken = $jwtEncoder->decode($authToken);
         $userId = $decodedJwtToken['id'];
         $user = $userRepository->findOneBy(['id' => $userId]);
-
         // Find the user's wishlist
         $wishlist = $wishlistRepository->findOneBy(['user' => $user]);
+        $product = $productRepository->find($productId);
+        $wishlistItem = $wishlistItemRepository->findOneBy(['wishlist' => $wishlist, 'product' => $product]);
 
         if (!$wishlist) {
             return new JsonResponse(['error' => 'Wishlist not found'], JsonResponse::HTTP_NOT_FOUND);
@@ -122,11 +123,15 @@ class WishlistController extends AbstractController
             return new JsonResponse(['error' => 'Product not found in wishlist'], JsonResponse::HTTP_NOT_FOUND);
         }
 
+        $productId = $product->getId(); // Get the product ID
+
         $entityManager->remove($wishlistItem);
         $entityManager->flush();
 
-        return new JsonResponse(['message' => 'Product removed from wishlist successfully'], JsonResponse::HTTP_OK);
+        // Return a success message along with the product ID
+        return new JsonResponse(['message' => 'Product removed from wishlist successfully', 'productId' => $productId], JsonResponse::HTTP_OK);
     }
+
 
     /**
      * @Route("/get_wishlist  ", name="get_wishlist", methods={"GET"})
@@ -155,13 +160,14 @@ class WishlistController extends AbstractController
         foreach ($wishlistItems as $wishlistItem) {
             $product = $wishlistItem->getProduct();
             $wishlistArray[] = [
+                'id'=> $product->getId(),
                 'name' => $product->getName(),
                 'price' => $product->getPrice(),
                 'image' => $product->getImage(),
                 'artist' => $product->getArtist()
             ];
         }
-        
+
 
         return new JsonResponse($wishlistArray);
     }

@@ -54,23 +54,20 @@ cart:
   controller: App\Controller\CartController::submitCart
   methods: POST
 
-
 wishlist:
-    path: /wishlist
-    controller: 'App\Controller\WishlistController::addToWishlist'
-    methods: POST
+  path: /wishlist
+  controller: 'App\Controller\WishlistController::addToWishlist'
+  methods: POST
 
 wishlist_remove:
-    path: /wishlist/remove/{productId}
-    controller: 'App\Controller\WishlistController::removeFromWishlist'
-    methods: DELETE
-
+  path: /wishlist/{productId}
+  controller: 'App\Controller\WishlistController::removeFromWishlist'
+  methods: DELETE
 
 get_wishlist:
-    path: /get_wishlist
-    controller: 'App\Controller\WishlistController::getWishlist'
-    methods: GET
-
+  path: /get_wishlist
+  controller: 'App\Controller\WishlistController::getWishlist'
+  methods: GET
 
 order:
   path: /order
@@ -86,4 +83,3 @@ ManageUsersInformations:
   path: /admin/board
   controller: App\Controller\AdminBoardController::ManageUsersInformations
   methods: PUT
-
