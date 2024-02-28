@@ -17,7 +17,7 @@ import ProductDetail from "./components/ProductDetail/ProductDetail.component";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AdminBoardComponent from "./components/AdminBoard/AdminBoardComponent";
-import AdminProduct from "./components/AdminBoard/AdminProduct";
+import AdminProduct from "./components/AdminBoard/ProductCRUD/UpdateProduct";
 
 type Props = object;
 
