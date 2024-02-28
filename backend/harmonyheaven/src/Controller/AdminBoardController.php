@@ -10,6 +10,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Repository\ProductRepository;
 use App\Repository\GenreRepository;
 use App\Repository\StyleRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\String\Slugger\AsciiSlugger;
+
+
+
+
 
 #[IsGranted('ROLE_ADMIN', message: 'Only admin can access this route')]
 class AdminBoardController extends AbstractController
@@ -90,5 +97,74 @@ class AdminBoardController extends AbstractController
         }
 
         return new JsonResponse($productsArray, 200);
+    }
+
+
+    /**
+     * @Route("/admin/products/{id}", name="updateProductInformation", methods={"PUT"})
+     */
+    public function updateProductsInformation(
+        int $id,
+        ProductRepository $productRepository,
+        GenreRepository $genreRepository,
+        StyleRepository $styleRepository,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+        $product = $productRepository->findOneBy(['id' => $id]);
+
+        if (!$product) {
+            return new JsonResponse(['error' => 'Product not found'], 404);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        $this->updateProductInformation($product, $data);
+
+        $entityManager->flush();
+
+        return new JsonResponse(['status' => 'Product updated!'], 200);
+    }
+    private function updateProductInformation(
+        $product,
+        $data,
+    ) {
+        if (isset($data['image'])) {
+            $product->setImage($data['image']);
+        }
+        if (isset($data['name'])) {
+            $product->setName($data['name']);
+            $slugger = new AsciiSlugger();
+            $slug = $slugger->slug($data['name'])->lower();
+            $product->setSlug($slug);
+        }
+
+        if (isset($data['description'])) {
+            $product->setDescription($data['description']);
+        }
+        if (isset($data['price'])) {
+            $product->setPrice($data['price']);
+        }
+        if (isset($data['quantity'])) {
+            $product->setQuantity($data['quantity']);
+        }
+        if (isset($data['type'])) {
+            $product->setType($data['type']);
+        }
+        if (isset($data['label'])) {
+            $product->setLabel($data['label']);
+        }
+        if (isset($data['year'])) {
+            $product->setYear($data['year']);
+        }
+        if (isset($data['country'])) {
+            $product->setCountry($data['country']);
+        }
+        if (isset($data['format'])) {
+            $product->setFormat($data['format']);
+        }
+        if (isset($data['artist'])) {
+            $product->setArtist($data['artist']);
+        }
     }
 }
