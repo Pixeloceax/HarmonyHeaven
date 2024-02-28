@@ -5,6 +5,7 @@ class AdminService {
   private readonly BACKEND_URL = "http://localhost:8000/";
   private readonly ADMIN_BOARD_URL = "admin/users";
   private readonly PRODUCT_URL = "admin/products";
+  private readonly PRODUCT_ID_URL = "admin/products/";
 
   // ---------- USER ADMIN CRUD ----------
   async getAllUsers() {
@@ -35,6 +36,20 @@ class AdminService {
       return response.data;
     } catch (error) {
       throw new Error("Error getting all products: " + error);
+    }
+  }
+
+  updateProductsInformation(productId: number, updatedInformation: string) {
+    try {
+      return axios.put(
+        `${this.BACKEND_URL}${this.PRODUCT_ID_URL}${productId}`,
+        updatedInformation,
+        {
+          headers: this.getAuthHeaders(),
+        }
+      );
+    } catch (error) {
+      throw new Error("Error updating product: " + error);
     }
   }
 
