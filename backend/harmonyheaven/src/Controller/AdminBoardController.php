@@ -14,12 +14,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use App\Entity\Product;
+use Symfony\Component\Uid\Uuid;
+
 
 #[IsGranted('ROLE_ADMIN', message: 'Only admin can access this route')]
 class AdminBoardController extends AbstractController
 {
 
-    // ---------- USER CRUD ADMIN ----------
+    // ---------------------------------------- USER CRUD ADMIN ----------------------------------------
 
     /**
      * @Route("/admin/users", name="getAllUsers", methods={"GET"})
@@ -37,18 +39,97 @@ class AdminBoardController extends AbstractController
                 ]
             ) {
                 $usersArray[] = [
+                    'id' => $user->getId(),
                     'name' => $user->getName(),
                     'user' => $user->getEmail(),
                     'address' => $user->getAddress(),
                     'phone' => $user->getPhone(),
+                    'roles' => $user->getRoles(),
                 ];
             }
         }
         return new JsonResponse($usersArray, 200);
     }
 
+    /**
+     * @Route("/admin/users/{id}", name="getUserById", methods={"GET"})
+     */
+    public function getUserById(Uuid $id, UserRepository $userRepository): JsonResponse
+    {
+        $user = $userRepository->findOneBy(['id' => $id]);
 
-    // ---------- PRODUCT CRUD ADMIN ----------
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not found'], 404);
+        }
+
+        return new JsonResponse([
+            'id' => $user->getId(),
+            'name' => $user->getName(),
+            'user' => $user->getEmail(),
+            'address' => $user->getAddress(),
+            'phone' => $user->getPhone(),
+            'roles' => $user->getRoles(),
+        ], 200);
+    }
+
+    /**
+     * @Route("/admin/users/{id}", name="updateUserInformation", methods={"PUT"})
+     */
+    public function updateUserInformation(
+        Uuid $id,
+        UserRepository $userRepository,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+        $user = $userRepository->findOneBy(['id' => $id]);
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not found'], 404);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        if (isset($data['name'])) {
+            $user->setName($data['name']);
+        }
+        if (isset($data['email'])) {
+            $user->setEmail($data['email']);
+        }
+        if (isset($data['address'])) {
+            $user->setAddress($data['address']);
+        }
+        if (isset($data['phone'])) {
+            $user->setPhone($data['phone']);
+        }
+        if (isset($data['roles'])) {
+            $user->setRoles($data['roles']);
+        }
+
+        $entityManager->flush();
+
+        return new JsonResponse(['status' => 'User updated!'], 200);
+    }
+    /**
+     * @Route("/admin/users/{id}", name="deleteUser", methods={"DELETE"})
+     */
+    public function deleteUser(
+        Uuid $id,
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+        $user = $userRepository->findOneBy(['id' => $id]);
+
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not found'], 404);
+        }
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        return new JsonResponse(['status' => 'User deleted'], 200);
+    }
+
+
+    // ---------------------------------------- PRODUCT CRUD ADMIN ----------------------------------------
 
     /**
      * @Route("/admin/products", name="getAllProducts", methods={"GET"})
@@ -176,7 +257,6 @@ class AdminBoardController extends AbstractController
             $slug = $slugger->slug($data['name'])->lower();
             $product->setSlug($slug);
         }
-
         if (isset($data['description'])) {
             $product->setDescription($data['description']);
         }
