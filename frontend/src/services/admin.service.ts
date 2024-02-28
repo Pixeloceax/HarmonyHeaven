@@ -23,6 +23,43 @@ class AdminService {
     }
   }
 
+  getUserById(userId: string) {
+    try {
+      return axios.get(`${this.BACKEND_URL}${this.ADMIN_BOARD_URL}/${userId}`, {
+        headers: this.getAuthHeaders(),
+      });
+    } catch (error) {
+      throw new Error("Error getting user by id: " + error);
+    }
+  }
+
+  updateUserInformation(userId: string, updatedInformation: string) {
+    try {
+      return axios.put(
+        `${this.BACKEND_URL}${this.ADMIN_BOARD_URL}/${userId}`,
+        updatedInformation,
+        {
+          headers: this.getAuthHeaders(),
+        }
+      );
+    } catch (error) {
+      throw new Error("Error updating user: " + error);
+    }
+  }
+
+  deleteUser(userId: number) {
+    try {
+      return axios.delete(
+        `${this.BACKEND_URL}${this.ADMIN_BOARD_URL}/${userId}`,
+        {
+          headers: this.getAuthHeaders(),
+        }
+      );
+    } catch (error) {
+      throw new Error("Error deleting user: " + error);
+    }
+  }
+
   // ---------- PRODUCT ADMIN CRUD ----------
 
   async getAllProducts() {
