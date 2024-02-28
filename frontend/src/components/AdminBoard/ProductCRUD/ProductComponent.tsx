@@ -39,6 +39,9 @@ export default class ProductComponent extends Component<Props, State> {
     return (
       <React.Fragment>
         <h2>Products</h2>
+        <button>
+          <Link to={`/admin/new-product`}>Add Product</Link>
+        </button>
         {products ? (
           <table>
             <thead>
@@ -58,6 +61,7 @@ export default class ProductComponent extends Component<Props, State> {
                 <th>Genre</th>
                 <th>Style</th>
                 <th>Edit</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -97,6 +101,14 @@ export default class ProductComponent extends Component<Props, State> {
                     <Link to={`/admin/product/${product.id}`}>
                       <button className="board-edit-button">Edit</button>
                     </Link>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => adminService.deleteProduct(product.id)}
+                      className="board-edit-button"
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
