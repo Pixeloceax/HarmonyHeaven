@@ -1,6 +1,6 @@
-import React from "react";
 import WishlistService from "../../services/wishlist.service";
 import IWishlistItem from "../../types/wishlist.type";
+import React from "react";
 import "./wishlist.css";
 
 interface Props {}
@@ -33,17 +33,33 @@ class Wishlist extends React.Component<Props, State> {
     }
   };
 
-  removeFromWishlist = async (id: string) => {
-    try {
-      await WishlistService.removeFromWishlist(id);
-      const updatedWishlist =
-        this.state.userWishlist?.filter((item) => item.id !== id) ?? null;
-      this.setState({ userWishlist: updatedWishlist });
-      this.calculateTotalPrice(updatedWishlist);
-    } catch (error) {
-      console.error("Error removing from wishlist:", error);
+  removeFromWishlist = async (product: IWishlistItem) => {
+  try {
+    // Check if product object is valid and has an 'id' property
+    if (!product || !product.id) {
+      console.error(
+        "Error removing from wishlist: Product is undefined or does not have an 'id' property"
+      );
+      return; 
     }
-  };
+
+    // Extract productId from the product object
+    const productId = product.id;
+
+    // Pass productId directly to removeFromWishlist function
+    await WishlistService.removeFromWishlist(productId);
+
+    // Update the state to reflect the removal
+    const updatedWishlist =
+      this.state.userWishlist?.filter((item) => item.id !== productId) ??
+      null;
+    this.setState({ userWishlist: updatedWishlist });
+    this.calculateTotalPrice(updatedWishlist);
+  } catch (error) {
+    console.error("Error removing from wishlist:", error);
+  }
+};
+
 
   addToCart = async (product: IWishlistItem) => {
     try {
@@ -80,10 +96,16 @@ class Wishlist extends React.Component<Props, State> {
                   <p>Artist: {item.artist}</p>
                 </div>
                 <div className="item-actions">
-                  <button onClick={() => this.removeFromWishlist(item.id)}>
+                  <button
+                    className="wish-remove"
+                    onClick={() => this.removeFromWishlist(item)}
+                  >
                     Remove
                   </button>
-                  <button onClick={() => this.addToCart(item)}>
+                  <button
+                    className="add-cart"
+                    onClick={() => this.addToCart(item)}
+                  >
                     Add to Cart
                   </button>
                 </div>
