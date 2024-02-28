@@ -13,10 +13,7 @@ use App\Repository\StyleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-
-
-
-
+use App\Entity\Product;
 
 #[IsGranted('ROLE_ADMIN', message: 'Only admin can access this route')]
 class AdminBoardController extends AbstractController
@@ -119,13 +116,54 @@ class AdminBoardController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
 
-        $this->updateProductInformation($product, $data);
+        $this->productRequirment($product, $data);
 
         $entityManager->flush();
 
         return new JsonResponse(['status' => 'Product updated!'], 200);
     }
-    private function updateProductInformation(
+
+    /**
+     * @Route("/admin/products/{id}", name="deleteProduct", methods={"DELETE"})
+     */
+    public function deleteProduct(
+        int $id,
+        ProductRepository $productRepository,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+        $product = $productRepository->findOneBy(['id' => $id]);
+
+        if (!$product) {
+            return new JsonResponse(['error' => 'Product not found'], 404);
+        }
+
+        $entityManager->remove($product);
+        $entityManager->flush();
+
+        return new JsonResponse(['status' => 'Product deleted'], 200);
+    }
+
+    /**
+     * @Route("/admin/products", name="createProduct", methods={"POST"})
+     */
+    public function createProduct(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        GenreRepository $genreRepository,
+        StyleRepository $styleRepository
+    ): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+
+        $product = new Product();
+
+        $this->productRequirment($product, $data);
+
+        $entityManager->persist($product);
+        $entityManager->flush();
+
+        return new JsonResponse(['status' => 'Product created!'], 201);
+    }
+    private function productRequirment(
         $product,
         $data,
     ) {
