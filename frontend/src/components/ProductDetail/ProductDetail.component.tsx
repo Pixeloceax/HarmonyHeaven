@@ -93,7 +93,15 @@ const ProductDetail = () => {
           <p className="product-price">{thisProduct.price}€</p>
         </div>
         <div className="product-detail-description">
-          <p className="product-description">{thisProduct.description}</p>
+          <p
+            className="product-description"
+            dangerouslySetInnerHTML={
+              { __html: thisProduct.description } as React.DetailedHTMLProps<
+                React.HTMLAttributes<HTMLParagraphElement>,
+                HTMLParagraphElement
+              >["dangerouslySetInnerHTML"]
+            }
+          />
         </div>
         <p className="product-info">Artist: {thisProduct.artist}</p>
         <p className="product-info">Country: {thisProduct.country}</p>
