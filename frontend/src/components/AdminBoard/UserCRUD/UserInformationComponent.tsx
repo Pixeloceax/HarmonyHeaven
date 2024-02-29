@@ -53,39 +53,41 @@ export default class UsersInformationComponent extends Component<Props, State> {
           <>
             <h1>info</h1>
             <table>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Phone</th>
-                <th>Roles</th>
-                <th>Edit</th>
-                <th>Delete</th>
-              </tr>
-              {getAllUsers.map((user) => (
+              <tbody>
                 <tr>
-                  <td>{user.name}</td>
-                  <td>{user.user}</td>
-                  <td>{user.address}</td>
-                  <td>{user.phone}</td>
-                  <td>{user.roles}</td>
-                  <td>
-                    <button className="board-edit-button">
-                      <Link to={`/admin/user/${user.id}`}>Edit</Link>
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => {
-                        adminService.deleteUser(user.id);
-                      }}
-                      className="board-edit-button"
-                    >
-                      Delete
-                    </button>
-                  </td>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Address</th>
+                  <th>Phone</th>
+                  <th>Roles</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
                 </tr>
-              ))}
+                {getAllUsers.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.name}</td>
+                    <td>{user.user}</td>
+                    <td>{user.address}</td>
+                    <td>{user.phone}</td>
+                    <td>{user.roles}</td>
+                    <td>
+                      <button className="board-edit-button">
+                        <Link to={`/admin/user/${user.id}`}>Edit</Link>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => {
+                          adminService.deleteUser(user.id);
+                        }}
+                        className="board-edit-button"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </>
         ) : (

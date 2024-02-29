@@ -3,7 +3,6 @@ import "./register.css";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services/auth.service";
-import { hashPassword } from "../../utils/hash-password.utils";
 import { emailValidation } from "../../utils/email-requirement.utils";
 import { passwordValidation } from "../../utils/password-requirement.utils";
 import Cat from "../../assets/images/cat.jpg";
@@ -67,8 +66,7 @@ export default class Register extends Component<Props, State> {
     });
 
     try {
-      const hashedPassword = await hashPassword.hashPassword(password);
-      AuthService.register(username, email, hashedPassword).then(
+      AuthService.register(username, email, password).then(
         (response) => {
           this.setState({
             message: response.data.message,
@@ -107,8 +105,8 @@ export default class Register extends Component<Props, State> {
     return (
       <div className="register">
         <div className="space">
-        <h1>Sign Up</h1>
-              <p>Welcome to Harmony Heaven</p>
+          <h1>Sign Up</h1>
+          <p>Welcome to Harmony Heaven</p>
           <div className="register-container">
             <Formik
               initialValues={initialValues}
