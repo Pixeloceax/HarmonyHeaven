@@ -27,6 +27,13 @@ use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 
 class CartController extends AbstractController
 {
+
+    // /**
+    //  * @Route("/add_cart", name="add_cart" methods={"POST"})
+    //  */
+    // public function addToCart() : return {
+        
+    // }
     
 /**
  * @Route("/cart", name="cart", methods={"POST"})
