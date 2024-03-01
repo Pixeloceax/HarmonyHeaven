@@ -2,8 +2,8 @@ import axios from "axios";
 import authHeader from "./auth-header.ts";
 
 class WishlistService {
-  private readonly BACKEND_URL = "http://localhost:8000/";
-  private readonly WISHLIST_ENDPOINT = "wishlist";
+  private readonly BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  private readonly WISHLIST_ENDPOINT = import.meta.env.VITE_USER_WISHLIST;
 
   async getWishlist() {
     try {
@@ -62,10 +62,7 @@ class WishlistService {
     }
   }
 
-  async updateWishlistQuantityItem(
-    _productId: string,
-    _quantity: number
-  ): Promise<void> {
+  async updateWishlistQuantityItem(): Promise<void> {
     try {
       // Implement your logic to update the quantity of an item in the wishlist
     } catch (error) {

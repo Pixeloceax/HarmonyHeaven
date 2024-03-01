@@ -2,8 +2,8 @@ import axios from "axios";
 import authHeader from "./auth-header";
 
 class UserService {
-  private readonly BACKEND_URL = "http://localhost:8000/";
-  private readonly USER_BOARD_URL = "user/board";
+  private readonly BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  private readonly USER_BOARD_URL = import.meta.env.VITE_USER_USERBOARD;
 
   async updateUserBoard(userData: string) {
     try {
@@ -14,10 +14,8 @@ class UserService {
           headers: this.getAuthHeaders(),
         }
       );
-      console.log(response);
       return response.data;
     } catch (error) {
-      console.log("Error updating user: ", error);
       throw new Error("Error updating user: " + error);
     }
   }

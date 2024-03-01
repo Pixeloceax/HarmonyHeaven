@@ -1,8 +1,9 @@
 import axios from "axios";
 
 class NewsService {
-  private readonly BACKEND_URL = "http://localhost:8000";
-  private readonly SUBSCRIBE_EMAIL = "/subscribe-email";
+  private readonly BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  private readonly SUBSCRIBE_EMAIL = import.meta.env
+    .VITE_PUBLIC_SUBSCRIBE_EMAIL;
 
   async subscribeEmail(email: string) {
     try {

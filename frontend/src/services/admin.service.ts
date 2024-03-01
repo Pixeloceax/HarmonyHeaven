@@ -2,16 +2,16 @@ import axios from "axios";
 import authHeader from "./auth-header";
 
 class AdminService {
-  private readonly BACKEND_URL = "http://localhost:8000/";
-  private readonly ADMIN_BOARD_URL = "admin/users";
-  private readonly PRODUCT_URL = "admin/products";
-  private readonly PRODUCT_ID_URL = "admin/products/";
+  private readonly ADMIN_BACK_END_URL = import.meta.env.VITE_ADMIN_BACKEND_URL;
+  private readonly ADMIN_MANAGE_USERS = import.meta.env.VITE_ADMIN_MANAGE_USERS;
+  private readonly ADMIN_MANAGE_PRODUCTS = import.meta.env
+    .VITE_ADMIN_MANAGE_PRODUCTS;
 
   // ---------- USER ADMIN CRUD ----------
   async getAllUsers() {
     try {
       const response = await axios.get(
-        `${this.BACKEND_URL}${this.ADMIN_BOARD_URL}`,
+        `${this.ADMIN_BACK_END_URL}${this.ADMIN_MANAGE_USERS}`,
 
         {
           headers: this.getAuthHeaders(),
@@ -25,9 +25,12 @@ class AdminService {
 
   getUserById(userId: string) {
     try {
-      return axios.get(`${this.BACKEND_URL}${this.ADMIN_BOARD_URL}/${userId}`, {
-        headers: this.getAuthHeaders(),
-      });
+      return axios.get(
+        `${this.ADMIN_BACK_END_URL}${this.ADMIN_MANAGE_USERS}/${userId}`,
+        {
+          headers: this.getAuthHeaders(),
+        }
+      );
     } catch (error) {
       throw new Error("Error getting user by id: " + error);
     }
@@ -36,7 +39,7 @@ class AdminService {
   updateUserInformation(userId: string, updatedInformation: string) {
     try {
       return axios.put(
-        `${this.BACKEND_URL}${this.ADMIN_BOARD_URL}/${userId}`,
+        `${this.ADMIN_BACK_END_URL}${this.ADMIN_MANAGE_USERS}/${userId}`,
         updatedInformation,
         {
           headers: this.getAuthHeaders(),
@@ -50,7 +53,7 @@ class AdminService {
   deleteUser(userId: number) {
     try {
       return axios.delete(
-        `${this.BACKEND_URL}${this.ADMIN_BOARD_URL}/${userId}`,
+        `${this.ADMIN_BACK_END_URL}${this.ADMIN_MANAGE_USERS}/${userId}`,
         {
           headers: this.getAuthHeaders(),
         }
@@ -65,7 +68,7 @@ class AdminService {
   async getAllProducts() {
     try {
       const response = await axios.get(
-        `${this.BACKEND_URL}${this.PRODUCT_URL}`,
+        `${this.ADMIN_BACK_END_URL}${this.ADMIN_MANAGE_PRODUCTS}`,
         {
           headers: this.getAuthHeaders(),
         }
@@ -79,7 +82,7 @@ class AdminService {
   updateProductsInformation(productId: number, updatedInformation: string) {
     try {
       return axios.put(
-        `${this.BACKEND_URL}${this.PRODUCT_ID_URL}${productId}`,
+        `${this.ADMIN_BACK_END_URL}${this.ADMIN_MANAGE_PRODUCTS}${productId}`,
         updatedInformation,
         {
           headers: this.getAuthHeaders(),
@@ -92,9 +95,13 @@ class AdminService {
 
   createProduct(product: object) {
     try {
-      return axios.post(`${this.BACKEND_URL}${this.PRODUCT_URL}`, product, {
-        headers: this.getAuthHeaders(),
-      });
+      return axios.post(
+        `${this.ADMIN_BACK_END_URL}${this.ADMIN_MANAGE_PRODUCTS}`,
+        product,
+        {
+          headers: this.getAuthHeaders(),
+        }
+      );
     } catch (error) {
       throw new Error("Error creating product: " + error);
     }
@@ -103,7 +110,7 @@ class AdminService {
   deleteProduct(productId: number) {
     try {
       return axios.delete(
-        `${this.BACKEND_URL}${this.PRODUCT_ID_URL}${productId}`,
+        `${this.ADMIN_BACK_END_URL}${this.ADMIN_MANAGE_PRODUCTS}${productId}`,
         {
           headers: this.getAuthHeaders(),
         }
