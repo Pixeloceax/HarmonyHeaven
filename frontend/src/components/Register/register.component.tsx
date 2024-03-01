@@ -39,7 +39,7 @@ export default class Register extends Component<Props, State> {
         .test(
           "len",
           "The username must be between 3 and 20 characters.",
-          (val) => val && val.length >= 3 && val.length <= 20
+          (val) => (val ? val.length >= 3 && val.length <= 20 : false)
         )
         .required("This field is required!"),
       email: emailValidation.emailValidation(),
@@ -47,11 +47,10 @@ export default class Register extends Component<Props, State> {
         .passwordValidation()
         .required("This field is required!"),
       passwordConfirmation: Yup.string()
-        .oneOf([Yup.ref("password"), null], "Passwords must match")
+        .oneOf([Yup.ref("password"), undefined], "Passwords must match")
         .required("This field is required!"),
     });
   }
-
   async handleRegister(formValue: {
     username: string;
     email: string;
