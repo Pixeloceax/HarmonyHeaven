@@ -24,11 +24,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 
 class CartController extends AbstractController
 {
 
- /**
+    /**
      * @Route("/cart", name="cart_add", methods={"POST"})
      */
     public function addToCart(
@@ -91,6 +93,51 @@ class CartController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse(['message' => 'Product added to cart successfully'], JsonResponse::HTTP_OK);
+    }
+
+    /**
+     * @Route("/cart/{productId}", name="cart_remove", methods={"DELETE"})
+     */
+    public function removeFromCart(
+        string $productId,
+        Request $request,
+        UserRepository $userRepository,
+        CartRepository $cartRepository,
+        CartItemRepository $cartItemRepository,
+        EntityManagerInterface $entityManager,
+        JWTEncoderInterface $jwtEncoder,
+        ProductRepository $productRepository,
+        TokenStorageInterface $tokenStorage
+    ): JsonResponse {
+        // Get the authenticated user
+        $user = $tokenStorage->getToken()->getUser();
+
+        // Find the user's cart
+        $cart = $cartRepository->findOneBy(['user' => $user]);
+
+        if (!$cart) {
+            return new JsonResponse(['error' => 'Cart not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        // Find the product to remove
+        $product = $productRepository->find($productId);
+        if (!$product) {
+            return new JsonResponse(['error' => 'Product not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $cartItem = $cartItemRepository->findOneBy(['cart' => $cart, 'product' => $product]);
+
+        if (!$cartItem) {
+            return new JsonResponse(['error' => 'Product not found in cart'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $productId = $product->getId(); // Get the product ID
+
+        $entityManager->remove($cartItem);
+        $entityManager->flush();
+
+        // Return a success message along with the product ID
+        return new JsonResponse(['message' => 'Product removed from cart successfully', 'productId' => $productId], JsonResponse::HTTP_OK);
     }
 
 

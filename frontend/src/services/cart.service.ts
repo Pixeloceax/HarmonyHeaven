@@ -4,7 +4,7 @@ import ICartItem from "../types/cart-item.type";
 
 class CartService {
   private readonly BACKEND_URL = "http://localhost:8000";
-  private readonly SUBMIT_CART = "/cart";
+  private readonly CART_ENDPOINT = "/cart";
   private subscribers: Function[] = [];
 
   private setCart(cart: ICartItem[]) {
@@ -59,7 +59,7 @@ class CartService {
     const foundSameProduct = cart.find((p) => p.product.id === productId);
     try {
       await axios.post(
-        `${this.BACKEND_URL}add_${this.SUBMIT_CART}`,
+        `${this.BACKEND_URL}add_${this.CART_ENDPOINT}`,
         { productId },
         {
           headers: authHeader(),
@@ -86,17 +86,35 @@ class CartService {
     }
   }
 
+  async removeFromCartLogged(productId: number): Promise<void> {
+    try {
+      await axios.delete(
+        `${this.BACKEND_URL}${this.CART_ENDPOINT}/${productId}`,
+        {
+          headers: authHeader(),
+        }
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Axios error:", error.response);
+      } else {
+        console.error("Error removing from cart:", error);
+      }
+      throw error;
+    }
+  }
+
+  removeFromCart(productId: number) {
+    const cart = this.getCart();
+    const updatedCart = cart.filter((item) => item.product.id !== productId);
+    this.setCart(updatedCart);
+  }
+
   updateCartQuantityItem(productId: string, quantity: number) {
     const cart = this.getCart();
     const updatedCart = cart.map((item) =>
       item.product.id === productId ? { ...item, quantity } : item
     );
-    this.setCart(updatedCart);
-  }
-
-  removeFromCart(productId: string) {
-    const cart = this.getCart();
-    const updatedCart = cart.filter((item) => item.product.id !== productId);
     this.setCart(updatedCart);
   }
 
@@ -109,7 +127,7 @@ class CartService {
 
     try {
       const response = await axios.post(
-        `${this.BACKEND_URL}${this.SUBMIT_CART}`,
+        `${this.BACKEND_URL}${this.CART_ENDPOINT}`,
         products,
         {
           headers: this.getAuthHeaders(),
