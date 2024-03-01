@@ -3,12 +3,14 @@ import WishlistService from "../../services/wishlist.service.ts";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import cartService from "../../services/cart.service.ts";
+import CartService from "../../services/cart.service.ts";
 import IWishlistItem from "../../types/wishlist.type.ts";
+import AuthService from "../../services/auth.service.ts";
 import shopService from "../../services/shop.service";
 import Pagination from "@mui/material/Pagination";
 import IProduct from "../../types/product.type";
 import { GoHeartFill } from "react-icons/go";
+import IUser from "../../types/user.type.ts";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 import { ImCart } from "react-icons/im";
@@ -17,20 +19,24 @@ import "./shop.css";
 
 type Props = object;
 type State = {
-  currentPage: number;
-  productsPerPage: number;
   products: IProduct[] | null;
+  currentUser: IUser | null;
+  productsPerPage: number;
   scrolledDown: boolean;
+  error: string | null;
+  currentPage: number;
 };
 
 export default class Vinyls extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      currentPage: 1,
-      productsPerPage: 9,
-      products: null,
       scrolledDown: false,
+      productsPerPage: 9,
+      currentUser: null,
+      currentPage: 1,
+      products: null,
+      error: null,
     };
   }
 
@@ -49,6 +55,17 @@ export default class Vinyls extends React.Component<Props, State> {
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
+  }
+
+  async fetchCurrentUser() {
+    try {
+      const user = await AuthService.getCurrentUser();
+      if (user) {
+        this.setState({ currentUser: user });
+      }
+    } catch (err) {
+      this.setState({ error: "Error getting current user: " + err });
+    }
   }
 
   handleScroll = () => {
@@ -86,9 +103,12 @@ export default class Vinyls extends React.Component<Props, State> {
     // Add product to wishlist
     const addToWishlist = (product: IProduct) => {
       const wishlistItem: IWishlistItem = {
-        product: product || 0,
-        id: product.id || 0,
-        price: product.price || 0,
+        product: product,
+        id: product.id,
+        price: product.price,
+        name: "",
+        image: "",
+        artist: "",
       };
 
       WishlistService.addToWishlist(wishlistItem.product.id); // Pass productId
@@ -115,12 +135,19 @@ export default class Vinyls extends React.Component<Props, State> {
                   </button>
                   <button
                     onClick={() =>
-                      cartService.addToCart(
-                        product.id,
-                        product.name,
-                        product.image,
-                        product.price
-                      )
+                      this.state.currentUser
+                        ? CartService.addToCartLogged(
+                            product.id,
+                            product.name,
+                            product.image,
+                            product.price
+                          )
+                        : CartService.addToCart(
+                            product.id,
+                            product.name,
+                            product.image,
+                            product.price
+                          )
                     }
                     className="cart-button"
                   >

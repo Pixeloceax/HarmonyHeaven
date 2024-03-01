@@ -23,7 +23,7 @@ class CartService {
   }
 
   addToCart(
-    productId: string,
+    productId: number,
     productName: string,
     productImage: string,
     productPrice: number
@@ -47,6 +47,43 @@ class CartService {
     }
 
     this.setCart(cart);
+  }
+
+  async addToCartLogged(
+    productId: number,
+    productName: string,
+    productImage: string,
+    productPrice: number
+  ): Promise<void> {
+    const cart = this.getCart();
+    const foundSameProduct = cart.find((p) => p.product.id === productId);
+    try {
+      await axios.post(
+        `${this.BACKEND_URL}add_${this.SUBMIT_CART}`,
+        { productId },
+        {
+          headers: authHeader(),
+        }
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Axios error:", error.response);
+        console.error("Error adding to wishlist:", error);
+      } else if (foundSameProduct) {
+        foundSameProduct.quantity += 1;
+      } else {
+        cart.push({
+          product: {
+            id: productId,
+            name: productName,
+            image: productImage,
+            price: productPrice,
+          },
+          quantity: 1,
+        });
+      }
+      throw error;
+    }
   }
 
   updateCartQuantityItem(productId: string, quantity: number) {

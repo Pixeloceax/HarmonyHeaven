@@ -4,7 +4,6 @@ import IUser from "../../types/user.type";
 import "./Narvbar.css";
 import logo from "../../assets/icons/png/LOGO sans texte.png";
 import cartService from "../../services/cart.service";
-import wishlistService from "../../services/wishlist.service";
 import { ImCart } from "react-icons/im";
 import { GoHeartFill } from "react-icons/go";
 
