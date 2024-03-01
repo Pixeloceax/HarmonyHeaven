@@ -2,7 +2,7 @@ import axios from "axios";
 import authHeader from "./auth-header";
 
 class AdminService {
-  private readonly ADMIN_BACK_END_URL = import.meta.env.VITE_ADMIN_BACK_END_URL;
+  private readonly ADMIN_BACK_END_URL = import.meta.env.VITE_ADMIN_BACKEND_URL;
   private readonly ADMIN_MANAGE_USERS = import.meta.env.VITE_ADMIN_MANAGE_USERS;
   private readonly ADMIN_MANAGE_PRODUCTS = import.meta.env
     .VITE_ADMIN_MANAGE_PRODUCTS;

@@ -2,14 +2,16 @@ import axios from "axios";
 import authHeader from "./auth-header";
 import ICartItem from "../types/cart-item.type";
 
+// Define the type for the subscriber functions
+type Subscriber = () => void;
+
 class CartService {
-  private readonly BACKEND_URL = "http://localhost:8000";
-  private readonly SUBMIT_CART = "/cart";
-  private subscribers: Function[] = [];
+  private readonly BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  private readonly SUBMIT_CART = import.meta.env.VITE_USER_SUBMIT_CART;
+  private subscribers: Subscriber[] = [];
 
   private setCart(cart: ICartItem[]) {
     localStorage.setItem("cart", JSON.stringify(cart));
-    // Notify subscribers whenever cart is updated
     this.notifySubscribers();
   }
 
@@ -23,7 +25,7 @@ class CartService {
   }
 
   addToCart(
-    productId: string,
+    productId: number, // Change type to number
     productName: string,
     productImage: string,
     productPrice: number
@@ -49,7 +51,8 @@ class CartService {
     this.setCart(cart);
   }
 
-  updateCartQuantityItem(productId: string, quantity: number) {
+  updateCartQuantityItem(productId: number, quantity: number) {
+    // Change type to number
     const cart = this.getCart();
     const updatedCart = cart.map((item) =>
       item.product.id === productId ? { ...item, quantity } : item
@@ -57,7 +60,8 @@ class CartService {
     this.setCart(updatedCart);
   }
 
-  removeFromCart(productId: string) {
+  removeFromCart(productId: number) {
+    // Change type to number
     const cart = this.getCart();
     const updatedCart = cart.filter((item) => item.product.id !== productId);
     this.setCart(updatedCart);
@@ -94,12 +98,14 @@ class CartService {
   }
 
   // Subscribe to cart changes
-  subscribe(callback: Function) {
+  subscribe(callback: Subscriber) {
+    // Use Subscriber type
     this.subscribers.push(callback);
   }
 
   // Unsubscribe from cart changes
-  unsubscribe(callback: Function) {
+  unsubscribe(callback: Subscriber) {
+    // Use Subscriber type
     this.subscribers = this.subscribers.filter(
       (subscriber) => subscriber !== callback
     );

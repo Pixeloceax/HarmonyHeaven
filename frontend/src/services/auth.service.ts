@@ -24,7 +24,7 @@ class AuthService {
   }
 
   register(username: string, email: string, password: string) {
-    return axios.post(this.BACKEND_URL + this.REGISTER, {
+    return axios.post(`${this.BACKEND_URL}${this.REGISTER}`, {
       username,
       email,
       password,

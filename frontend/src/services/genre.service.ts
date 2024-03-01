@@ -2,8 +2,8 @@ import axios from "axios";
 import IGenre from "../types/genre.type";
 
 class genreService {
-  private readonly BACKEND_URL = "http://localhost:8000";
-  private readonly GENRES_LIST = "/genres-list";
+  private readonly BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  private readonly GENRES_LIST = import.meta.env.VITE_PUBLIC_GENRES;
 
   async getGenres() {
     try {
