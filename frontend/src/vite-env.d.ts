@@ -16,6 +16,7 @@ interface ImportMetaEnv {
   readonly VITE_USER_GET_CURRENT_USER: string;
   readonly VITE_USER_USERBOARD: string;
   readonly VITE_USER_SUBMIT_CART: string;
+  readonly VITE_USER_WISHLIST: string;
 
   readonly VITE_ADMIN_BACKEND_URL: string;
   readonly VITE_ADMIN_MANAGE_USERS: string;
