@@ -76,7 +76,16 @@ export default class ProductComponent extends Component<Props, State> {
                   </td>
                   <td>{product.name}</td>
                   <td>{product.slug}</td>
-                  <td>{product.description}</td>
+                  <td
+                    dangerouslySetInnerHTML={
+                      {
+                        __html: product.description,
+                      } as React.DetailedHTMLProps<
+                        React.HTMLAttributes<HTMLParagraphElement>,
+                        HTMLParagraphElement
+                      >["dangerouslySetInnerHTML"]
+                    }
+                  ></td>
                   <td>{product.price}€</td>
                   <td>{product.quantity}</td>
                   <td>{product.type}</td>
