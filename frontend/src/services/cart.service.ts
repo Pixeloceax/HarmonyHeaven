@@ -4,7 +4,7 @@ import ICartItem from "../types/cart-item.type";
 
 class CartService {
   private readonly BACKEND_URL = "http://localhost:8000";
-  private readonly SUBMIT_CART = "/cart";
+  private readonly SUBMIT_CART = "/order";
   private subscribers: Function[] = [];
 
   private setCart(cart: ICartItem[]) {
@@ -81,6 +81,7 @@ class CartService {
       if (response.status === 200) {
         localStorage.removeItem("cart");
         console.log("Cart confirmed");
+        window.location.href = "/order";
       } else if (response.status === 500) {
         console.error("Error while confirming the cart");
       } else {
