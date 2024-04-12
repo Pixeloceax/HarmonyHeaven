@@ -196,4 +196,47 @@ private function createPayment($entityManager)
     $entityManager->persist($payment);
     return $payment;
 }
+
+/**
+ * @Route("/get-order", name="get-order", methods={"GET"})
+ */
+public function getOrder(UserRepository $userRepository, Request $request, JWTEncoderInterface $jwtEncoder, 
+CommandRepository $commandRepository): JsonResponse {
+    // Récupérer l'User connecté
+    $authHeader = $request->headers->get('Authorization');
+    $authToken = str_replace('Bearer ', '', $authHeader);
+    $decodedJwtToken = $jwtEncoder->decode($authToken);
+    $userId = $decodedJwtToken['id'];
+    $user = $userRepository->findOneBy(['id' => $userId]);
+    $orderArray = [];
+
+    // Vérifier si l'utilisateur possède déjà une commande
+    $existingOrder = $commandRepository->findOneBy(['user' => $user]);
+
+    // Si l'utilisateur n'a pas de panier, retourner une erreur
+    if (!$existingOrder) {
+        return new JsonResponse(['message' => 'Vous n\'avez pas de commande en cours.'], 400);
+    } else {
+        foreach($existingOrder->getCommandItem() as $item) {
+            $orderArray[] = [
+                'id'=>$item->getProduct()->getId(),
+                'product'=>$item->getProduct()->getName(),
+                'img'=>$item->getProduct()->getImage(),
+                'quantity'=>$item->getQuantity(),
+                'price'=>$item->getProduct()->getPrice(),
+            ];
+        }
+    }
+
+    // Vérifier si l'utilisateur a une adresse associée à son compte
+    $address = $user->getAddress();
+    if ($address) {
+        // Ajouter l'adresse à la réponse
+        $response = ['order' => $orderArray, 'address' => $address];
+    } else {
+        // Retourner seulement la commande dans la réponse
+        $response = ['order' => $orderArray];
+    }
+    return new JsonResponse($response, 200);
+}
 }
