@@ -1,17 +1,15 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import AuthService from "../../services/auth.service";
 import IUser from "../../types/user.type";
 import "./Narvbar.css";
 import logo from "../../assets/icons/png/LOGO sans texte.png";
 import cartService from "../../services/cart.service";
-import wishlistService from "../../services/wishlist.service";
 import { ImCart } from "react-icons/im";
 import { GoHeartFill } from "react-icons/go";
 
 interface State {
   error: string | null;
   currentUser: IUser | null;
-  isSticky: boolean;
   cartTotal: number;
 }
 
@@ -23,22 +21,18 @@ class Navbar extends Component<object, State> {
     this.state = {
       error: null,
       currentUser: null,
-      isSticky: true,
       cartTotal: cartService.getCartTotalItems(),
     };
-    this.handleScroll = this.handleScroll.bind(this);
     this.updateCartTotal = this.updateCartTotal.bind(this);
   }
 
   componentDidMount() {
     this.fetchCurrentUser();
-    window.addEventListener("scroll", this.handleScroll);
-    cartService.subscribe(this.updateCartTotal); // Subscribe to cart changes
+    cartService.subscribe(this.updateCartTotal);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
-    cartService.unsubscribe(this.updateCartTotal); // Unsubscribe from cart changes
+    cartService.unsubscribe(this.updateCartTotal);
   }
 
   async fetchCurrentUser() {
@@ -71,32 +65,15 @@ class Navbar extends Component<object, State> {
     }
   }
 
-  handleScroll() {
-    const MIN_PAGE_HEIGHT = 20;
-    const { isSticky } = this.state;
-
-    if (window.scrollY > 40 && !isSticky) {
-      this.setState({ isSticky: true });
-    } else if (
-      window.scrollY <= 50 &&
-      isSticky &&
-      window.innerHeight > MIN_PAGE_HEIGHT
-    ) {
-      this.setState({ isSticky: false });
-    } else if (window.innerHeight <= MIN_PAGE_HEIGHT) {
-      this.setState({ isSticky: true });
-    }
-  }
-
   updateCartTotal() {
     this.setState({ cartTotal: cartService.getCartTotalItems() });
   }
 
   render() {
-    const { currentUser, isSticky, cartTotal } = this.state;
+    const { currentUser, cartTotal } = this.state;
     return (
-      <>
-        <nav className={`navbar ${isSticky ? "sticky" : ""}`}>
+      <header>
+        <nav className="navbar">
           <ul className="navbar-list">
             <div className="nav-icons">
               <li>
@@ -174,7 +151,7 @@ class Navbar extends Component<object, State> {
             </div>
           </div>
         </nav>
-      </>
+      </header>
     );
   }
 }

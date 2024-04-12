@@ -1,24 +1,18 @@
+header {
+  position: sticky;
+  top: 0;
+  z-index: 99;
+}
+
 .navbar {
   display: flex;
-  position: fixed;
-  top: 0;
-  z-index: 5;
   background-color: #0000007a;
   justify-content: space-between;
   align-items: center;
   padding: 1% 5%;
   color: white;
   width: 100%;
-  transition: top 0.3s ease; /* Add transition for smoother animation */
-  visibility: hidden; /* Initially hide the navbar */
 }
-
-.sticky {
-  top: 0; /* Bring the navbar back to the top when sticky */
-  visibility: visible; /* Make the navbar visible when sticky */
-}
-
-/* Your other styles remain the same */
 
 .navbar-cart {
   display: flex;
