@@ -93,7 +93,7 @@ class Navbar extends Component<object, State> {
                 <img src={logo} alt="logo" />
               </a>
             </li>
-            <li>
+            <li className="navbar-menu-button">
               <button className="navbar-open-button" onClick={this.openNav}>
                 menu
               </button>
