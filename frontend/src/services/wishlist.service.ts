@@ -1,5 +1,5 @@
-import axios from "axios";
 import authHeader from "./auth-header.ts";
+import axios from "axios";
 
 class WishlistService {
   private readonly BACKEND_URL = import.meta.env.VITE_BACKEND_URL;

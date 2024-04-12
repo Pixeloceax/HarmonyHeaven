@@ -8,7 +8,7 @@ type Subscriber = () => void;
 class CartService {
   private readonly BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   private readonly SUBMIT_CART = import.meta.env.VITE_USER_SUBMIT_CART;
-  private subscribers: Subscriber[] = [];
+  private subscribers: Function[] = [];
 
   private setCart(cart: ICartItem[]) {
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -25,7 +25,7 @@ class CartService {
   }
 
   addToCart(
-    productId: number, // Change type to number
+    productId: number,
     productName: string,
     productImage: string,
     productPrice: number
@@ -51,19 +51,74 @@ class CartService {
     this.setCart(cart);
   }
 
-  updateCartQuantityItem(productId: number, quantity: number) {
-    // Change type to number
+
+  async addToCartLogged(
+    productId: number,
+    productName: string,
+    productImage: string,
+    productPrice: number
+  ): Promise<void> {
+    const cart = this.getCart();
+    const foundSameProduct = cart.find((p) => p.product.id === productId);
+    try {
+      await axios.post(
+        `${this.BACKEND_URL}add_${this.CART_ENDPOINT}`,
+        { productId },
+        {
+          headers: authHeader(),
+        }
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Axios error:", error.response);
+        console.error("Error adding to wishlist:", error);
+      } else if (foundSameProduct) {
+        foundSameProduct.quantity += 1;
+      } else {
+        cart.push({
+          product: {
+            id: productId,
+            name: productName,
+            image: productImage,
+            price: productPrice,
+          },
+          quantity: 1,
+        });
+      }
+      throw error;
+    }
+  }
+
+
+  async removeFromCartLogged(productId: number): Promise<void> {
+    try {
+      await axios.delete(
+        `${this.BACKEND_URL}${this.CART_ENDPOINT}/${productId}`,
+        {
+          headers: authHeader(),
+        }
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Axios error:", error.response);
+      } else {
+        console.error("Error removing from cart:", error);
+      }
+      throw error;
+    }
+  }
+
+  removeFromCart(productId: number) {
+    const cart = this.getCart();
+    const updatedCart = cart.filter((item) => item.product.id !== productId);
+    this.setCart(updatedCart);
+  }
+
+  updateCartQuantityItem(productId: string, quantity: number) {
     const cart = this.getCart();
     const updatedCart = cart.map((item) =>
       item.product.id === productId ? { ...item, quantity } : item
     );
-    this.setCart(updatedCart);
-  }
-
-  removeFromCart(productId: number) {
-    // Change type to number
-    const cart = this.getCart();
-    const updatedCart = cart.filter((item) => item.product.id !== productId);
     this.setCart(updatedCart);
   }
 
@@ -76,7 +131,7 @@ class CartService {
 
     try {
       const response = await axios.post(
-        `${this.BACKEND_URL}${this.SUBMIT_CART}`,
+        `${this.BACKEND_URL}${this.CART_ENDPOINT}`,
         products,
         {
           headers: this.getAuthHeaders(),

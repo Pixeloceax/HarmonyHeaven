@@ -54,19 +54,29 @@ cart:
   controller: App\Controller\CartController::submitCart
   methods: POST
 
+cart_add:
+  path: /add_cart
+  controller: App\Controller\CartController::addToCart
+  methods: POST
+
+cart_remove:
+  path: /cart/{productId}
+  controller: App\Controller\CartController::removeFromCart
+  methods: DELETE
+
 wishlist:
   path: /wishlist
-  controller: 'App\Controller\WishlistController::addToWishlist'
+  controller: App\Controller\WishlistController::addToWishlist
   methods: POST
 
 wishlist_remove:
   path: /wishlist/{productId}
-  controller: 'App\Controller\WishlistController::removeFromWishlist'
+  controller: App\Controller\WishlistController::removeFromWishlist
   methods: DELETE
 
 get_wishlist:
   path: /get_wishlist
-  controller: 'App\Controller\WishlistController::getWishlist'
+  controller: App\Controller\WishlistController::getWishlist
   methods: GET
 
 order:
