@@ -17,6 +17,7 @@ import Footer from "./components/Footer/footer.component";
 import ProductDetail from "./components/ProductDetail/ProductDetail.component";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import OrderComponent from "./components/Order/OrderComponent";
 import AdminBoardComponent from "./components/AdminBoard/AdminBoardComponent";
 import AdminUpdateProduct from "./components/AdminBoard/ProductCRUD/UpdateProduct";
 import CreateProduct from "./components/AdminBoard/ProductCRUD/CreateProduct";
@@ -118,6 +119,7 @@ class App extends Component<Props, State> {
           <Route path="/shop" element={<Vinyls />} />
           <Route path="/shop/:productId" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/order" element={<OrderComponent />} />
 
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />

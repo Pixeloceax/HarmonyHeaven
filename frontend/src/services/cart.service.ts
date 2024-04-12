@@ -140,6 +140,7 @@ class CartService {
       if (response.status === 200) {
         localStorage.removeItem("cart");
         console.log("Cart confirmed");
+        window.location.href = "/order";
       } else if (response.status === 500) {
         console.error("Error while confirming the cart");
       } else {
