@@ -59,7 +59,17 @@ order:
   controller: App\Controller\CartController::order
   methods: POST
 
+get-order:
+  path: /get-order
+  controller: App\Controller\CartController::getOrder
+  methods: GET
+
 UpdateUserBoardInformation:
   path: /user/board
   controller: App\Controller\UserBoardController::UpdateUserBoardInformation
   methods: PUT
+
+pay:
+  path: /pay
+  controller: App\Controller\PaymentController::pay
+  methods: POST
