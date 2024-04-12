@@ -1,13 +1,14 @@
 import { Component } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthService from "./services/auth.service";
-import IUser from "./types/use.type";
+import IUser from "./types/user.type";
 import Login from "./components/Login/login.component";
 import Register from "./components/Register/register.component";
 import Home from "./pages/home/Home";
 import UserBoardComponent from "./components/UserBoard/UserBoardComponent";
 import Vinyls from "./pages/shop/Shop";
 import Cart from "./components/cart/cart.component";
+import Wishlist from "./pages/wishlist/Wishlist";
 import Navbar from "./components/Navbar/Navbar.component";
 import ForgotPassword from "./components/forgot-password/forgot-password.component";
 import ResetPassword from "./pages/reset-password/reset-password.page";
@@ -17,11 +18,16 @@ import ProductDetail from "./components/ProductDetail/ProductDetail.component";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OrderComponent from "./components/Order/OrderComponent";
+import AdminBoardComponent from "./components/AdminBoard/AdminBoardComponent";
+import AdminUpdateProduct from "./components/AdminBoard/ProductCRUD/UpdateProduct";
+import CreateProduct from "./components/AdminBoard/ProductCRUD/CreateProduct";
+import UpdateUser from "./components/AdminBoard/UserCRUD/UpdateUser";
 
 type Props = object;
 
 type State = {
   currentUser: IUser | null;
+  isLogin: boolean;
 };
 
 class App extends Component<Props, State> {
@@ -30,6 +36,7 @@ class App extends Component<Props, State> {
 
     this.state = {
       currentUser: null,
+      isLogin: false,
     };
   }
 
@@ -40,15 +47,16 @@ class App extends Component<Props, State> {
       if (user) {
         this.setState({
           currentUser: user,
+          isLogin: true,
         });
       }
     } catch (error) {
-      console.error("Error getting current user:", error);
+      throw new Error("Error getting current user: " + error);
     }
   }
 
   render() {
-    const { currentUser } = this.state;
+    const { currentUser, isLogin } = this.state;
 
     return (
       <BrowserRouter>
@@ -57,15 +65,56 @@ class App extends Component<Props, State> {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="*" element={<Home />} />
+          <Route path="/login" element={isLogin ? <Home /> : <Login />} />
+          <Route path="/register" element={isLogin ? <Home /> : <Register />} />
           <Route
-            path="/login"
-            element={currentUser ? <Navigate to="/" /> : <Login />}
+            path="/admin"
+            element={
+              currentUser?.roles && currentUser.roles.includes("ROLE_ADMIN") ? (
+                <AdminBoardComponent />
+              ) : (
+                <Home />
+              )
+            }
           />
+
           <Route
-            path="/register"
-            element={currentUser ? <Navigate to="/" /> : <Register />}
+            path="/admin/product/:productId"
+            element={
+              currentUser?.roles && currentUser.roles.includes("ROLE_ADMIN") ? (
+                <AdminUpdateProduct />
+              ) : (
+                <Home />
+              )
+            }
           />
-          <Route path="/user" element={<UserBoardComponent />} />
+
+          <Route
+            path="/admin/new-product"
+            element={
+              currentUser?.roles && currentUser.roles.includes("ROLE_ADMIN") ? (
+                <CreateProduct />
+              ) : (
+                <Home />
+              )
+            }
+          />
+
+          <Route
+            path="/admin/user/:userId"
+            element={
+              currentUser?.roles && currentUser.roles.includes("ROLE_ADMIN") ? (
+                <UpdateUser />
+              ) : (
+                <Home />
+              )
+            }
+          />
+
+          <Route
+            path="/user"
+            element={isLogin ? <UserBoardComponent /> : <Login />}
+          />
 
           <Route path="/shop" element={<Vinyls />} />
           <Route path="/shop/:productId" element={<ProductDetail />} />
@@ -74,6 +123,7 @@ class App extends Component<Props, State> {
 
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/debug" element={<Debug />} />
         </Routes>
         <Footer />

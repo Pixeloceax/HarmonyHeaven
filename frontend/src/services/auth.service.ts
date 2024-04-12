@@ -1,11 +1,11 @@
 import axios from "axios";
-import IUser from "../types/use.type";
+import IUser from "../types/user.type";
 import authHeader from "./auth-header";
 class AuthService {
-  private readonly BACKEND_URL = "http://localhost:8000";
-  private readonly LOGIN = "/login";
-  private readonly GET_USER_DATA = "/get-current-user";
-  private readonly REGISTER = "/register";
+  private readonly BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  private readonly LOGIN = import.meta.env.VITE_PUBLIC_LOGIN;
+  private readonly REGISTER = import.meta.env.VITE_PUBLIC_REGISTER;
+  private readonly GET_USER_DATA = import.meta.env.VITE_USER_GET_CURRENT_USER;
 
   async login(email: string, password: string) {
     const response = await axios.post(`${this.BACKEND_URL}${this.LOGIN}`, {
@@ -24,7 +24,7 @@ class AuthService {
   }
 
   register(username: string, email: string, password: string) {
-    return axios.post(this.BACKEND_URL + this.REGISTER, {
+    return axios.post(`${this.BACKEND_URL}${this.REGISTER}`, {
       username,
       email,
       password,

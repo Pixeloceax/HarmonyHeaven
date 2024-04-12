@@ -54,6 +54,31 @@ cart:
   controller: App\Controller\CartController::submitCart
   methods: POST
 
+cart_add:
+  path: /add_cart
+  controller: App\Controller\CartController::addToCart
+  methods: POST
+
+cart_remove:
+  path: /cart/{productId}
+  controller: App\Controller\CartController::removeFromCart
+  methods: DELETE
+
+wishlist:
+  path: /wishlist
+  controller: App\Controller\WishlistController::addToWishlist
+  methods: POST
+
+wishlist_remove:
+  path: /wishlist/{productId}
+  controller: App\Controller\WishlistController::removeFromWishlist
+  methods: DELETE
+
+get_wishlist:
+  path: /get_wishlist
+  controller: App\Controller\WishlistController::getWishlist
+  methods: GET
+
 order:
   path: /order
   controller: App\Controller\CartController::order
@@ -73,3 +98,44 @@ pay:
   path: /pay
   controller: App\Controller\PaymentController::pay
   methods: POST
+# ADMIN
+
+getAllProducts:
+  path: /admin/products
+  controller: App\Controller\AdminBoardController::getAllProducts
+  methods: GET
+
+updateProductsInformation:
+  path: /admin/products/{id}
+  controller: App\Controller\AdminBoardController::updateProductsInformation
+  methods: PUT
+
+deleteProduct:
+  path: /admin/products/{id}
+  controller: App\Controller\AdminBoardController::deleteProduct
+  methods: DELETE
+
+createProduct:
+  path: /admin/products
+  controller: App\Controller\AdminBoardController::createProduct
+  methods: POST
+
+getAllUsers:
+  path: /admin/users
+  controller: App\Controller\AdminBoardController::getAllUsers
+  methods: GET
+
+getUserById:
+  path: /admin/users/{id}
+  controller: App\Controller\AdminBoardController::getUserById
+  methods: GET
+
+updateUserInformation:
+  path: /admin/users/{id}
+  controller: App\Controller\AdminBoardController::updateUserInformation
+  methods: PUT
+
+deleteUser:
+  path: /admin/users/{id}
+  controller: App\Controller\AdminBoardController::deleteUser
+  methods: DELETE

@@ -4,7 +4,7 @@ import { passwordValidation } from "../../utils/password-requirement.utils";
 import { emailValidation } from "../../utils/email-requirement.utils";
 import UserService from "../../services/user.service";
 import AuthService from "../../services/auth.service";
-import IUser from "../../types/use.type";
+import IUser from "../../types/user.type";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import Loader from "../loader/loader.component";
 

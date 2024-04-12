@@ -20,7 +20,6 @@
 
 /* Your other styles remain the same */
 
-
 .navbar-cart {
   display: flex;
   justify-content: center;
@@ -108,7 +107,6 @@
   right: 45px;
 }
 
-
 .navbar-cart-link {
 }
 
@@ -162,4 +160,10 @@
     top: 15px;
     right: 35px;
   }
+}
+
+.nav-icons {
+  display: flex;
+  min-width: 100px;
+  justify-content: space-between;
 }

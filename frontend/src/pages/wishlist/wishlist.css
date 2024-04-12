@@ -1,22 +1,25 @@
-.cart-container {
-  margin: 20px;
-  padding: 20px;
+.wishlist-container {
   background-color: #f9f9f9;
   height: 100vh;
-  margin: 3rem 5rem 0 3rem;
+  margin: auto;
   padding: 2rem;
+  max-width: 50%;
+  min-width: 50%;
+  margin-top: 2rem;
 }
 
-.cart-item {
+.wishlist-item {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  border-bottom: #333 2px dashed;
+  background-color: #c3c3c381;
+  padding: 1rem;
 }
 
-.cart-image {
+.item-image img {
   width: 100px;
   height: 100px;
-
+  margin-right: 20px;
 }
 
 .item-details {
@@ -49,10 +52,6 @@
   margin-right: 10px;
 }
 
-.item-actions button:hover {
-  background-color: #d9534f;
-}
-
 .total-price {
   color: #333;
   margin-top: 20px;
@@ -73,20 +72,27 @@
   background-color: #555;
 }
 
-.cart-container h1 {
+.wishlist-container h1 {
   margin: 20px 0;
   font-size: 24px;
   color: #333;
 }
 
-.item-actions > label {
-  color: #333;
+.add-cart{
+  background-color: #000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 5px 10px;
 }
 
-.item-container {
-  padding-bottom: 2rem;
-  padding-top: 2rem;
-  border-bottom: #333 2px dashed;
-  background-color: #c3c3c381;
-  padding: 1rem;
+.wish-remove{
+  background-color: #000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 5px 10px;
+  margin-right: 5px;
 }

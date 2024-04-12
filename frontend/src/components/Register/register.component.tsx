@@ -3,7 +3,6 @@ import "./register.css";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services/auth.service";
-import { hashPassword } from "../../utils/hash-password.utils";
 import { emailValidation } from "../../utils/email-requirement.utils";
 import { passwordValidation } from "../../utils/password-requirement.utils";
 import Cat from "../../assets/images/cat.jpg";
@@ -40,7 +39,7 @@ export default class Register extends Component<Props, State> {
         .test(
           "len",
           "The username must be between 3 and 20 characters.",
-          (val) => val && val.length >= 3 && val.length <= 20
+          (val) => (val ? val.length >= 3 && val.length <= 20 : false)
         )
         .required("This field is required!"),
       email: emailValidation.emailValidation(),
@@ -48,11 +47,10 @@ export default class Register extends Component<Props, State> {
         .passwordValidation()
         .required("This field is required!"),
       passwordConfirmation: Yup.string()
-        .oneOf([Yup.ref("password"), null], "Passwords must match")
+        .oneOf([Yup.ref("password"), undefined], "Passwords must match")
         .required("This field is required!"),
     });
   }
-
   async handleRegister(formValue: {
     username: string;
     email: string;
@@ -67,8 +65,7 @@ export default class Register extends Component<Props, State> {
     });
 
     try {
-      const hashedPassword = await hashPassword.hashPassword(password);
-      AuthService.register(username, email, hashedPassword).then(
+      AuthService.register(username, email, password).then(
         (response) => {
           this.setState({
             message: response.data.message,
@@ -107,8 +104,8 @@ export default class Register extends Component<Props, State> {
     return (
       <div className="register">
         <div className="space">
-        <h1>Sign Up</h1>
-              <p>Welcome to Harmony Heaven</p>
+          <h1>Sign Up</h1>
+          <p>Welcome to Harmony Heaven</p>
           <div className="register-container">
             <Formik
               initialValues={initialValues}

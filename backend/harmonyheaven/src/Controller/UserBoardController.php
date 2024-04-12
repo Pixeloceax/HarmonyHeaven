@@ -11,14 +11,22 @@ use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER', message: 'You do not have permission to access this route')]
 class UserBoardController extends AbstractController
 {
     /**
      * @Route("/user/board", name="userBoard", methods={"PUT"})
      */
-    public function UpdateUserBoardInformation(Request $request, JWTEncoderInterface $jwtEncoder, EntityManagerInterface $entityManager, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher, JWTTokenManagerInterface $jwtManager): JsonResponse
-    {
+    public function UpdateUserBoardInformation(
+        Request $request,
+        JWTEncoderInterface $jwtEncoder,
+        EntityManagerInterface $entityManager,
+        UserRepository $userRepository,
+        UserPasswordHasherInterface $passwordHasher,
+        JWTTokenManagerInterface $jwtManager
+    ): JsonResponse {
         $authHeader = $request->headers->get('Authorization');
         $authToken = str_replace('Bearer ', '', $authHeader);
         $decodedJwtToken = $jwtEncoder->decode($authToken);
@@ -39,13 +47,16 @@ class UserBoardController extends AbstractController
         return new JsonResponse(['message' => 'User board updated',], 200);
     }
 
-    private function updateUserInformation($user, $data, UserPasswordHasherInterface $passwordHasher)
-    {
+    private function updateUserInformation(
+        $user,
+        $data,
+        UserPasswordHasherInterface $passwordHasher
+    ) {
         if (isset($data['name'])) {
             $user->setName($data['name']);
         }
-        if (isset($data['email'])) {
-            $user->setEmail($data['email']);
+        if (isset($data['user'])) {
+            $user->setEmail($data['user']);
         }
         if (isset($data['password'])) {
             $user->setPassword($passwordHasher->hashPassword($user, $data['password']));

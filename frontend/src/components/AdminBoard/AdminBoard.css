@@ -1,0 +1,40 @@
+table {
+  display: inline-table;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+.board-edit-button {
+  background-color: white;
+  color: black;
+  width: 100px;
+  height: 25px;
+  border: none;
+}
+
+.board-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board-container > form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-board-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

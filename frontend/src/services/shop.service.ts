@@ -2,9 +2,9 @@ import axios from "axios";
 import IProduct from "../types/product.type";
 
 class ShopService {
-  private readonly BACKEND_URL = "http://localhost:8000";
-  private readonly PRODUCTS_LIST = "/products-list";
-  private readonly PRODUCT_DETAIL = "/product";
+  private readonly BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  private readonly PRODUCTS_LIST = import.meta.env.VITE_PUBLIC_PRODUCTS_LIST;
+  private readonly PRODUCT_DETAIL = import.meta.env.VITE_PUBLIC_PRODUCT_DETAIL;
 
   async getProducts() {
     try {
