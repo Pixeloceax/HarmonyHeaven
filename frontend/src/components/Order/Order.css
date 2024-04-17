@@ -1,0 +1,51 @@
+.order-container {
+background-color: white;
+}
+.order-container>* {
+margin: 1em;
+}
+
+.command-info-container>img {
+width: 100px;
+height: 100px;
+object-fit: cover;
+margin-right: 20px;
+}
+
+.command-list-container {
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.command-info-container {
+display: flex;
+align-items: center;
+}
+
+.command-info>h2 {
+font-size: 18px;
+color: #333;
+}
+.command-info>h3 {
+font-size: 16px;
+color: #666;
+}
+.command-info>* {
+margin: 0;
+}
+
+.command-actions>button {
+background-color: #ff6347;
+padding: 5px 10px;
+color: #fff;
+border: none;
+border-radius: 3px;
+cursor: pointer;
+}
+
+.delivery-address {
+color: #333;
+margin-top: 20px;
+font-size: 20px;
+}
