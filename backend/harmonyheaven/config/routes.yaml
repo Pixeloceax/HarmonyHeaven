@@ -74,10 +74,17 @@ order:
   controller: App\Controller\CartController::order
   methods: POST
 
+# USER BOARD
+
 UpdateUserBoardInformation:
   path: /user/board
   controller: App\Controller\UserBoardController::UpdateUserBoardInformation
   methods: PUT
+
+deleteUserAccount:
+  path: /user/board/{id}
+  controller: App\Controller\UserBoardController::deleteUserAccount
+  methods: DELETE
 
 # ADMIN
 
