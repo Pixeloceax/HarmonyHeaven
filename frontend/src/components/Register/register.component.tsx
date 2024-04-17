@@ -51,6 +51,7 @@ export default class Register extends Component<Props, State> {
         .required("This field is required!"),
     });
   }
+
   async handleRegister(formValue: {
     username: string;
     email: string;

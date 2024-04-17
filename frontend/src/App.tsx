@@ -21,6 +21,7 @@ import AdminBoardComponent from "./components/AdminBoard/AdminBoardComponent";
 import AdminUpdateProduct from "./components/AdminBoard/ProductCRUD/UpdateProduct";
 import CreateProduct from "./components/AdminBoard/ProductCRUD/CreateProduct";
 import UpdateUser from "./components/AdminBoard/UserCRUD/UpdateUser";
+import AboutPage from "./pages/About/AboutPage";
 
 type Props = object;
 
@@ -114,17 +115,15 @@ class App extends Component<Props, State> {
             path="/user"
             element={isLogin ? <UserBoardComponent /> : <Login />}
           />
-
           <Route path="/shop" element={<Vinyls />} />
           <Route path="/shop/:productId" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
-
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/debug" element={<Debug />} />
         </Routes>
-        <Footer />
       </BrowserRouter>
     );
   }
