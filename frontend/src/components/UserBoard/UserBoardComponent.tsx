@@ -6,6 +6,7 @@ import OrderComponent from "./OrderComponent";
 import PersonalInformationComponent from "./PersonalInformationComponent";
 import PaymentMethodsComponent from "./PaymentMethodsComponent";
 import PrintBillComponent from "./PrintBillComponent";
+import DeleteAccount from "./DeleteAccount";
 import IUser from "../../types/user.type";
 
 type Props = object;
@@ -36,6 +37,7 @@ export default class UserBoardComponent extends Component<Props, State> {
       if (!user) {
         this.setState({ redirect: "/login" });
       } else {
+        console.log(user);
         this.setState({
           currentUser: user,
         });
@@ -67,6 +69,11 @@ export default class UserBoardComponent extends Component<Props, State> {
         title: "Print bill",
         component: <PrintBillComponent />,
         desc: "Print your bill",
+      },
+      {
+        title: "Delete account",
+        component: currentUser && <DeleteAccount userId={currentUser.id} />,
+        desc: "Delete your account",
       },
     ];
 

@@ -1,183 +1,182 @@
-@startuml class diagram
+    @startuml class diagram
 
-skin rose
-!theme blueprint
+    skin rose
+    !theme blueprint
 
-title Class Diagram - Harmony Heaven Ecommerce
+    title Class Diagram - Harmony Heaven Ecommerce
 
-class User {
-    + UUID id
-    + String name
-    + String email
-    + String password
-    + String address
-    + String phone
-    + String role
+    class User {
+        + UUID id
+        + String name
+        + String email
+        + String password
+        + String address
+        + String phone
+        + String role
 
-    + Register()
-    + Login()
-    + GetProfile()
-    + UpdateProfile()
-    + DeleteProfile()
-    + AddToCart()
-    + RemoveFromCart()
-    + AddCommand()
-    + CancelCommand()
-    + AddPayment()
-    + AddDelivery()
-    + GetReceipt()
-    + Logout()
-}
+        + Register()
+        + Login()
+        + GetProfile()
+        + UpdateProfile()
+        + DeleteProfile()
+        + AddToCart()
+        + RemoveFromCart()
+        + AddCommand()
+        + CancelCommand()
+        + AddPayment()
+        + AddDelivery()
+        + GetReceipt()
+        + Logout()
+    }
 
-class Product {
-    + Int id
-    + String name
-    + String description
-    + Float price
-    + String image
-    + String type
-    + String label
-    + String year
-    + String country
-    + String format
-    + Genre genre
-    + Style style
-    + Int stock
+    class Product {
+        + Int id
+        + String name
+        + String description
+        + Float price
+        + String image
+        + String type
+        + String label
+        + String year
+        + String country
+        + String format
+        + Genre genre
+        + Style style
+        + Int stock
 
-    + getProduct()
-    + createNewProduct()
-    + updateProduct()
-    + deleteProduct()
-    + updateStock()
-    + getStock()
-}
+        + getProduct()
+        + createNewProduct()
+        + updateProduct()
+        + deleteProduct()
+        + updateStock()
+        + getStock()
+    }
 
-class Genre {
-    + Int id
-    + String name
-    + String description
+    class Genre {
+        + Int id
+        + String name
+        + String description
 
-    + getGenre()
-    + createNewGenre()
-    + updateGenre()
-    + deleteGenre()
+        + getGenre()
+        + createNewGenre()
+        + updateGenre()
+        + deleteGenre()
 
-}
+    }
 
-class Style {
-    + Int id
-    + String name
-    + String description
+    class Style {
+        + Int id
+        + String name
+        + String description
 
-    + getStyle()
-    + createNewStyle()
-    + updateStyle()
-    + deleteStyle()
-}
+        + getStyle()
+        + createNewStyle()
+        + updateStyle()
+        + deleteStyle()
+    }
 
-class Cart {
-    + Int id
-    + User user_id
-    + Product product_id
-    + Quantity quantity
+    class Cart {
+        + Int id
+        + User user_id
+        + Product product_id
+        + Quantity quantity
 
-    + getCart()
-    + addProductToCart()
-    + updateCart()
-    + removeProductFromCart()
-    + setEmptyCart()
-}
+        + getCart()
+        + addProductToCart()
+        + updateCart()
+        + removeProductFromCart()
+        + setEmptyCart()
+    }
 
-class Command {
-    + Int id
-    + User user_id
-    + Product product_id
-    + Payment payment_id
-    + Delivery delivery_id
-    + String Status
+    class Wishlist {
+        + Int id
+        + User user_id
+        + Product product_id
+        + Quantity quantity
 
-    + getCommand()
-    + createCommandeFromCart()
-    + cancelCommand()
-    + getStatus
-    + updateStatus()
-}
+        + getWishlist()
+        + addProductToWishlist()
+        + updateWishlist()
+        + removeProductFromWishlist()
+    }
 
-class Receipt {
-    + Int id
-    + Command command_id
-    + Product product_id
+    class Command {
+        + Int id
+        + User user_id
+        + Product product_id
+        + Payment payment_id
+        + Delivery delivery_id
+        + String Status
 
-    + getReceipt()
-    + sendEmailReceipt()
-}
+        + getCommand()
+        + createCommandeFromCart()
+        + cancelCommand()
+        + getStatus()
+        + updateStatus()
+    }
 
-class Payment {
-    + Int id
-    + PaymentMethod paymentMethod
-    + String status
-    + Float amountPaid
+    class Receipt {
+        + Int id
+        + Command command_id
+        + Product product_id
 
-    + getPaymentStatus()
-    + updatePaymentStatus()
-    + getAmountPaid()
-}
+        + getReceipt()
+        + sendEmailReceipt()
+    }
 
-class PaymentMethod {
-    + Int id
-    + String name
-    + String description
+    class Payment {
+        + Int id
+        + String paymentMethod
+        + String status
+        + Float amountPaid
 
-    + getPaymentMethod()
-    + createNewPaymentMethod()
-    + updatePaymentMethod()
-    + deletePaymentMethod()
-}
+        + getPaymentStatus()
+        + updatePaymentStatus()
+        + getAmountPaid()
+    }
 
-class Delivery {
-    + Int id
-    + String address
-    + String status
-    + Date deliveryDate
-    + String deliveryMethod
-    + Float deliveryCost
 
-    + getDeliveryStatus()
-    + updateDeliveryStatus()
-    + getDeliveryDate()
-    + updateDeliveryDate()
-    + getDeliveryMethod()
-    + updateDeliveryMethod()
-    + getDeliveryCost()
-    
-}
+    class Delivery {
+        + Int id
+        + String address
+        + String status
+        + Date deliveryDate
+        + String deliveryMethod
+        + Float deliveryCost
 
-'Un User peut avoir plusieurs Cart et Command (OneToMany)
+        + getDeliveryStatus()
+        + updateDeliveryStatus()
+        + getDeliveryDate()
+        + updateDeliveryDate()
+        + getDeliveryMethod()
+        + updateDeliveryMethod()
+        + getDeliveryCost()
+    }
 
-User "1" -- "0..*" Cart 
+    'Un User peut avoir plusieurs Cart et Command (OneToMany)
 
-User "1" -- "0..*" Command 
+    User "1" -- "0..*" Cart
 
-'Un Product peut être dans plusieurs Cart et Command, et peut avoir plusieurs Genre et Style (ManyToMany)
+    User "1" -- "0..*" Wishlist
 
-Product "*" -- "0..*" Cart 
+    User "1" -- "0..*" Command 
 
-Product "*" -- "0..*" Command 
+    'Un Product peut être dans plusieurs Cart et Command, et peut avoir plusieurs Genre et Style (ManyToMany)
 
-Product "*" -- "0..*" Genre 
+    Product "*" -- "0..*" Cart 
 
-Product "*" -- "0..*" Style 
+    Product "*" -- "0..*" Command 
 
-'Une Command a un Receipt, un Payment et un Delivery (OneToOne)
+    Product "*" -- "0..*" Genre 
 
-Command "1" -- "1" Receipt 
+    Product "*" -- "0..*" Style 
 
-Command "1" -- "1" Payment 
+    'Une Command a un Receipt, un Payment et un Delivery (OneToOne)
 
-Command "1" -- "1" Delivery 
+    Command "1" -- "1" Receipt 
 
-'Un Payment a un PaymentMethod (OneToOne)
+    Command "1" -- "1" Payment 
 
-Payment "1" -- "1" PaymentMethod 
-
-@enduml
+    Command "1" -- "1" Delivery 
+&
+    @enduml

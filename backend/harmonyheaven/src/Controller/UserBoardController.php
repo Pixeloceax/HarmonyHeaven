@@ -12,6 +12,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Uuid;
+
 
 #[IsGranted('ROLE_USER', message: 'You do not have permission to access this route')]
 class UserBoardController extends AbstractController
@@ -69,4 +71,23 @@ class UserBoardController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/user/board/{id}", name="deleteUserAccount", methods={"DELETE"})
+     */
+    public function deleteUserAccount(
+        Uuid $id,
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+        $user = $userRepository->findOneBy(['id' => $id]);
+
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not found'], 404);
+        }
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        return new JsonResponse(['status' => 'User deleted'], 200);
+    }
 }

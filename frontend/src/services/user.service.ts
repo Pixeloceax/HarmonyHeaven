@@ -20,6 +20,19 @@ class UserService {
     }
   }
 
+  deleteUser(userId: string) {
+    try {
+      return axios.delete(
+        `${this.BACKEND_URL}${this.USER_BOARD_URL}/${userId}`,
+        {
+          headers: this.getAuthHeaders(),
+        }
+      );
+    } catch (error) {
+      throw new Error("Error deleting user: " + error);
+    }
+  }
+
   private getAuthHeaders() {
     return authHeader();
   }
