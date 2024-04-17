@@ -4,7 +4,7 @@ import IProduct from "../types/product.type";
 class ShopService {
   private readonly BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   private readonly PRODUCTS_LIST = import.meta.env.VITE_PUBLIC_PRODUCTS_LIST;
-  private readonly PRODUCT_DETAIL = import.meta.env.VITE_PUBLIC_PRODUCT_DETAIL;
+  private readonly PRODUCT_DETAIL = import.meta.env.VITE_PUBLIC_PRODUCT_DETAILS;
 
   async getProducts() {
     try {
