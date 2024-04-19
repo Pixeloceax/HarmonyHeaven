@@ -1,5 +1,5 @@
 import axios from "axios";
-import authHeader from "./auth-header";
+import authHeader from "./AuthHeader";
 
 class UserService {
   private readonly BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
