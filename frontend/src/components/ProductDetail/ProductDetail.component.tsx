@@ -1,10 +1,10 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import shopService from "../../services/shop.service";
+import ShopService from "../../services/ShopService";
 import IProduct from "../../types/product.type";
 import Loader from "../loader/loader.component";
-import cartService from "../../services/cart.service";
+import CartService from "../../services/CartService";
 import "./ProductDetail.css";
 
 const ProductDetail = () => {
@@ -23,7 +23,7 @@ const ProductDetail = () => {
   const productId: number = parseInt(getProductId.productId);
   useEffect(() => {
     const fetchProduct = async () => {
-      const product = await shopService.getProductById(productId);
+      const product = await ShopService.getProductById(productId);
       setThisProduct(product);
     };
 
@@ -124,7 +124,7 @@ const ProductDetail = () => {
 
         <button
           onClick={() =>
-            cartService.addToCart(
+            CartService.addToCart(
               thisProduct.id as number,
               thisProduct.name as string,
               thisProduct.image,

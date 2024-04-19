@@ -1,4 +1,4 @@
-import WishlistService from "../../services/wishlist.service";
+import WishlistService from "../../services/WishlistService";
 import IWishlistItem from "../../types/wishlist.type";
 import React from "react";
 import "./wishlist.css";
@@ -34,32 +34,31 @@ class Wishlist extends React.Component<Props, State> {
   };
 
   removeFromWishlist = async (product: IWishlistItem) => {
-  try {
-    // Check if product object is valid and has an 'id' property
-    if (!product || !product.id) {
-      console.error(
-        "Error removing from wishlist: Product is undefined or does not have an 'id' property"
-      );
-      return; 
+    try {
+      // Check if product object is valid and has an 'id' property
+      if (!product || !product.id) {
+        console.error(
+          "Error removing from wishlist: Product is undefined or does not have an 'id' property"
+        );
+        return;
+      }
+
+      // Extract productId from the product object
+      const productId = product.id;
+
+      // Pass productId directly to removeFromWishlist function
+      await WishlistService.removeFromWishlist(productId);
+
+      // Update the state to reflect the removal
+      const updatedWishlist =
+        this.state.userWishlist?.filter((item) => item.id !== productId) ??
+        null;
+      this.setState({ userWishlist: updatedWishlist });
+      this.calculateTotalPrice(updatedWishlist);
+    } catch (error) {
+      console.error("Error removing from wishlist:", error);
     }
-
-    // Extract productId from the product object
-    const productId = product.id;
-
-    // Pass productId directly to removeFromWishlist function
-    await WishlistService.removeFromWishlist(productId);
-
-    // Update the state to reflect the removal
-    const updatedWishlist =
-      this.state.userWishlist?.filter((item) => item.id !== productId) ??
-      null;
-    this.setState({ userWishlist: updatedWishlist });
-    this.calculateTotalPrice(updatedWishlist);
-  } catch (error) {
-    console.error("Error removing from wishlist:", error);
-  }
-};
-
+  };
 
   addToCart = async (product: IWishlistItem) => {
     try {

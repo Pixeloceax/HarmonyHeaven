@@ -1,5 +1,5 @@
 import { Component } from "react";
-import userService from "../../services/user.service";
+import UserService from "../../services/UserService";
 
 interface Props {
   userId: string;
@@ -8,7 +8,7 @@ interface Props {
 export default class DeleteAccount extends Component<Props> {
   deleteUser = () => {
     console.log(this.props.userId);
-    userService.deleteUser(this.props.userId);
+    UserService.deleteUser(this.props.userId);
   };
 
   render() {

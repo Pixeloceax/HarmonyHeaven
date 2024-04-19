@@ -1,12 +1,12 @@
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import WishlistService from "../../services/wishlist.service.ts";
+import WishlistService from "../../services/WishlistService.ts";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import CartService from "../../services/cart.service.ts";
+import CartService from "../../services/CartService.ts";
 import IWishlistItem from "../../types/wishlist.type.ts";
-import AuthService from "../../services/auth.service.ts";
-import shopService from "../../services/shop.service";
+import AuthService from "../../services/AuthService.ts";
+import ShopService from "../../services/ShopService.ts";
 import Pagination from "@mui/material/Pagination";
 import IProduct from "../../types/product.type";
 import { GoHeartFill } from "react-icons/go";
@@ -41,8 +41,7 @@ export default class Vinyls extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    shopService
-      .getProducts()
+    ShopService.getProducts()
       .then((products) => {
         this.setState({ products });
       })

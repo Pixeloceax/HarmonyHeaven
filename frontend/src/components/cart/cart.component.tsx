@@ -1,5 +1,5 @@
-import AuthService from "../../services/auth.service";
-import cartService from "../../services/cart.service";
+import AuthService from "../../services/AuthService";
+import CartService from "../../services/CartService";
 import IProduct from "../../types/product.type";
 import { useState, useEffect } from "react";
 import IUser from "../../types/user.type";
@@ -18,7 +18,7 @@ const Cart = () => {
 
   useEffect(() => {
     const fetchCart = async () => {
-      const cart = cartService.getCart();
+      const cart = CartService.getCart();
       setUserCart(cart);
       calculateTotalPrice(cart);
     };
@@ -48,8 +48,8 @@ const Cart = () => {
   };
 
   const updateQuantity = (id: string, newQuantity: number) => {
-    cartService.updateCartQuantityItem(id, newQuantity);
-    const cart = cartService.getCart();
+    CartService.updateCartQuantityItem(id, newQuantity);
+    const cart = CartService.getCart();
     setUserCart(cart);
     calculateTotalPrice(cart);
   };
@@ -58,20 +58,20 @@ const Cart = () => {
     if (!currentUser) {
       window.location.href = "/login";
     } else {
-      cartService.confirmCart();
+      CartService.confirmCart();
     }
   };
 
   const removeFromCart = (id: number) => {
-    cartService.removeFromCart(id);
-    const cart = cartService.getCart();
+    CartService.removeFromCart(id);
+    const cart = CartService.getCart();
     setUserCart(cart);
     calculateTotalPrice(cart);
   };
 
   const removeFromCartLogged = (id: number) => {
-    cartService.removeFromCartLogged(id);
-    const cart = cartService.getCart();
+    CartService.removeFromCartLogged(id);
+    const cart = CartService.getCart();
     setUserCart(cart);
     calculateTotalPrice(cart);
   };
@@ -135,6 +135,7 @@ const Cart = () => {
       >
         Submit cart
       </button>
+      <p>{error}</p>
     </div>
   );
 };
