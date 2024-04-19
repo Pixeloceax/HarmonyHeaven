@@ -1,6 +1,6 @@
 import axios from "axios";
 import IUser from "../types/user.type";
-import authHeader from "./auth-header";
+import authHeader from "./AuthHeader";
 class AuthService {
   private readonly BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   private readonly LOGIN = import.meta.env.VITE_PUBLIC_LOGIN;

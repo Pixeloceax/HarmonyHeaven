@@ -1,5 +1,5 @@
 import axios from "axios";
-import authHeader from "./auth-header";
+import authHeader from "./AuthHeader";
 import ICartItem from "../types/cart-item.type";
 
 // Define the type for the subscriber functions
@@ -51,7 +51,6 @@ class CartService {
     this.setCart(cart);
   }
 
-
   async addToCartLogged(
     productId: number,
     productName: string,
@@ -88,7 +87,6 @@ class CartService {
       throw error;
     }
   }
-
 
   async removeFromCartLogged(productId: number): Promise<void> {
     try {

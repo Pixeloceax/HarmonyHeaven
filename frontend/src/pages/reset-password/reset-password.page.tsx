@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import resetPasswordService from "../../services/resetPassword.service";
+import ResetPasswordService from "../../services/ResetPasswordService";
 import { toast } from "react-toastify";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { passwordValidation } from "../../utils/password-requirement.utils";
+import { passwordValidation } from "../../utils/PasswordRequirement";
 import "./reset-password.css";
 
 type State = {
@@ -20,10 +20,10 @@ const ResetPassword: React.FC = () => {
   const validationSchema = () => {
     return Yup.object().shape({
       password: passwordValidation
-        .passwordValidation()
+        .PasswordValidation()
         .required("This field is required!"),
       confirmPassword: passwordValidation
-        .passwordValidation()
+        .PasswordValidation()
         .required("This field is required!"),
     });
   };
@@ -38,8 +38,8 @@ const ResetPassword: React.FC = () => {
     const fetchData = async () => {
       if (token) {
         try {
-          await resetPasswordService.checkToken(token);
-          if ((await resetPasswordService.checkToken(token)).status != 200) {
+          await ResetPasswordService.checkToken(token);
+          if ((await ResetPasswordService.checkToken(token)).status != 200) {
             toast.error("Invalid token!");
           }
         } catch (error: any) {
@@ -62,7 +62,7 @@ const ResetPassword: React.FC = () => {
       return;
     }
     try {
-      const response = await resetPasswordService.resetPassword(
+      const response = await ResetPasswordService.resetPassword(
         values.password,
         token
       );

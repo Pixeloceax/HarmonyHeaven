@@ -1,4 +1,4 @@
-import newsService from "../../services/news.service";
+import newsService from "../../services/NewsService";
 import "./footer.css";
 import { FormEvent, useState } from "react";
 import HHlogo from "../../assets/icons/png/LOGO sans texte.png";
@@ -42,7 +42,7 @@ const Footer: React.FC = () => {
               </button>
             </form>
             <h3 className="privacy">
-              By subscribing you agree to with our&nbsp; 
+              By subscribing you agree to with our&nbsp;
               <a href="policy" target="_blank">
                 Privacy Policy
               </a>
