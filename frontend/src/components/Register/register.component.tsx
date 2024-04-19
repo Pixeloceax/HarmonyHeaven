@@ -2,9 +2,9 @@ import { Component } from "react";
 import "./register.css";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import AuthService from "../../services/auth.service";
-import { emailValidation } from "../../utils/email-requirement.utils";
-import { passwordValidation } from "../../utils/password-requirement.utils";
+import AuthService from "../../services/AuthService";
+import { emailValidation } from "../../utils/EmailRequirement";
+import { passwordValidation } from "../../utils/PasswordRequirement";
 import Cat from "../../assets/images/cat.jpg";
 
 type Props = object;
@@ -42,9 +42,9 @@ export default class Register extends Component<Props, State> {
           (val) => (val ? val.length >= 3 && val.length <= 20 : false)
         )
         .required("This field is required!"),
-      email: emailValidation.emailValidation(),
+      email: emailValidation.EmailValidation(),
       password: passwordValidation
-        .passwordValidation()
+        .PasswordValidation()
         .required("This field is required!"),
       passwordConfirmation: Yup.string()
         .oneOf([Yup.ref("password"), undefined], "Passwords must match")

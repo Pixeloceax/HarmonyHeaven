@@ -1,9 +1,9 @@
 import { Component } from "react";
 import { toast } from "react-toastify";
-import resetPasswordService from "../../services/resetPassword.service";
+import ResetPasswordService from "../../services/ResetPasswordService";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { emailValidation } from "../../utils/email-requirement.utils";
+import { emailValidation } from "../../utils/EmailRequirement";
 
 type Props = object;
 
@@ -21,7 +21,7 @@ export default class ForgotPassword extends Component<Props, State> {
     };
   }
   handleForgotPassword = async (values: State) => {
-    const response = await resetPasswordService.forgotPassword(values.email);
+    const response = await ResetPasswordService.forgotPassword(values.email);
     if (response.status === 200) {
       toast.success(response.data.message);
     } else if (response.status !== 200) {
@@ -32,7 +32,7 @@ export default class ForgotPassword extends Component<Props, State> {
   validationSchema = () => {
     return Yup.object().shape({
       email: emailValidation
-        .emailValidation()
+        .EmailValidation()
         .required("This field is required!"),
     });
   };
