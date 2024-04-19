@@ -1,10 +1,10 @@
 import * as Yup from "yup";
 
-class passwordRequirment {
+class PasswordRequirement {
   private readonly regex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{13,}$/;
 
-  public passwordValidation() {
+  public PasswordValidation() {
     return Yup.string()
       .min(13, "Password must be at least 13 characters long")
       .matches(
@@ -14,4 +14,4 @@ class passwordRequirment {
   }
 }
 
-export const passwordValidation = new passwordRequirment();
+export const passwordValidation = new PasswordRequirement();
