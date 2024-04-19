@@ -71,7 +71,6 @@ class Product
 
         $this->genre = new ArrayCollection(); // Initialize genre property
         $this->style = new ArrayCollection();
-        $this->wishlistItem = new ArrayCollection();
         $this->commandItems = new ArrayCollection();
     }
 
