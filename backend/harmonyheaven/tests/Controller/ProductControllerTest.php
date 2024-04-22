@@ -17,7 +17,6 @@ class ProductControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertResponseStatusCodeSame(200);
 
-        // Add more assertions to check the JSON structure and data if needed
     }
     /**
      * @covers ::getProductById
@@ -25,12 +24,12 @@ class ProductControllerTest extends WebTestCase
     public function testGetProductById(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/product/1'); // Assuming product ID 1 exists
+        $client->request('GET', '/product/1'); // product ID 1 exists
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseStatusCodeSame(200);
 
-        // Add more assertions to check the JSON structure and data if needed
+
     }
 
     /**
@@ -39,7 +38,7 @@ class ProductControllerTest extends WebTestCase
     public function testGetProductByInvalidId(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/product/99999'); // Assuming product ID 99999 doesn't exist
+        $client->request('GET', '/product/99999'); // product ID 99999 doesn't exist
 
         $this->assertResponseStatusCodeSame(404);
     }
