@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import AuthService from "../../services/auth.service";
 import IUser from "../../types/user.type";
 import "./Narvbar.css";
@@ -23,18 +23,25 @@ class Navbar extends Component<object, State> {
       error: null,
       currentUser: null,
       isSticky: true,
-      cartTotal: cartService.getCartTotalItems(),
+      cartTotal: 0,
     };
     this.handleScroll = this.handleScroll.bind(this);
     this.updateCartTotal = this.updateCartTotal.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
-  componentDidMount() {
+  async getCartTotal() {
+    const cartTotal = await cartService.getCartTotalItems();
+    this.setState({ cartTotal });
+}
+
+  async componentDidMount() {
     this.fetchCurrentUser();
     window.addEventListener("scroll", this.handleScroll);
     cartService.subscribe(this.updateCartTotal); // Subscribe to cart changes
+    this.getCartTotal();
   }
-
+  
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
     cartService.unsubscribe(this.updateCartTotal); // Unsubscribe from cart changes
@@ -87,9 +94,10 @@ class Navbar extends Component<object, State> {
     }
   }
 
-  updateCartTotal() {
-    this.setState({ cartTotal: cartService.getCartTotalItems() });
-  }
+  async updateCartTotal() {
+  const cartTotal = await cartService.getCartTotalItems();
+  this.setState({ cartTotal });
+}
 
   render() {
     const { currentUser, isSticky, cartTotal } = this.state;
