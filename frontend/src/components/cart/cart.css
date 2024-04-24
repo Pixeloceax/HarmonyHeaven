@@ -35,12 +35,12 @@
   color: #666;
 }
 
-.item-actions {
+.item-action {
   display: flex;
-  align-items: center;
+  align-items: baseline;
 }
 
-.item-actions label {
+.item-action label {
   margin-right: 10px;
 }
 
@@ -49,8 +49,14 @@
   margin-right: 10px;
 }
 
-.item-actions button:hover {
-  background-color: #d9534f;
+.item-action button {
+  background-color: #ff5400;
+  padding: 0.8em 1em;
+  border-radius: 10px;
+}
+
+.item-action button:hover {
+  background-color: #ff8000;
 }
 
 .total-price {
@@ -79,7 +85,7 @@
   color: #333;
 }
 
-.item-actions > label {
+.item-action > label {
   color: #333;
 }
 
