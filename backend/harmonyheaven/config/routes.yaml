@@ -49,18 +49,43 @@ reset-password:
   controller: App\Controller\ResetPasswordController::resetPassword
   methods: POST
 
-cart:
-  path: /cart
+update-stock:
+  path: /update-stock
+  controller: App\Controller\CartController::updateStock
+  methods: POST
+
+increment-stock:
+  path: /increment-stock
+  controller: App\Controller\CartController::incrementStock
+  methods: POST
+
+decrement-stock:
+  path: /decrement-stock
+  controller: App\Controller\CartController::decrementStock
+  methods: POST
+
+submit-cart:
+  path: /submit-cart
   controller: App\Controller\CartController::submitCart
   methods: POST
 
-cart_add:
-  path: /add_cart
+add-to-cart:
+  path: /add-to-cart
   controller: App\Controller\CartController::addToCart
   methods: POST
 
-cart_remove:
-  path: /cart/{productId}
+update-cart-item:
+  path: /update-cart-item/{productId}
+  controller: App\Controller\CartController::updateCartItem
+  methods: PUT
+
+get-cart:
+  path: /get-cart
+  controller: App\Controller\CartController::getCart
+  methods: GET
+
+remove-from-cart:
+  path: /remove-from-cart/{productId}
   controller: App\Controller\CartController::removeFromCart
   methods: DELETE
 
@@ -98,6 +123,12 @@ pay:
   path: /pay
   controller: App\Controller\PaymentController::pay
   methods: POST
+
+update-statuts:
+    path: /update-statuts/{idOrder}
+    controller: App\Controller\PaymentController::updateStatuts
+    methods: POST
+
 # ADMIN
 
 getAllProducts:
