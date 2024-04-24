@@ -32,7 +32,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN composer install --no-scripts --no-autoloader
 
 # Fixtures
-RUN php bin/console doctrine:fixtures:load --no-interaction
+#RUN php bin/console doctrine:fixtures:load --no-interaction
 
 # Symfony CLI
 RUN wget https://get.symfony.com/cli/installer -O - | bash

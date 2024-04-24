@@ -1,41 +1,59 @@
-version: '3.8'
+version: "3.8"
 
 services:
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: harmony-heaven-front:v1.1
     ports:
-      - "3000:3000"
+      - "5200:5200"
+    networks:
+      - app_net
 
   backend:
-    build:
-      context: ./backend/harmonyheaven
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
+    image: axelvalentin/harmonyheaven:backend-1
     environment:
-      - APP_ENV=dev
-      - APP_DEBUG=1
+      - APP_ENV=prod
+      - APP_DEBUG=0
       - DATABASE_URL=mysql://symfony_user:symfony_password@database:3306/symfony_db
+    networks:
+      - app_net
+    ports:
+      - 8000:8000
     depends_on:
       - database
-   
+
   database:
     image: mysql:latest
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
       MYSQL_DATABASE: symfony_db
       MYSQL_USER: symfony_user
-      MYSQL_PASSWORD: symfony_password
-    ports:
-      - "3306"
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - app_net
+    secrets:
+      - mysql_root_password
+      - mysql_password
 
   adminer:
     image: adminer:latest
-    restart: always
+    restart: unless-stopped
     ports:
       - 8080:8080
+    networks:
+      - app_net
+
+secrets:
+  mysql_root_password:
+    file: ./secrets/mysql_root_password.txt
+  mysql_password:
+    file: ./secrets/mysql_password.txt
+
+networks:
+  app_net:
 
 volumes:
   db-data:
+    driver: local

@@ -9,4 +9,14 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
   },
+  preview: {
+    port: 5200,
+    strictPort: true,
+  },
+  server: {
+    port: 5200,
+    strictPort: true,
+    host: true,
+    origin: "http://0.0.0.0:5200",
+  },
 });
