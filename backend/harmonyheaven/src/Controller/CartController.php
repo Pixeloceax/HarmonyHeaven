@@ -101,42 +101,42 @@ class CartController extends AbstractController
      * @Route("/update-stock", name="update-stock", methods={"POST"})
      */
     public function updateStock(
-    Request $request,
-    ProductRepository $productRepository,
-    EntityManagerInterface $entityManager
+        Request $request,
+        ProductRepository $productRepository,
+        EntityManagerInterface $entityManager
     ): JsonResponse {
-    $data = json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
 
-    $productId = $data['productId'];
-    $oldQuantity = $data['oldQuantity'];
-    $newQuantity = $data['newQuantity'];
+        $productId = $data['productId'];
+        $oldQuantity = $data['oldQuantity'];
+        $newQuantity = $data['newQuantity'];
 
-    $product = $productRepository->find($productId);
+        $product = $productRepository->find($productId);
 
-    if (!$product) {
-        return new JsonResponse(['error' => 'Product not found'], JsonResponse::HTTP_NOT_FOUND);
-    }
+        if (!$product) {
+            return new JsonResponse(['error' => 'Product not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
 
-    //Si la nouvelle quantité est > à l'ancienne
-    if($newQuantity > $oldQuantity) {
-        //On calcule la différence
-        $difference = ($newQuantity - $oldQuantity);
-        //On décrémente le stock en BDD
-        $product->setQuantity($product->getQuantity() - $difference);
-        $entityManager->persist($product);
-    }
+        //Si la nouvelle quantité est > à l'ancienne
+        if ($newQuantity > $oldQuantity) {
+            //On calcule la différence
+            $difference = ($newQuantity - $oldQuantity);
+            //On décrémente le stock en BDD
+            $product->setQuantity($product->getQuantity() - $difference);
+            $entityManager->persist($product);
+        }
 
-    //Si la nouvelle quantité est < à l'ancienne
-    if($newQuantity < $oldQuantity) {
-        //On calcule la différence
-        $difference = ($oldQuantity - $newQuantity);
-        //On incrémente le stock en BDD
-        $product->setQuantity($product->getQuantity() + $difference);
-        $entityManager->persist($product);
-    }
-    $entityManager->flush();
+        //Si la nouvelle quantité est < à l'ancienne
+        if ($newQuantity < $oldQuantity) {
+            //On calcule la différence
+            $difference = ($oldQuantity - $newQuantity);
+            //On incrémente le stock en BDD
+            $product->setQuantity($product->getQuantity() + $difference);
+            $entityManager->persist($product);
+        }
+        $entityManager->flush();
 
-    return new JsonResponse(['message' => 'Stock updated successfully']);
+        return new JsonResponse(['message' => 'Stock updated successfully']);
     }
 
 
@@ -144,13 +144,13 @@ class CartController extends AbstractController
      * @Route("/update-cart-item/{productId}", name="update-cart-item", methods={"PUT"})
      */
     public function updateCartItem(
-    Request $request,
-    UserRepository $userRepository,
-    ProductRepository $productRepository,
-    CartRepository $cartRepository,
-    EntityManagerInterface $entityManager,
-    JWTEncoderInterface $jwtEncoder,
-    int $productId
+        Request $request,
+        UserRepository $userRepository,
+        ProductRepository $productRepository,
+        CartRepository $cartRepository,
+        EntityManagerInterface $entityManager,
+        JWTEncoderInterface $jwtEncoder,
+        int $productId
     ): JsonResponse {
         // Get the authenticated user
         $authHeader = $request->headers->get('Authorization');
@@ -230,7 +230,7 @@ class CartController extends AbstractController
         if (!$cartItem) {
             return new JsonResponse(['error' => 'Product not found in cart'], JsonResponse::HTTP_NOT_FOUND);
         }
-        
+
         $productId = $product->getId(); // Get the product ID
         $entityManager->remove($cartItem);
         $entityManager->flush();
@@ -282,12 +282,12 @@ class CartController extends AbstractController
         foreach ($cartItemsData as $itemData) {
             $product = $productRepository->find($itemData['id']);
             $existingCartItem = $cartItemRepository->findOneBy(['cart' => $cart, 'product' => $product]);
-        
+
             // If the product exists already in the cart, update the quantity
             if ($existingCartItem) {
                 $existingCartItem->setQuantity($existingCartItem->getQuantity() + $itemData['quantity']);
                 $entityManager->persist($existingCartItem);
-        
+
                 // If the product does not exist in the cart, add a new cart item
             } else {
                 $cartItem = new CartItem();
@@ -298,8 +298,8 @@ class CartController extends AbstractController
                 $entityManager->persist($cartItem);
             }
         }
-        
-        
+
+
         $entityManager->flush();
         return new JsonResponse($cart, 200);
     }
@@ -412,13 +412,16 @@ class CartController extends AbstractController
     /**
      * @Route("/increment-stock", name="increment-stock", methods={"POST"})
      */
-    public function incrementStock(ProductRepository $productRepository,EntityManagerInterface $entityManager,
-        Request $request): JsonResponse {
+    public function incrementStock(
+        ProductRepository $productRepository,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
         $productId = $data['product']['id'];
         $quantity = $data['product']['quantity'];
         $product = $productRepository->findOneBy(['id' => $productId]);
-        $product->setQuantity($product->getQuantity() +$quantity);
+        $product->setQuantity($product->getQuantity() + $quantity);
         $entityManager->persist($product);
         $entityManager->flush();
         return new JsonResponse(['message' => 'Stock mis à jour.'], 200);
@@ -427,13 +430,16 @@ class CartController extends AbstractController
     /**
      * @Route("/decrement-stock", name="decrement-stock", methods={"POST"})
      */
-    public function decrementStock(ProductRepository $productRepository,EntityManagerInterface $entityManager,
-        Request $request): JsonResponse {
+    public function decrementStock(
+        ProductRepository $productRepository,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): JsonResponse {
 
         $data = json_decode($request->getContent(), true);
         $productId = $data['product']['id'];
         $product = $productRepository->findOneBy(['id' => $productId]);
-        $product->setQuantity($product->getQuantity() -1);
+        $product->setQuantity($product->getQuantity() - 1);
         $entityManager->persist($product);
         $entityManager->flush();
         return new JsonResponse(['message' => 'Stock mis à jour.'], 200);
@@ -466,7 +472,7 @@ class CartController extends AbstractController
 
         // Main Command entity
         $command = $existingCommand;
-        
+
         $cartItems = $existingCart->getCartItem();
         foreach ($cartItems as $item) {
             $existingCommandItem = $commandItemRepository->findOneBy(['product' => $item->getProduct(), 'command' => $existingCommand]);
@@ -501,58 +507,62 @@ class CartController extends AbstractController
         $entityManager->flush();
     }
 
-private function createPayment($entityManager, $totalAmount)
-{
-    $payment = new Payment();
-    $payment->setStatus(0);
-    $payment->setAmountPaid($totalAmount);
-    $payment->setMethod('Credit card');
-    $entityManager->persist($payment);
-    return $payment;
-}
+    private function createPayment($entityManager, $totalAmount)
+    {
+        $payment = new Payment();
+        $payment->setStatus(0);
+        $payment->setAmountPaid($totalAmount);
+        $payment->setMethod('Credit card');
+        $entityManager->persist($payment);
+        return $payment;
+    }
 
-/**
- * @Route("/get-order", name="get-order", methods={"GET"})
- */
-public function getOrder(UserRepository $userRepository, Request $request, JWTEncoderInterface $jwtEncoder, 
-CommandRepository $commandRepository): JsonResponse {
-    // Récupérer l'User connecté
-    $authHeader = $request->headers->get('Authorization');
-    $authToken = str_replace('Bearer ', '', $authHeader);
-    $decodedJwtToken = $jwtEncoder->decode($authToken);
-    $userId = $decodedJwtToken['id'];
-    $user = $userRepository->findOneBy(['id' => $userId]);
-    $orderArray = [];
+    /**
+     * @Route("/get-order", name="get-order", methods={"GET"})
+     */
+    public function getOrder(
+        UserRepository $userRepository,
+        Request $request,
+        JWTEncoderInterface $jwtEncoder,
+        CommandRepository $commandRepository
+    ): JsonResponse {
+        // Récupérer l'User connecté
+        $authHeader = $request->headers->get('Authorization');
+        $authToken = str_replace('Bearer ', '', $authHeader);
+        $decodedJwtToken = $jwtEncoder->decode($authToken);
+        $userId = $decodedJwtToken['id'];
+        $user = $userRepository->findOneBy(['id' => $userId]);
+        $orderArray = [];
 
-    // Vérifier si l'utilisateur possède déjà une commande
-    $existingOrder = $commandRepository->findOneBy(['user' => $user, 'statut' => 0]);
+        // Vérifier si l'utilisateur possède déjà une commande
+        $existingOrder = $commandRepository->findOneBy(['user' => $user, 'statut' => 0]);
 
-    // Si l'utilisateur n'a pas de panier, retourner une erreur
-    if (!$existingOrder) {
-        return new JsonResponse(['message' => 'Vous n\'avez pas de commande en cours.'], 400);
-    } else {
-        foreach($existingOrder->getCommandItem() as $item) {
-            $orderArray[] = [
-                'id'=>$item->getProduct()->getId(),
-                'product'=>$item->getProduct()->getName(),
-                'img'=>$item->getProduct()->getImage(),
-                'quantity'=>$item->getQuantity(),
-                'price'=>$item->getProduct()->getPrice(),
-            ];
+        // Si l'utilisateur n'a pas de panier, retourner une erreur
+        if (!$existingOrder) {
+            return new JsonResponse(['message' => 'Vous n\'avez pas de commande en cours.'], 400);
+        } else {
+            foreach ($existingOrder->getCommandItem() as $item) {
+                $orderArray[] = [
+                    'id' => $item->getProduct()->getId(),
+                    'product' => $item->getProduct()->getName(),
+                    'img' => $item->getProduct()->getImage(),
+                    'quantity' => $item->getQuantity(),
+                    'price' => $item->getProduct()->getPrice(),
+                ];
+            }
         }
-    }
 
-    // Vérifier si l'utilisateur a une adresse associée à son compte
-    $address = $user->getAddress();
-    if ($address) {
-        // Ajouter l'adresse à la réponse
-        $response = ['order' => $orderArray, 'address' => $address, 'statut' => $existingOrder->getStatut(), 'idOrder' => $existingOrder->getId()];
-    } else {
-        // Retourner seulement la commande dans la réponse
-        $response = ['order' => $orderArray, 'statut' => $existingOrder->getStatut(), 'idOrder' => $existingOrder->getId()];
+        // Vérifier si l'utilisateur a une adresse associée à son compte
+        $address = $user->getAddress();
+        if ($address) {
+            // Ajouter l'adresse à la réponse
+            $response = ['order' => $orderArray, 'address' => $address, 'statut' => $existingOrder->getStatut(), 'idOrder' => $existingOrder->getId()];
+        } else {
+            // Retourner seulement la commande dans la réponse
+            $response = ['order' => $orderArray, 'statut' => $existingOrder->getStatut(), 'idOrder' => $existingOrder->getId()];
+        }
+        return new JsonResponse($response, 200);
     }
-    return new JsonResponse($response, 200);
-}
 
     private function createDelivery($user, $entityManager, $totalAmount)
     {

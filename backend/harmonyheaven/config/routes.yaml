@@ -108,6 +108,13 @@ order:
   path: /order
   controller: App\Controller\CartController::order
   methods: POST
+  
+pay:
+  path: /pay
+  controller: App\Controller\PaymentController::pay
+  methods: POST
+
+# USER BOARD
 
 get-order:
   path: /get-order
@@ -129,6 +136,11 @@ update-statuts:
     controller: App\Controller\PaymentController::updateStatuts
     methods: POST
 
+deleteUserAccount:
+  path: /user/board/{id}
+  controller: App\Controller\UserBoardController::deleteUserAccount
+  methods: DELETE
+ 
 # ADMIN
 
 getAllProducts:

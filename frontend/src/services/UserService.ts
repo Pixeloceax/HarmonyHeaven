@@ -1,5 +1,5 @@
 import axios from "axios";
-import authHeader from "./auth-header";
+import authHeader from "./AuthHeader";
 
 class UserService {
   private readonly BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -17,6 +17,19 @@ class UserService {
       return response.data;
     } catch (error) {
       throw new Error("Error updating user: " + error);
+    }
+  }
+
+  deleteUser(userId: string) {
+    try {
+      return axios.delete(
+        `${this.BACKEND_URL}${this.USER_BOARD_URL}/${userId}`,
+        {
+          headers: this.getAuthHeaders(),
+        }
+      );
+    } catch (error) {
+      throw new Error("Error deleting user: " + error);
     }
   }
 

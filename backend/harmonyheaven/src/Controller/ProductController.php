@@ -44,15 +44,15 @@ class ProductController extends AbstractController
     {
         $product = $productRepository->findOneBy(['id' => $id]);
 
+        if (!$product) {
+            return new JsonResponse(['error' => 'Product not found'], 404);
+        }
+
         $genres = $product->getGenre();
         $genresArray = [];
 
         $styles = $product->getStyle();
         $stylesArray = [];
-
-        if (!$product) {
-            return new JsonResponse(['error' => 'Product not found'], 404);
-        }
 
         foreach ($genres as $genre) {
             $genresArray[] = [
@@ -85,4 +85,5 @@ class ProductController extends AbstractController
         ];
         return new JsonResponse($data, 200);
     }
+
 }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import IProduct from "../../../types/product.type";
-import adminService from "../../../services/admin.service";
+import AdminService from "../../../services/AdminService";
 
 type Props = object;
 
@@ -36,7 +36,7 @@ export default class CreateProduct extends Component<Props, State> {
     const formData = new FormData(form);
     const product = Object.fromEntries(formData.entries());
     try {
-      await adminService.createProduct(product);
+      await AdminService.createProduct(product);
       form.reset();
     } catch (error) {
       throw new Error("Error creating product: " + error);

@@ -1,4 +1,4 @@
-import authHeader from "./auth-header.ts";
+import authHeader from "./AuthHeader.ts";
 import axios from "axios";
 
 class WishlistService {

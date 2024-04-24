@@ -1,10 +1,10 @@
-import cartService from "../../services/cart.service";
 import IProduct from "../../types/product.type";
 import { useState, useEffect } from "react";
 import "./cart.css";
 import axios from "axios";
-import authHeader from "../../services/auth-header";
-import authService from "../../services/auth.service";
+import AuthHeader from "../../services/AuthHeader";
+import AuthService from "../../services/AuthService";
+import CartService from "../../services/CartService";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const UPDATE_CART_ITEM = import.meta.env.VITE_UPDATE_CART_ITEM;
 const UPDATE_STOCK = import.meta.env.VITE_UPDATE_STOCK;
@@ -30,7 +30,7 @@ const Cart = () => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const cart = await cartService.getCart();
+        const cart = await CartService.getCart();
         setUserCart(cart);
       } catch (err) {
         setError("Error getting cart: " + err);
@@ -47,80 +47,87 @@ const Cart = () => {
   }, [userCart]);
 
   const updateQuantity = async (id: number, newQuantity: number) => {
-  try {
-    const user = await authService.getCurrentUser(); // Attendre la résolution de la promesse
+    try {
+      const user = await AuthService.getCurrentUser(); // Attendre la résolution de la promesse
 
-    if (user) {
-      // L'utilisateur est connecté, mettre à jour la quantité via l'API
-      const oldQuantity = userCart.find((item: CartItem) => item.id === id)?.quantity || 0;
+      if (user) {
+        // L'utilisateur est connecté, mettre à jour la quantité via l'API
+        const oldQuantity =
+          userCart.find((item: CartItem) => item.id === id)?.quantity || 0;
 
-      await axios.put(
-        `${BACKEND_URL}${UPDATE_CART_ITEM}/${id}`,
-        { quantity: newQuantity },
-        { headers: authHeader() }
-      );
-      const updatedCart = await cartService.getCart();
-      setUserCart(updatedCart);
-
-      // Mettre à jour le stock du produit dans la base de données
-      const product = updatedCart.find((item: CartItem) => item.id === id);
-      if (product) {
-        product.quantity = oldQuantity; // Stockez l'ancienne quantité dans l'objet CartItem
-        product.quantity = newQuantity;
-        await axios.post(
-          `${BACKEND_URL}${UPDATE_STOCK}`,
-          { productId: product.id, oldQuantity, newQuantity },
-          { headers: authHeader() }
+        await axios.put(
+          `${BACKEND_URL}${UPDATE_CART_ITEM}/${id}`,
+          { quantity: newQuantity },
+          { headers: AuthHeader() }
         );
-      }
-    } else {
-      // L'utilisateur n'est pas connecté, mettre à jour la quantité dans le localStorage
-      const cart = JSON.parse(localStorage.getItem("cart") as string) || [];
-      const index = cart.findIndex((item: CartItem) => item.id === id);
+        const updatedCart = await CartService.getCart();
+        setUserCart(updatedCart);
 
-      if (index !== -1) {
-        const oldQuantity = cart[index].quantity;
-        const updatedItem = { ...cart[index], quantity: newQuantity, oldQuantity }; // Stockez l'ancienne quantité dans l'objet CartItem
-        const updatedCart = [...cart];
-        updatedCart[index] = updatedItem;
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-        setUserCart(updatedCart); // Mettre à jour l'état userCart avec le nouveau panier mis à jour
+        // Mettre à jour le stock du produit dans la base de données
+        const product = updatedCart.find((item: CartItem) => item.id === id);
+        if (product) {
+          product.quantity = oldQuantity; // Stockez l'ancienne quantité dans l'objet CartItem
+          product.quantity = newQuantity;
+          await axios.post(
+            `${BACKEND_URL}${UPDATE_STOCK}`,
+            { productId: product.id, oldQuantity, newQuantity },
+            { headers: AuthHeader() }
+          );
+        }
+      } else {
+        // L'utilisateur n'est pas connecté, mettre à jour la quantité dans le localStorage
+        const cart = JSON.parse(localStorage.getItem("cart") as string) || [];
+        const index = cart.findIndex((item: CartItem) => item.id === id);
 
-        // Appeler l'API pour mettre à jour le stock du produit en BDD
-        const productToSend = updatedCart.find((item: CartItem) => item.id === id);
-        if (productToSend) { // Vérifiez si productToSend n'est pas undefined
-          await axios.post(`${BACKEND_URL}${UPDATE_STOCK}`, {
-            productId: productToSend.id,
-            oldQuantity: productToSend.oldQuantity, // Utilisez l'ancienne quantité stockée dans l'objet CartItem
-            newQuantity: productToSend.quantity,
-          });
+        if (index !== -1) {
+          const oldQuantity = cart[index].quantity;
+          const updatedItem = {
+            ...cart[index],
+            quantity: newQuantity,
+            oldQuantity,
+          }; // Stockez l'ancienne quantité dans l'objet CartItem
+          const updatedCart = [...cart];
+          updatedCart[index] = updatedItem;
+          localStorage.setItem("cart", JSON.stringify(updatedCart));
+          setUserCart(updatedCart); // Mettre à jour l'état userCart avec le nouveau panier mis à jour
+
+          // Appeler l'API pour mettre à jour le stock du produit en BDD
+          const productToSend = updatedCart.find(
+            (item: CartItem) => item.id === id
+          );
+          if (productToSend) {
+            // Vérifiez si productToSend n'est pas undefined
+            await axios.post(`${BACKEND_URL}${UPDATE_STOCK}`, {
+              productId: productToSend.id,
+              oldQuantity: productToSend.oldQuantity, // Utilisez l'ancienne quantité stockée dans l'objet CartItem
+              newQuantity: productToSend.quantity,
+            });
+          }
         }
       }
+    } catch (err) {
+      setError("Error updating quantity: " + err);
     }
-  } catch (err) {
-    setError("Error updating quantity: " + err);
-  }
-};
-
+  };
 
   const handleConfirmCart = async () => {
     try {
-      await cartService.confirmCart(totalPrice);
+      await CartService.confirmCart(totalPrice);
       // Vous pouvez ajouter un message de succès ou effectuer d'autres actions après la confirmation du panier
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   const removeFromCart = async (id: number) => {
     try {
-        await cartService.removeFromCart(id);
-        const updatedCart = await cartService.getCart();
-        setUserCart(updatedCart);
+      await CartService.removeFromCart(id);
+      const updatedCart = await CartService.getCart();
+      setUserCart(updatedCart);
     } catch (err) {
-        setError("Error removing item: " + err);
+      setError("Error removing item: " + err);
     }
-};
+  };
 
   return (
     <div className="cart-container">
@@ -147,12 +154,14 @@ const Cart = () => {
                   <label htmlFor={`quantity-dropdown-${item.id}`}>
                     Quantité :
                   </label>
-                    <select
-                      id={`quantity-dropdown-${item.id}`}
-                      className="quantity-dropdown"
-                      value={item.quantity}
-                      onChange={(e) => updateQuantity(item.id, Number(e.target.value))}
-                    >
+                  <select
+                    id={`quantity-dropdown-${item.id}`}
+                    className="quantity-dropdown"
+                    value={item.quantity}
+                    onChange={(e) =>
+                      updateQuantity(item.id, Number(e.target.value))
+                    }
+                  >
                     {[...Array(10)].map((_, index) => (
                       <option key={index + 1} value={index + 1}>
                         {index + 1}
@@ -160,10 +169,10 @@ const Cart = () => {
                     ))}
                   </select>
                   <button
-                  onClick={() => removeFromCart(item.id)}
-                  className="cart-button"
+                    onClick={() => removeFromCart(item.id)}
+                    className="cart-button"
                   >
-                  Remove
+                    Remove
                   </button>
                 </div>
               </div>
@@ -181,6 +190,7 @@ const Cart = () => {
       >
         Submit cart
       </button>
+      <p>{error}</p>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import axios from "axios";
-import authHeader from "./auth-header";
+import authHeader from "./AuthHeader";
 
 class AdminService {
   private readonly ADMIN_BACK_END_URL = import.meta.env.VITE_ADMIN_BACKEND_URL;

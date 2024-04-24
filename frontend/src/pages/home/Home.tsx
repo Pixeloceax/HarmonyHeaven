@@ -1,6 +1,6 @@
 import { Component } from "react";
 import IGenre from "../../types/genre.type";
-import genreService from "../../services/genre.service";
+import GenreService from "../../services/GenreService";
 import "./Home.css";
 import { FaSearch } from "react-icons/fa";
 
@@ -25,7 +25,7 @@ export default class Home extends Component<Props, State> {
 
   async componentDidMount() {
     try {
-      const genre = await genreService.getGenres();
+      const genre = await GenreService.getGenres();
       if (!genre) {
         throw new Error("No genres found");
       }

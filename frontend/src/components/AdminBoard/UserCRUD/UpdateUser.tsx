@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import IUser from "../../../types/user.type";
-import adminService from "../../../services/admin.service";
+import AdminService from "../../../services/AdminService";
 import Loader from "../../loader/loader.component";
 
 const UpdateUser = () => {
@@ -19,7 +19,7 @@ const UpdateUser = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await adminService.getUserById(String(userId));
+        const response = await AdminService.getUserById(String(userId));
         setUser(response.data);
       } catch (error) {
         throw new Error("Error getting user: " + error);
@@ -50,7 +50,7 @@ const UpdateUser = () => {
     event.preventDefault();
     try {
       console.log(changes);
-      await adminService.updateUserInformation(
+      await AdminService.updateUserInformation(
         String(userId),
         JSON.stringify(changes)
       );

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import * as Yup from "yup";
-import { passwordValidation } from "../../utils/password-requirement.utils";
-import { emailValidation } from "../../utils/email-requirement.utils";
-import UserService from "../../services/user.service";
-import AuthService from "../../services/auth.service";
+import { passwordValidation } from "../../utils/PasswordRequirement";
+import { emailValidation } from "../../utils/EmailRequirement";
+import UserService from "../../services/UserService";
+import AuthService from "../../services/AuthService";
 import IUser from "../../types/user.type";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import Loader from "../loader/loader.component";
@@ -42,8 +42,8 @@ export default class PersonalInformationComponent extends Component<
 
   validationSchema = Yup.object().shape({
     name: Yup.string(),
-    user: emailValidation.emailValidation(),
-    password: passwordValidation.passwordValidation(),
+    user: emailValidation.EmailValidation(),
+    password: passwordValidation.PasswordValidation(),
     address: Yup.string(),
     phone: Yup.string(),
   });

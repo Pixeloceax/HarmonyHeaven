@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AuthService from "./services/auth.service";
+import AuthService from "./services/AuthService";
 import IUser from "./types/user.type";
 import Login from "./components/Login/login.component";
 import Register from "./components/Register/register.component";
@@ -12,7 +12,7 @@ import Navbar from "./components/Navbar/Navbar.component";
 import ForgotPassword from "./components/forgot-password/forgot-password.component";
 import ResetPassword from "./pages/reset-password/reset-password.page";
 import Debug from "./pages/debug/debug.page";
-import Footer from "./components/Footer/footer.component";
+// import Footer from "./components/Footer/footer.component";
 import ProductDetail from "./components/ProductDetail/ProductDetail.component";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,6 +22,7 @@ import AdminUpdateProduct from "./components/AdminBoard/ProductCRUD/UpdateProduc
 import CreateProduct from "./components/AdminBoard/ProductCRUD/CreateProduct";
 import UpdateUser from "./components/AdminBoard/UserCRUD/UpdateUser";
 import Shop from "./pages/shop/Shop";
+import AboutPage from "./pages/About/AboutPage";
 
 type Props = object;
 
@@ -119,14 +120,13 @@ class App extends Component<Props, State> {
           <Route path="/shop" element={<Shop />} />
           <Route path="/shop/:productId" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/order" element={<OrderComponent />} />
-
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/debug" element={<Debug />} />
         </Routes>
-        <Footer />
       </BrowserRouter>
     );
   }

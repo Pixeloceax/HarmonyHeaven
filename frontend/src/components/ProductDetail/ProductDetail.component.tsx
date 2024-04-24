@@ -1,15 +1,16 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import shopService from "../../services/shop.service";
+import ShopService from "../../services/ShopService";
 import IProduct from "../../types/product.type";
 import Loader from "../loader/loader.component";
-import cartService from "../../services/cart.service";
+import CartService from "../../services/CartService";
 import "./ProductDetail.css";
 
 const ProductDetail = () => {
   const [thisProduct, setThisProduct] = useState<IProduct | null>(null);
   const getProductId = useParams();
+  console.log(getProductId.productId);
 
   if (getProductId.productId === undefined) {
     try {
@@ -20,11 +21,9 @@ const ProductDetail = () => {
   }
 
   const productId: number = parseInt(getProductId.productId);
-
   useEffect(() => {
     const fetchProduct = async () => {
-      const product = await shopService.getProductById(productId);
-
+      const product = await ShopService.getProductById(productId);
       setThisProduct(product);
     };
 
@@ -45,10 +44,8 @@ const ProductDetail = () => {
         <div className="product-detail-images">
           <img
             className="PlaceholderImage"
-            src={
-              (thisProduct.image =
-                thisProduct.image || "https://via.placeholder.com/648x624")
-            }
+            src={thisProduct.image || "https://via.placeholder.com/648x624"}
+            alt={thisProduct.name}
           />
           <div className="Column">
             <div className="Row">
@@ -89,7 +86,7 @@ const ProductDetail = () => {
           </div>
         </div>
         <div className="product-detail-informations">
-          <p className="product-name">{thisProduct.name}</p>
+          <h1 className="product-name">{thisProduct.name}</h1>{" "}
           <p className="product-price">{thisProduct.price}€</p>
         </div>
         <div className="product-detail-description">
@@ -127,8 +124,8 @@ const ProductDetail = () => {
 
         <button
           onClick={() =>
-            cartService.addToCart(
-              thisProduct.id,
+            CartService.addToCart(
+              thisProduct.id as number,
               thisProduct.name as string,
               thisProduct.image,
               thisProduct.price as number

@@ -5,8 +5,8 @@ import * as Yup from "yup";
 import "./login.css";
 import Cat from "../../assets/images/cat.jpg";
 
-import AuthService from "../../services/auth.service";
-import cartServiceNew from "../../services/cart.service";
+import CartService from "../../services/CartService";
+import AuthService from "../../services/AuthService";
 
 type Props = object;
 
@@ -47,7 +47,7 @@ export default class Login extends Component<Props, State> {
 
     AuthService.login(email, password).then(
       async () => {
-        await cartServiceNew.persistStorage();
+        await CartService.persistStorage();
         window.location.href = "/user";
       },
       (error) => {
@@ -77,12 +77,10 @@ export default class Login extends Component<Props, State> {
     return (
       <div className="login">
         <div className="space">
-        <h1>Log In</h1>
-              <p>Welcome to Harmony Heaven</p>
+          <h1>Log In</h1>
+          <p>Welcome to Harmony Heaven</p>
           <div className="login-form-container">
-            <div className="title">
-              
-            </div>
+            <div className="title"></div>
             <Formik
               initialValues={initialValues}
               validationSchema={this.validationSchema}

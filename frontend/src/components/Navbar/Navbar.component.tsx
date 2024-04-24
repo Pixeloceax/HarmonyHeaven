@@ -1,16 +1,15 @@
 import { Component } from "react";
-import AuthService from "../../services/auth.service";
+import AuthService from "../../services/AuthService";
 import IUser from "../../types/user.type";
 import "./Narvbar.css";
 import logo from "../../assets/icons/png/LOGO sans texte.png";
-import cartService from "../../services/cart.service";
+import CartService from "../../services/CartService";
 import { ImCart } from "react-icons/im";
 import { GoHeartFill } from "react-icons/go";
 
 interface State {
   error: string | null;
   currentUser: IUser | null;
-  isSticky: boolean;
   cartTotal: number;
 }
 
@@ -22,29 +21,24 @@ class Navbar extends Component<object, State> {
     this.state = {
       error: null,
       currentUser: null,
-      isSticky: true,
       cartTotal: 0,
     };
-    this.handleScroll = this.handleScroll.bind(this);
     this.updateCartTotal = this.updateCartTotal.bind(this);
     this.logout = this.logout.bind(this);
   }
 
   async getCartTotal() {
-    const cartTotal = await cartService.getCartTotalItems();
+    const cartTotal = await CartService.getCartTotalItems();
     this.setState({ cartTotal });
-}
+  }
 
   async componentDidMount() {
     this.fetchCurrentUser();
-    window.addEventListener("scroll", this.handleScroll);
-    cartService.subscribe(this.updateCartTotal); // Subscribe to cart changes
-    this.getCartTotal();
+    CartService.subscribe(this.updateCartTotal);
   }
-  
+
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
-    cartService.unsubscribe(this.updateCartTotal); // Unsubscribe from cart changes
+    CartService.unsubscribe(this.updateCartTotal);
   }
 
   async fetchCurrentUser() {
@@ -77,33 +71,15 @@ class Navbar extends Component<object, State> {
     }
   }
 
-  handleScroll() {
-    const MIN_PAGE_HEIGHT = 20;
-    const { isSticky } = this.state;
-
-    if (window.scrollY > 40 && !isSticky) {
-      this.setState({ isSticky: true });
-    } else if (
-      window.scrollY <= 50 &&
-      isSticky &&
-      window.innerHeight > MIN_PAGE_HEIGHT
-    ) {
-      this.setState({ isSticky: false });
-    } else if (window.innerHeight <= MIN_PAGE_HEIGHT) {
-      this.setState({ isSticky: true });
-    }
+  async updateCartTotal() {
+    this.setState({ cartTotal: await CartService.getCartTotalItems() });
   }
 
-  async updateCartTotal() {
-  const cartTotal = await cartService.getCartTotalItems();
-  this.setState({ cartTotal });
-}
-
   render() {
-    const { currentUser, isSticky, cartTotal } = this.state;
+    const { currentUser, cartTotal } = this.state;
     return (
-      <>
-        <nav className={`navbar ${isSticky ? "sticky" : ""}`}>
+      <header>
+        <nav className="navbar">
           <ul className="navbar-list">
             <div className="nav-icons">
               <li>
@@ -123,7 +99,7 @@ class Navbar extends Component<object, State> {
                 <img src={logo} alt="logo" />
               </a>
             </li>
-            <li>
+            <li className="navbar-menu-button">
               <button className="navbar-open-button" onClick={this.openNav}>
                 menu
               </button>
@@ -181,7 +157,7 @@ class Navbar extends Component<object, State> {
             </div>
           </div>
         </nav>
-      </>
+      </header>
     );
   }
 }
