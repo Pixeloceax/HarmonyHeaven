@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import shopService from "../../../services/shop.service";
+import ShopService from "../../../services/ShopService";
 import IProduct from "../../../types/product.type";
 import IGenre from "../../../types/genreType";
 import IStyle from "../../../types/styleType";
 import Loader from "../../loader/loader.component";
-import adminService from "../../../services/admin.service";
+import AdminService from "../../../services/AdminService";
 
 const UpdateProduct = () => {
   const { productId } = useParams();
@@ -29,7 +29,7 @@ const UpdateProduct = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const product = await shopService.getProductById(Number(productId));
+        const product = await ShopService.getProductById(Number(productId));
         setProduct(product);
       } catch (error) {
         throw new Error("Error getting product: " + error);
@@ -60,7 +60,7 @@ const UpdateProduct = () => {
     event.preventDefault();
     try {
       console.log(changes);
-      await adminService.updateProductsInformation(
+      await AdminService.updateProductsInformation(
         Number(productId),
         JSON.stringify(changes)
       );

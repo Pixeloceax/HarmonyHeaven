@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Loader from "../loader/loader.component";
-import AuthService from "../../services/auth.service";
+import AuthService from "../../services/AuthService";
 import "./AdminBoard.css";
 import OrderComponent from "./OrderComponent";
 import PersonalInformationComponent from "./UserCRUD/UserInformationComponent";

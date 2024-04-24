@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AuthService from "./services/auth.service";
+import AuthService from "./services/AuthService";
 import IUser from "./types/user.type";
 import Login from "./components/Login/login.component";
 import Register from "./components/Register/register.component";
@@ -13,7 +13,7 @@ import Navbar from "./components/Navbar/Navbar.component";
 import ForgotPassword from "./components/forgot-password/forgot-password.component";
 import ResetPassword from "./pages/reset-password/reset-password.page";
 import Debug from "./pages/debug/debug.page";
-import Footer from "./components/Footer/footer.component";
+// import Footer from "./components/Footer/footer.component";
 import ProductDetail from "./components/ProductDetail/ProductDetail.component";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

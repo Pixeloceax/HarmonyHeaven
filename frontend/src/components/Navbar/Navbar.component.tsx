@@ -1,9 +1,9 @@
 import { Component } from "react";
-import AuthService from "../../services/auth.service";
+import AuthService from "../../services/AuthService";
 import IUser from "../../types/user.type";
 import "./Narvbar.css";
 import logo from "../../assets/icons/png/LOGO sans texte.png";
-import cartService from "../../services/cart.service";
+import CartService from "../../services/CartService";
 import { ImCart } from "react-icons/im";
 import { GoHeartFill } from "react-icons/go";
 
@@ -21,18 +21,18 @@ class Navbar extends Component<object, State> {
     this.state = {
       error: null,
       currentUser: null,
-      cartTotal: cartService.getCartTotalItems(),
+      cartTotal: CartService.getCartTotalItems(),
     };
     this.updateCartTotal = this.updateCartTotal.bind(this);
   }
 
   componentDidMount() {
     this.fetchCurrentUser();
-    cartService.subscribe(this.updateCartTotal);
+    CartService.subscribe(this.updateCartTotal);
   }
 
   componentWillUnmount() {
-    cartService.unsubscribe(this.updateCartTotal);
+    CartService.unsubscribe(this.updateCartTotal);
   }
 
   async fetchCurrentUser() {
@@ -66,7 +66,7 @@ class Navbar extends Component<object, State> {
   }
 
   updateCartTotal() {
-    this.setState({ cartTotal: cartService.getCartTotalItems() });
+    this.setState({ cartTotal: CartService.getCartTotalItems() });
   }
 
   render() {

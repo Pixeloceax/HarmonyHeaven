@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import IProduct from "../../../types/product.type";
-import adminService from "../../../services/admin.service";
+import AdminService from "../../../services/AdminService";
 import Loader from "../../loader/loader.component";
 import { Link } from "react-router-dom";
 import IGenre from "../../../types/genreType";
@@ -23,7 +23,7 @@ export default class ProductComponent extends Component<Props, State> {
 
   async componentDidMount() {
     try {
-      const products = await adminService.getAllProducts();
+      const products = await AdminService.getAllProducts();
       const firstFiveProducts = products.slice(10, 15);
       this.setState({
         products: firstFiveProducts,
@@ -113,7 +113,13 @@ export default class ProductComponent extends Component<Props, State> {
                   </td>
                   <td>
                     <button
-                      onClick={() => adminService.deleteProduct(product.id)}
+                      onClick={() => {
+                        if (product.id !== undefined) {
+                          AdminService.deleteProduct(product.id);
+                        } else {
+                          console.error("Product ID is undefined.");
+                        }
+                      }}
                       className="board-edit-button"
                     >
                       Delete
