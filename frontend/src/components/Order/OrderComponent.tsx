@@ -5,7 +5,11 @@ import './Order.css';
 import CheckoutForm from './CheckoutForm';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const GET_ORDER = import.meta.env.VITE_GET_ORDER;
+const UPDATE_STATUTS = import.meta.env.VITE_UPDATE_STATUTS;
 const stripeApiKey = import.meta.env.VITE_STRIPE_API_KEY;
 const stripePromise = loadStripe(stripeApiKey);
 
@@ -20,11 +24,13 @@ interface OrderItem {
 interface OrderResponse {
   order: OrderItem[];
   address?: string;
+  idOrder: number;
 }
 
 interface OrderState {
   orderItems: OrderItem[];
   totalPrice: number;
+  idOrder: number;
 }
 
 const Order = () => {
@@ -32,16 +38,18 @@ const Order = () => {
   const [orderState, setOrderState] = useState<OrderState>({
     orderItems: [],
     totalPrice: 0,
+    idOrder: 0,
   });
 
   useEffect(() => {
     const fetchOrder = async (): Promise<void> => {
       try {
-        const response = await axios.get<OrderResponse>('http://localhost:8000/get-order', { headers: authHeader() });
+        const response = await axios.get<OrderResponse>(`${BACKEND_URL}${GET_ORDER}`, { headers: authHeader() });
         if (Array.isArray(response.data.order)) {
           setOrderState({
             orderItems: response.data.order,
             totalPrice: calculateTotalPrice(response.data.order),
+            idOrder: response.data.idOrder,
           });
           if (response.data.address) {
             setAddress(response.data.address);
@@ -68,11 +76,15 @@ const Order = () => {
   const handlePaymentSuccess = (response: any) => {
     console.log('Payment successful:', response);
     // Traitez le paiement réussi ici
+    axios.post(`${BACKEND_URL}${UPDATE_STATUTS}/${orderState.idOrder}`, null, { headers: authHeader() });
+    toast.success('Paiement effectué. Merci pour votre achat.')
+    //Rediriger ( vers l'historique des commandes par exemple )
   };
 
   const handlePaymentError = (error: any) => {
     console.error('Payment error:', error);
     // Traitez l'erreur de paiement ici
+    toast.error('Un problème est survenu.')
   };
 
   return (
@@ -98,7 +110,7 @@ const Order = () => {
         </div>
       ))}
       <div className='total-price-container'>
-        <h2 className='total-price'>Total : {orderState.totalPrice} €</h2>
+      <h2 className='total-price'>Total : {+(orderState.totalPrice.toFixed(2))} €</h2>
       </div>
 
       <h2 className='delivery-address'>Adresse de livraison</h2>
