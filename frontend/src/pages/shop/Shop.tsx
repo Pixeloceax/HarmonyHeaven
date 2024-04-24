@@ -1,8 +1,6 @@
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import WishlistService from "../../services/WishlistService.ts";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PaginationItem from "@mui/material/PaginationItem";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CartService from "../../services/CartService.ts";
 import IWishlistItem from "../../types/wishlist.type.ts";
 import AuthService from "../../services/AuthService.ts";
@@ -77,6 +75,10 @@ export default class Vinyls extends React.Component<Props, State> {
     }
   };
 
+  handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+    this.setState({ currentPage: value });
+  };
+
   scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -93,11 +95,6 @@ export default class Vinyls extends React.Component<Props, State> {
     const currentProducts = products
       ? products.slice(indexOfFirstProduct, indexOfLastProduct)
       : [];
-
-    // Change page
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-      this.setState({ currentPage: value });
-    };
 
     // Add product to wishlist
     const addToWishlist = (product: IProduct) => {
@@ -170,12 +167,10 @@ export default class Vinyls extends React.Component<Props, State> {
                 products ? Math.ceil(products.length / productsPerPage) : 1
               }
               page={currentPage}
-              onChange={handleChange}
+              onChange={this.handleChange}
               renderItem={(item) => (
                 <PaginationItem component="button" {...item} />
               )}
-              prevIcon={<ArrowBackIcon />}
-              nextIcon={<ArrowForwardIcon />}
             />
           </Stack>
         </div>

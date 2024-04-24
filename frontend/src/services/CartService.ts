@@ -8,6 +8,8 @@ type Subscriber = () => void;
 class CartService {
   private readonly BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   private readonly SUBMIT_CART = import.meta.env.VITE_USER_SUBMIT_CART;
+  private readonly CART_ENDPOINT = this.SUBMIT_CART;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   private subscribers: Function[] = [];
 
   private setCart(cart: ICartItem[]) {
@@ -112,7 +114,7 @@ class CartService {
     this.setCart(updatedCart);
   }
 
-  updateCartQuantityItem(productId: string, quantity: number) {
+  updateCartQuantityItem(productId: number, quantity: number) {
     const cart = this.getCart();
     const updatedCart = cart.map((item) =>
       item.product.id === productId ? { ...item, quantity } : item

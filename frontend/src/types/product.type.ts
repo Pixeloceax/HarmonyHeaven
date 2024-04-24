@@ -1,9 +1,9 @@
 export default interface IProduct {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  id?: number;
-  name?: string;
+  id: number;
+  name: string;
   description?: string;
-  price?: number;
+  price: number;
   image: string;
   type?: string;
   label?: string;

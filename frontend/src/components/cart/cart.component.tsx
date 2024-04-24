@@ -47,7 +47,7 @@ const Cart = () => {
     setTotalPrice(total);
   };
 
-  const updateQuantity = (id: string, newQuantity: number) => {
+  const updateQuantity = (id: number, newQuantity: number) => {
     CartService.updateCartQuantityItem(id, newQuantity);
     const cart = CartService.getCart();
     setUserCart(cart);
