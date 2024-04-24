@@ -1,135 +1,190 @@
-import AuthService from "../../services/AuthService";
-import CartService from "../../services/CartService";
 import IProduct from "../../types/product.type";
 import { useState, useEffect } from "react";
-import IUser from "../../types/user.type";
 import "./cart.css";
+import axios from "axios";
+import AuthHeader from "../../services/AuthHeader";
+import AuthService from "../../services/AuthService";
+import CartService from "../../services/CartService";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const UPDATE_CART_ITEM = import.meta.env.VITE_UPDATE_CART_ITEM;
+const UPDATE_STOCK = import.meta.env.VITE_UPDATE_STOCK;
 
-interface CartItem {
-  product: IProduct;
+interface ICartItem {
+  id: number;
+  name: string;
+  image: string;
+  price: number;
   quantity: number;
+  oldQuantity?: number;
+}
+
+interface CartItem extends ICartItem {
+  product: IProduct;
 }
 
 const Cart = () => {
-  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [userCart, setUserCart] = useState<CartItem[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCart = async () => {
-      const cart = CartService.getCart();
-      setUserCart(cart);
-      calculateTotalPrice(cart);
+      try {
+        const cart = await CartService.getCart();
+        setUserCart(cart);
+      } catch (err) {
+        setError("Error getting cart: " + err);
+      }
     };
     fetchCart();
   }, []);
 
   useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
-        const user = await AuthService.getCurrentUser();
-        if (user) {
-          setCurrentUser(user);
-        }
-      } catch (err) {
-        setError("Error getting current user: " + err);
-      }
-    };
-    fetchCurrentUser();
-  }, []);
-
-  const calculateTotalPrice = (cart: CartItem[]) => {
-    const total = cart.reduce(
-      (acc, item) => acc + (item.product.price ?? 0) * item.quantity,
-      0
-    );
+    const total = userCart.reduce((acc, item) => {
+      return acc + item.price * item.quantity;
+    }, 0);
     setTotalPrice(total);
-  };
+  }, [userCart]);
 
-  const updateQuantity = (id: number, newQuantity: number) => {
-    CartService.updateCartQuantityItem(id, newQuantity);
-    const cart = CartService.getCart();
-    setUserCart(cart);
-    calculateTotalPrice(cart);
-  };
+  const updateQuantity = async (id: number, newQuantity: number) => {
+    try {
+      const user = await AuthService.getCurrentUser(); // Attendre la résolution de la promesse
 
-  const confirmCart = () => {
-    if (!currentUser) {
-      window.location.href = "/login";
-    } else {
-      CartService.confirmCart();
+      if (user) {
+        // L'utilisateur est connecté, mettre à jour la quantité via l'API
+        const oldQuantity =
+          userCart.find((item: CartItem) => item.id === id)?.quantity || 0;
+
+        await axios.put(
+          `${BACKEND_URL}${UPDATE_CART_ITEM}/${id}`,
+          { quantity: newQuantity },
+          { headers: AuthHeader() }
+        );
+        const updatedCart = await CartService.getCart();
+        setUserCart(updatedCart);
+
+        // Mettre à jour le stock du produit dans la base de données
+        const product = updatedCart.find((item: CartItem) => item.id === id);
+        if (product) {
+          product.quantity = oldQuantity; // Stockez l'ancienne quantité dans l'objet CartItem
+          product.quantity = newQuantity;
+          await axios.post(
+            `${BACKEND_URL}${UPDATE_STOCK}`,
+            { productId: product.id, oldQuantity, newQuantity },
+            { headers: AuthHeader() }
+          );
+        }
+      } else {
+        // L'utilisateur n'est pas connecté, mettre à jour la quantité dans le localStorage
+        const cart = JSON.parse(localStorage.getItem("cart") as string) || [];
+        const index = cart.findIndex((item: CartItem) => item.id === id);
+
+        if (index !== -1) {
+          const oldQuantity = cart[index].quantity;
+          const updatedItem = {
+            ...cart[index],
+            quantity: newQuantity,
+            oldQuantity,
+          }; // Stockez l'ancienne quantité dans l'objet CartItem
+          const updatedCart = [...cart];
+          updatedCart[index] = updatedItem;
+          localStorage.setItem("cart", JSON.stringify(updatedCart));
+          setUserCart(updatedCart); // Mettre à jour l'état userCart avec le nouveau panier mis à jour
+
+          // Appeler l'API pour mettre à jour le stock du produit en BDD
+          const productToSend = updatedCart.find(
+            (item: CartItem) => item.id === id
+          );
+          if (productToSend) {
+            // Vérifiez si productToSend n'est pas undefined
+            await axios.post(`${BACKEND_URL}${UPDATE_STOCK}`, {
+              productId: productToSend.id,
+              oldQuantity: productToSend.oldQuantity, // Utilisez l'ancienne quantité stockée dans l'objet CartItem
+              newQuantity: productToSend.quantity,
+            });
+          }
+        }
+      }
+    } catch (err) {
+      setError("Error updating quantity: " + err);
     }
   };
 
-  const removeFromCart = (id: number) => {
-    CartService.removeFromCart(id);
-    const cart = CartService.getCart();
-    setUserCart(cart);
-    calculateTotalPrice(cart);
+  const handleConfirmCart = async () => {
+    try {
+      await CartService.confirmCart(totalPrice);
+      // Vous pouvez ajouter un message de succès ou effectuer d'autres actions après la confirmation du panier
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const removeFromCartLogged = (id: number) => {
-    CartService.removeFromCartLogged(id);
-    const cart = CartService.getCart();
-    setUserCart(cart);
-    calculateTotalPrice(cart);
+  const removeFromCart = async (id: number) => {
+    try {
+      await CartService.removeFromCart(id);
+      const updatedCart = await CartService.getCart();
+      setUserCart(updatedCart);
+    } catch (err) {
+      setError("Error removing item: " + err);
+    }
   };
 
   return (
     <div className="cart-container">
-      {userCart.length === 0 && <h1>Your cart is empty, return to Shop?</h1>}
-      {userCart.map((item: CartItem) => (
-        <div className="item-container" key={item.product.id}>
-          <div className="cart-item">
-            <div className="item-image">
-              <img
-                className="cart-image"
-                src={item.product.image}
-                alt={item.product.name}
-              />
+      {Array.isArray(userCart) && userCart.length === 0 && (
+        <h1>Your cart is empty, return to Shop?</h1>
+      )}
+      {Array.isArray(userCart) &&
+        userCart.map((item: CartItem) => {
+          return (
+            <div className="item-container" key={item.id}>
+              <div className="cart-item">
+                <div className="item-image">
+                  <img
+                    className="cart-image"
+                    src={item.image}
+                    alt={item.name}
+                  />
+                </div>
+                <div className="item-details">
+                  <h2>{item.name}</h2>
+                  <h3>{item.price}€</h3>
+                </div>
+                <div className="item-action">
+                  <label htmlFor={`quantity-dropdown-${item.id}`}>
+                    Quantité :
+                  </label>
+                  <select
+                    id={`quantity-dropdown-${item.id}`}
+                    className="quantity-dropdown"
+                    value={item.quantity}
+                    onChange={(e) =>
+                      updateQuantity(item.id, Number(e.target.value))
+                    }
+                  >
+                    {[...Array(10)].map((_, index) => (
+                      <option key={index + 1} value={index + 1}>
+                        {index + 1}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={() => removeFromCart(item.id)}
+                    className="cart-button"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
             </div>
-            <div className="item-details">
-              <h2>{item.product.name}</h2>
-              <h3>{item.product.price}€</h3>
-            </div>
-            <div className="item-actions">
-              <label htmlFor={`quantity-dropdown-${item.product.id}`}>
-                Quantité :
-              </label>
-              <select
-                id={`quantity-dropdown-${item.product.id}`}
-                className="quantity-dropdown"
-                value={item.quantity}
-                onChange={(e) =>
-                  updateQuantity(item.product.id!, Number(e.target.value))
-                }
-              >
-                {[...Array(10)].map((_, index) => (
-                  <option key={index + 1} value={index + 1}>
-                    {index + 1}
-                  </option>
-                ))}
-              </select>
-              <button
-                onClick={() => {
-                  currentUser
-                    ? removeFromCartLogged(item.product.id!)
-                    : removeFromCart(item.product.id!);
-                }}
-                className="cart-button"
-              >
-                Remove
-              </button>
-            </div>
-          </div>
-        </div>
-      ))}
+          );
+        })}
+
       <h2 className="total-price">
         Total: {Math.round(totalPrice * 100) / 100}€
       </h2>
       <button
-        onClick={confirmCart}
+        onClick={handleConfirmCart}
         disabled={userCart.length === 0}
         className="submit-button"
       >

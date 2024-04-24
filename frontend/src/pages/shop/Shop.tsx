@@ -6,9 +6,8 @@ import IWishlistItem from "../../types/wishlist.type.ts";
 import AuthService from "../../services/AuthService.ts";
 import ShopService from "../../services/ShopService.ts";
 import Pagination from "@mui/material/Pagination";
-import IProduct from "../../types/product.type";
+import IProduct from "../../types/product.type.ts";
 import { GoHeartFill } from "react-icons/go";
-import IUser from "../../types/user.type.ts";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 import { ImCart } from "react-icons/im";
@@ -18,27 +17,30 @@ import "./shop.css";
 type Props = object;
 type State = {
   products: IProduct[] | null;
-  currentUser: IUser | null;
+  currentUser: boolean;
   productsPerPage: number;
   scrolledDown: boolean;
   error: string | null;
   currentPage: number;
+  cartTotal: number;
 };
 
-export default class Vinyls extends React.Component<Props, State> {
+export default class Shop extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       scrolledDown: false,
       productsPerPage: 9,
-      currentUser: null,
+      currentUser: false,
       currentPage: 1,
       products: null,
       error: null,
+      cartTotal: 0, // Ajoutez cette ligne
     };
   }
 
   componentDidMount() {
+    this.fetchCurrentUser();
     ShopService.getProducts()
       .then((products) => {
         this.setState({ products });
@@ -46,7 +48,6 @@ export default class Vinyls extends React.Component<Props, State> {
       .catch((error) => {
         console.error("Error fetching products:", error);
       });
-
     window.addEventListener("scroll", this.handleScroll);
   }
 
@@ -54,11 +55,15 @@ export default class Vinyls extends React.Component<Props, State> {
     window.removeEventListener("scroll", this.handleScroll);
   }
 
+  handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+    this.setState({ currentPage: value });
+  };
+
   async fetchCurrentUser() {
     try {
       const user = await AuthService.getCurrentUser();
       if (user) {
-        this.setState({ currentUser: user });
+        this.setState({ currentUser: true });
       }
     } catch (err) {
       this.setState({ error: "Error getting current user: " + err });
@@ -69,14 +74,9 @@ export default class Vinyls extends React.Component<Props, State> {
     const { scrolledDown } = this.state;
     const threshold = 100;
     const isScrolled = window.scrollY > threshold;
-
     if (isScrolled !== scrolledDown) {
       this.setState({ scrolledDown: isScrolled });
     }
-  };
-
-  handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-    this.setState({ currentPage: value });
   };
 
   scrollToTop = () => {
@@ -86,10 +86,24 @@ export default class Vinyls extends React.Component<Props, State> {
     });
   };
 
+  async handleAddToCart(
+    productId: number,
+    productName: string,
+    productImage: string,
+    productPrice: number
+  ) {
+    await CartService.addToCart(
+      productId,
+      productName,
+      productImage,
+      productPrice
+    );
+    const cartTotal = await CartService.getCartTotalItems();
+    this.setState({ cartTotal });
+  }
+
   render() {
     const { products, currentPage, productsPerPage, scrolledDown } = this.state;
-
-    // Pagination Logic
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const currentProducts = products
@@ -131,19 +145,12 @@ export default class Vinyls extends React.Component<Props, State> {
                   </button>
                   <button
                     onClick={() =>
-                      this.state.currentUser
-                        ? CartService.addToCartLogged(
-                            product.id,
-                            product.name,
-                            product.image,
-                            product.price
-                          )
-                        : CartService.addToCart(
-                            product.id,
-                            product.name,
-                            product.image,
-                            product.price
-                          )
+                      this.handleAddToCart(
+                        product.id,
+                        product.name,
+                        product.image,
+                        product.price
+                      )
                     }
                     className="cart-button"
                   >

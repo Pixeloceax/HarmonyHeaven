@@ -6,7 +6,6 @@ import Login from "./components/Login/login.component";
 import Register from "./components/Register/register.component";
 import Home from "./pages/home/Home";
 import UserBoardComponent from "./components/UserBoard/UserBoardComponent";
-import Vinyls from "./pages/shop/Shop";
 import Cart from "./components/cart/cart.component";
 import Wishlist from "./pages/wishlist/Wishlist";
 import Navbar from "./components/Navbar/Navbar.component";
@@ -22,6 +21,7 @@ import AdminBoardComponent from "./components/AdminBoard/AdminBoardComponent";
 import AdminUpdateProduct from "./components/AdminBoard/ProductCRUD/UpdateProduct";
 import CreateProduct from "./components/AdminBoard/ProductCRUD/CreateProduct";
 import UpdateUser from "./components/AdminBoard/UserCRUD/UpdateUser";
+import Shop from "./pages/shop/Shop";
 import AboutPage from "./pages/About/AboutPage";
 
 type Props = object;
@@ -116,7 +116,8 @@ class App extends Component<Props, State> {
             path="/user"
             element={isLogin ? <UserBoardComponent /> : <Login />}
           />
-          <Route path="/shop" element={<Vinyls />} />
+
+          <Route path="/shop" element={<Shop />} />
           <Route path="/shop/:productId" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/about" element={<AboutPage />} />

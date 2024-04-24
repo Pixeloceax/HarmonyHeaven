@@ -140,3 +140,8 @@
   margin-top: 0.5rem;
   padding: 0.3rem;
 }
+
+.cart-button:hover {
+  cursor: pointer;
+  color: #ff8000;
+}

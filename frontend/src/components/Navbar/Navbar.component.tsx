@@ -21,12 +21,18 @@ class Navbar extends Component<object, State> {
     this.state = {
       error: null,
       currentUser: null,
-      cartTotal: CartService.getCartTotalItems(),
+      cartTotal: 0,
     };
     this.updateCartTotal = this.updateCartTotal.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
-  componentDidMount() {
+  async getCartTotal() {
+    const cartTotal = await CartService.getCartTotalItems();
+    this.setState({ cartTotal });
+  }
+
+  async componentDidMount() {
     this.fetchCurrentUser();
     CartService.subscribe(this.updateCartTotal);
   }
@@ -65,8 +71,8 @@ class Navbar extends Component<object, State> {
     }
   }
 
-  updateCartTotal() {
-    this.setState({ cartTotal: CartService.getCartTotalItems() });
+  async updateCartTotal() {
+    this.setState({ cartTotal: await CartService.getCartTotalItems() });
   }
 
   render() {
