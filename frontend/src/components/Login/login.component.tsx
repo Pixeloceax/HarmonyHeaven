@@ -6,6 +6,7 @@ import "./login.css";
 import Cat from "../../assets/images/cat.jpg";
 
 import AuthService from "../../services/auth.service";
+import cartServiceNew from "../../services/cart.service";
 
 type Props = object;
 
@@ -45,7 +46,8 @@ export default class Login extends Component<Props, State> {
     });
 
     AuthService.login(email, password).then(
-      () => {
+      async () => {
+        await cartServiceNew.persistStorage();
         window.location.href = "/user";
       },
       (error) => {
