@@ -5,7 +5,7 @@ import IUser from "./types/user.type";
 import Login from "./components/Login/login.component";
 import Register from "./components/Register/register.component";
 import Home from "./pages/home/Home";
-import UserBoardComponent from "./components/UserBoard/UserBoardComponent";
+import UserBoardComponent from "./pages/UserBoard/UserBoardComponent";
 import Vinyls from "./pages/shop/Shop";
 import Cart from "./components/cart/cart.component";
 import Wishlist from "./pages/wishlist/Wishlist";

@@ -6,7 +6,7 @@ import UserService from "../../services/UserService";
 import AuthService from "../../services/AuthService";
 import IUser from "../../types/user.type";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import Loader from "../loader/loader.component";
+import Loader from "../../components/loader/loader.component";
 
 type Props = object;
 type State = {
