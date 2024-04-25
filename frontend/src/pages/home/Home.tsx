@@ -1,18 +1,19 @@
-import { Component } from "react";
+import React, { Component } from "react";
+import { withTranslation, WithTranslation } from "react-i18next";
 import IGenre from "../../types/genre.type";
 import GenreService from "../../services/GenreService";
 import "./Home.css";
 import { FaSearch } from "react-icons/fa";
 
-type Props = object;
-type State = {
+interface Props extends WithTranslation {}
+interface State {
   searchQuery: string;
   selectedGenre: string | null;
   genres: IGenre[] | null;
   divCount: 6;
-};
+}
 
-export default class Home extends Component<Props, State> {
+class Home extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -47,6 +48,8 @@ export default class Home extends Component<Props, State> {
 
   render() {
     const { genres } = this.state;
+    const { t } = this.props;
+
     return (
       <>
         <main className="mainSection">
@@ -54,19 +57,19 @@ export default class Home extends Component<Props, State> {
             <div className="content">
               <h1 className="HHVinyl">
                 <p>
-                  EXCEPTIONAL <br />
-                  VINYLS
+                  {t("EXCEPTIONAL")} <br />
+                  {t("VINYLS")}
                   <br />
                   <br />
-                  HARMONY <br />
-                  HEAVEN
+                  {t("HARMONY")}  <br />
+                  {t("HEAVEN")} 
                 </p>
               </h1>
             </div>
           </section>
           <section className="secondSection">
             <div className="midSection">
-              <h1 className="newsHeading">NEWS & HOT</h1>
+              <h1 className="newsHeading">{t("NEWS & HOT")}</h1>
               <div className="inputSection">
                 <select
                   className="genre-buttons"
@@ -74,7 +77,7 @@ export default class Home extends Component<Props, State> {
                   onChange={(e) => this.handleGenreSelect(e.target.value)}
                 >
                   <option value="" disabled>
-                    Genres
+                    {t("Genres")}
                   </option>
                   {genres &&
                     genres.map((genre) => (
@@ -106,3 +109,5 @@ export default class Home extends Component<Props, State> {
     );
   }
 }
+
+export default withTranslation()(Home); 

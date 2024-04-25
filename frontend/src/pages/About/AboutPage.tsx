@@ -1,7 +1,15 @@
 import React, { Component } from "react";
+import { withTranslation, WithTranslation } from "react-i18next";
 
-export default class AboutPage extends Component {
+interface Props extends WithTranslation {}
+
+class AboutPage extends Component {
+  constructor(props: Props) {
+    super(props);
+    this.state = {};
+  }
   render() {
+    const { t } = this.props;
     return (
       <React.Fragment>
         <div
@@ -13,7 +21,7 @@ export default class AboutPage extends Component {
           }}
         >
           <div>
-            <h2>Contact Us</h2>
+            <h2>{t("Contact Us")}</h2>
             <form
               style={{
                 display: "flex",
@@ -23,7 +31,7 @@ export default class AboutPage extends Component {
               }}
             >
               <label>
-                Name:
+                {t("Name")}:
                 <input type="text" name="name" />
               </label>
               <label>
@@ -57,3 +65,4 @@ export default class AboutPage extends Component {
     );
   }
 }
+export default withTranslation()(AboutPage);

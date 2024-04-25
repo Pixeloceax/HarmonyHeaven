@@ -6,8 +6,6 @@
 }
 
 .product-detail-images {
-  width: 1312px;
-  height: 624px;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -41,6 +39,8 @@
 .PlaceholderImage {
   flex: 1 1 0;
   align-self: stretch;
+  width: 7  00px;
+  height: 700px;
 }
 
 .Container {
@@ -57,11 +57,11 @@
   position: absolute;
 }
 
-/* ---------------------------------------------------------------------- */
-
 .product-detail-informations {
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
+  margin-top: 2%;
 }
 
 .product-name {

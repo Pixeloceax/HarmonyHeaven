@@ -13,8 +13,8 @@ import Navbar from "./components/Navbar/Navbar.component";
 import ForgotPassword from "./components/forgot-password/forgot-password.component";
 import ResetPassword from "./pages/reset-password/reset-password.page";
 import Debug from "./pages/debug/debug.page";
-// import Footer from "./components/Footer/footer.component";
-import ProductDetail from "./components/ProductDetail/ProductDetail.component";
+import Footer from "./components/Footer/footer.component";
+import ProductDetail from "./pages/ProductDetail/ProductDetail.component";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OrderComponent from "./components/Order/OrderComponent";
@@ -23,6 +23,7 @@ import AdminUpdateProduct from "./components/AdminBoard/ProductCRUD/UpdateProduc
 import CreateProduct from "./components/AdminBoard/ProductCRUD/CreateProduct";
 import UpdateUser from "./components/AdminBoard/UserCRUD/UpdateUser";
 import AboutPage from "./pages/About/AboutPage";
+import i18n from "./types/i18";
 
 type Props = object;
 
@@ -44,7 +45,7 @@ class App extends Component<Props, State> {
   async componentDidMount() {
     try {
       const user = await AuthService.getCurrentUser();
-
+  
       if (user) {
         this.setState({
           currentUser: user,
@@ -54,8 +55,12 @@ class App extends Component<Props, State> {
     } catch (error) {
       throw new Error("Error getting current user: " + error);
     }
+  
+    // Detect browser language and set i18n language
+    const browserLanguage = navigator.language.split(/[-_]/)[0];
+    i18n.changeLanguage(browserLanguage);
   }
-
+  
   render() {
     const { currentUser, isLogin } = this.state;
 
@@ -126,6 +131,7 @@ class App extends Component<Props, State> {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/debug" element={<Debug />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     );
   }

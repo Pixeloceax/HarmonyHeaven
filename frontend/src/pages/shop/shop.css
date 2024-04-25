@@ -17,11 +17,11 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
   border: #ffffff 1px solid;
-  min-height: 472px;
-  max-width: 400px;
-  min-width: 400px;
+  min-height: 485px;
+  max-height: 485px;
+  max-width: 340px;
+  min-width: 340px;
   margin-top: 2%;
 }
 .child-section > p {
@@ -37,11 +37,18 @@
   height: 300px;
   margin: auto;
 }
-
+.product-details{
+  margin-top: 2%;
+  max-width: 297px;
+  min-width: 297px;
+  max-height:100px;
+  min-height:100px;
+}
 .buttons-div {
   margin-top: 10px;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 1%;
 }
 
 .pagination {

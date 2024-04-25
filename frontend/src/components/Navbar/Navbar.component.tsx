@@ -1,159 +1,151 @@
-import { Component } from "react";
-import AuthService from "../../services/AuthService";
-import IUser from "../../types/user.type";
-import "./Narvbar.css";
+import { withTranslation, WithTranslation } from "react-i18next";
 import logo from "../../assets/icons/png/LOGO sans texte.png";
+import AuthService from "../../services/AuthService";
 import CartService from "../../services/CartService";
-import { ImCart } from "react-icons/im";
 import { GoHeartFill } from "react-icons/go";
+import { useEffect, useState } from "react";
+import IUser from "../../types/user.type";
+import { ImCart } from "react-icons/im";
+import "./Narvbar.css";
 
-interface State {
-  error: string | null;
-  currentUser: IUser | null;
-  cartTotal: number;
-}
+interface Props extends WithTranslation {}
 
-class Navbar extends Component<object, State> {
-  navLinks = ["home", "shop", "Wishlist", "orders", "user", "about"];
+const Navbar: React.FC<Props> = ({ t }) => {
+  const [error, setError] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
+  const [cartTotal, setCartTotal] = useState<number>(
+    CartService.getCartTotalItems()
+  );
 
-  constructor(props: object) {
-    super(props);
-    this.state = {
-      error: null,
-      currentUser: null,
-      cartTotal: CartService.getCartTotalItems(),
-    };
-    this.updateCartTotal = this.updateCartTotal.bind(this);
-  }
+  const navLinks: string[] = [
+    "home",
+    "shop",
+    "Wishlist",
+    "orders",
+    "profil",
+    "about",
+  ];
 
-  componentDidMount() {
-    this.fetchCurrentUser();
-    CartService.subscribe(this.updateCartTotal);
-  }
-
-  componentWillUnmount() {
-    CartService.unsubscribe(this.updateCartTotal);
-  }
-
-  async fetchCurrentUser() {
+  const fetchCurrentUser = async () => {
     try {
       const user = await AuthService.getCurrentUser();
       if (user) {
-        this.setState({ currentUser: user });
+        setCurrentUser(user);
       }
     } catch (err) {
-      this.setState({ error: "Error getting current user: " + err });
+      setError("Error getting current user: " + err);
     }
-  }
+  };
 
-  logout() {
+  const logout = () => {
     AuthService.logout();
-    this.setState({ currentUser: null });
-  }
+    setCurrentUser(null);
+  };
 
-  openNav() {
+  const openNav = () => {
     const navElement = document.getElementById("navElement");
     if (navElement) {
       navElement.style.width = "100%";
     }
-  }
+  };
 
-  closeNav() {
+  const closeNav = () => {
     const navElement = document.getElementById("navElement");
     if (navElement) {
       navElement.style.width = "0%";
     }
-  }
+  };
 
-  updateCartTotal() {
-    this.setState({ cartTotal: CartService.getCartTotalItems() });
-  }
+  const updateCartTotal = () => {
+    setCartTotal(CartService.getCartTotalItems());
+  };
 
-  render() {
-    const { currentUser, cartTotal } = this.state;
-    return (
-      <header>
-        <nav className="navbar">
-          <ul className="navbar-list">
-            <div className="nav-icons">
-              <li>
-                <a className="navbar-cart" href="/cart">
-                  <ImCart />
-                  <p>{cartTotal}</p>
-                </a>
-              </li>
-              <li>
-                <a className="navbar-wishlist" href="/wishlist">
-                  <GoHeartFill />
-                </a>
-              </li>
-            </div>
+  useEffect(() => {
+    fetchCurrentUser();
+    CartService.subscribe(updateCartTotal);
+    return () => {
+      CartService.unsubscribe(updateCartTotal);
+    };
+  }, []);
+
+  return (
+    <header>
+      <nav className="navbar">
+        <ul className="navbar-list">
+          <div className="nav-icons">
             <li>
-              <a className="navbar-logo" href="/">
-                <img src={logo} alt="logo" />
+              <a className="navbar-cart" href="/cart">
+                <ImCart />
+                <p>{cartTotal}</p>
               </a>
             </li>
-            <li className="navbar-menu-button">
-              <button className="navbar-open-button" onClick={this.openNav}>
-                menu
-              </button>
+            <li>
+              <a className="navbar-wishlist" href="/wishlist">
+                <GoHeartFill />
+              </a>
             </li>
-          </ul>
-
-          <div id="navElement" className="navbar-overlay">
-            <button className="navbar-close-button" onClick={this.closeNav}>
-              close
+          </div>
+          <li>
+            <a className="navbar-logo" href="/">
+              <img src={logo} alt="logo" />
+            </a>
+          </li>
+          <li className="navbar-menu-button">
+            <button className="navbar-open-button" onClick={openNav}>
+              menu
             </button>
+          </li>
+        </ul>
 
-            <div className="navbar-overlay-content">
-              <ul>
-                {this.navLinks
-                  .filter(
-                    (link) => !["login", "register", "logout"].includes(link)
-                  )
-                  .map((link, index) => (
-                    <li className="navbar-overlay-link-item" key={index}>
-                      <a className="navbar-overlay-link" href={`/${link}`}>
-                        {link.toUpperCase()}
-                      </a>
-                    </li>
-                  ))}
-                {currentUser ? (
-                  <li className="navbar-overlay-link-item">
-                    <a
-                      className="navbar-overlay-link"
-                      href="/logout"
-                      onClick={this.logout}
-                    >
-                      LOGOUT
-                    </a>
-                  </li>
-                ) : (
-                  <>
-                    <li className="navbar-overlay-link-item">
-                      <a className="navbar-overlay-link" href="/login">
-                        LOGIN
-                      </a>
-                    </li>
-                    <li className="navbar-overlay-link-item">
-                      <a className="navbar-overlay-link" href="/register">
-                        REGISTER
-                      </a>
-                    </li>
-                  </>
-                )}
-                <li className="navbar-overlay-link-item">
-                  <a className="navbar-overlay-link" href="/contact">
-                    CONTACT
+        <div id="navElement" className="navbar-overlay">
+          <button className="navbar-close-button" onClick={closeNav}>
+            {t("close")}
+          </button>
+
+          <div className="navbar-overlay-content">
+            <ul>
+              {navLinks.map((link, index) => (
+                <li className="navbar-overlay-link-item" key={index}>
+                  <a className="navbar-overlay-link" href={`/${link}`}>
+                    {t(link).toUpperCase()}
                   </a>
                 </li>
-              </ul>
-            </div>
+              ))}
+              {currentUser ? (
+                <li className="navbar-overlay-link-item">
+                  <a
+                    className="navbar-overlay-link"
+                    href="/logout"
+                    onClick={logout}
+                  >
+                    {t("LOGOUT")}
+                  </a>
+                </li>
+              ) : (
+                <>
+                  <li className="navbar-overlay-link-item">
+                    <a className="navbar-overlay-link" href="/login">
+                      {t("LOGIN")}
+                    </a>
+                  </li>
+                  <li className="navbar-overlay-link-item">
+                    <a className="navbar-overlay-link" href="/register">
+                      {t("REGISTER")}
+                    </a>
+                  </li>
+                </>
+              )}
+              <li className="navbar-overlay-link-item">
+                <a className="navbar-overlay-link" href="/contact">
+                  {t("CONTACT")}
+                </a>
+              </li>
+            </ul>
           </div>
-        </nav>
-      </header>
-    );
-  }
-}
+        </div>
+      </nav>
+    </header>
+  );
+};
 
-export default Navbar;
+export default withTranslation()(Navbar);

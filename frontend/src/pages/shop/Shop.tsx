@@ -116,12 +116,18 @@ export default class Vinyls extends React.Component<Props, State> {
           <div className="vinyls">
             {currentProducts.map((product, index) => (
               <div key={index} className="child-section">
-                <img src={product.image} className="vinyl-cover" alt="cover" />
                 <Link to={`/shop/${product.id}`}>
-                  <p>{product.name}</p>
+                  <img
+                    src={product.image}
+                    className="vinyl-cover"
+                    alt="cover"
+                  />
                 </Link>
-                <p>{product.artist}</p>
-                <p>{product.price}€</p>
+                <div className="product-details">
+                  <p>{product.name}</p>
+                  <p>{product.artist}</p>
+                  <p>{product.price}€</p>
+                </div>
                 <div className="buttons-div">
                   <button
                     onClick={() => addToWishlist(product)}
