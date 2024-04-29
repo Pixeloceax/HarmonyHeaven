@@ -38,6 +38,8 @@ RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 RUN composer dump-autoload --optimize
 RUN php bin/console assets:install --symlink
 
+RUN symfony console cache:clear --env=prod
+
 EXPOSE 8000
 
 CMD symfony server:start
