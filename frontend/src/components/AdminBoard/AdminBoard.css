@@ -11,16 +11,42 @@ th {
   padding: 8px;
 }
 
-.board-edit-button {
-  background-color: white;
-  color: black;
-  width: 100px;
-  height: 25px;
+td {
+  font-size: 12px;
+}
+
+th {
+  font-size: 12px;
+}
+
+.board-button {
+  color: white;
+  width: 80px;
+  height: 30px;
   border: none;
+  border-radius: 5px;
+}
+
+.board-button:hover {
+  cursor: pointer;
+}
+
+.board-button>a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board-button>a>svg {
+  margin-right: 0.5em;
+}
+
+.board-delete-button>svg, .board-edit-button>svg {
+  margin-right: 0.5em;
 }
 
 .board-container {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,3 +57,75 @@ th {
   flex-direction: column;
   align-items: center;
 }
+
+.board-edit-button {
+  background-color: #007bff;
+}
+
+.board-edit-button:hover {
+  background-color: #0069d9;
+}
+
+.board-delete-button {
+  background-color: #dc3545;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board-delete-button:hover {
+  background-color: #c82333;
+}
+
+.btn-primary {
+  background-color: #ff5400;
+  padding: 1em 1em;
+  border: 0px;
+  border-radius: 10px;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #ff8000;
+  cursor: pointer;
+}
+
+td>img {
+  width: 80px;
+  height: 80px;
+}
+
+.add-product-btn-container {
+  margin: 1em 0;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-product-btn-container:hover {
+  background-color: #666;
+}
+
+.genre-array-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.array-form-control {
+  order: 3;
+  background-color: white;
+  border: 1px solid #d3d3d3;
+  height: 48px;
+  width: 480px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin: 1em;
+  border-radius: 10px;
+}
+

@@ -179,17 +179,18 @@ const Cart = () => {
             </div>
           );
         })}
-
-      <h2 className="total-price">
-        Total: {Math.round(totalPrice * 100) / 100}€
-      </h2>
-      <button
-        onClick={handleConfirmCart}
-        disabled={userCart.length === 0}
-        className="submit-button"
-      >
-        Submit cart
-      </button>
+      <div className="cart-confirm">
+        <h2 className="total-price">
+          Total: {Math.round(totalPrice * 100) / 100}€
+        </h2>
+        <button
+          onClick={handleConfirmCart}
+          disabled={userCart.length === 0}
+          className="submit-button"
+        >
+          Submit cart
+        </button>
+      </div>
       <p>{error}</p>
     </div>
   );

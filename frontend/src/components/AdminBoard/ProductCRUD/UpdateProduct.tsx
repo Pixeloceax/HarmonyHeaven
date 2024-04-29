@@ -78,6 +78,7 @@ const UpdateProduct = () => {
       <div className="board-container">
         <form onSubmit={handleSubmit}>
           {fields.map((field) => (
+            <div className="form-group">
             <label key={field.name}>
               {field.label}:
               <input
@@ -85,10 +86,12 @@ const UpdateProduct = () => {
                 name={field.name}
                 value={product[field.name as keyof IProduct]}
                 onChange={handleChange}
+                className="form-control"
               />
             </label>
+            </div>
           ))}
-          <label>
+          <label className="genre-array-container">
             Genre du produit:
             {Array.isArray(product.genre) &&
               product.genre.map((genre: IGenre) => (
@@ -98,11 +101,12 @@ const UpdateProduct = () => {
                   name="genre"
                   value={genre.name}
                   readOnly
+                  className="array-form-control"
                 />
               ))}
           </label>
 
-          <label>
+          <label className="genre-array-container">
             Style du produit:
             {Array.isArray(product.style) &&
               product.style.map((style: IStyle) => (
@@ -112,10 +116,11 @@ const UpdateProduct = () => {
                   name="style"
                   value={style.name}
                   readOnly
+                  className="array-form-control"
                 />
               ))}
           </label>
-          <button type="submit">Update product</button>
+          <button type="submit" className="btn btn-primary">Update product</button>
         </form>
       </div>
     </React.Fragment>

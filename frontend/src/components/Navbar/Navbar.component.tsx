@@ -6,6 +6,7 @@ import logo from "../../assets/icons/png/LOGO sans texte.png";
 import CartService from "../../services/CartService";
 import { ImCart } from "react-icons/im";
 import { GoHeartFill } from "react-icons/go";
+import { IconContext } from "react-icons";
 
 interface State {
   error: string | null;
@@ -84,13 +85,17 @@ class Navbar extends Component<object, State> {
             <div className="nav-icons">
               <li>
                 <a className="navbar-cart" href="/cart">
-                  <ImCart />
+                  <IconContext.Provider value={{ className: "cart-icon"}}>
+                    <ImCart />
+                  </IconContext.Provider>
                   <p>{cartTotal}</p>
                 </a>
               </li>
               <li>
                 <a className="navbar-wishlist" href="/wishlist">
-                  <GoHeartFill />
+                  <IconContext.Provider value={{ className: "heart-icon"}}>
+                    <GoHeartFill />
+                  </IconContext.Provider>
                 </a>
               </li>
             </div>

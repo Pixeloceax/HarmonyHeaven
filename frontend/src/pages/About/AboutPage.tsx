@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./AboutPage.css"
 
 export default class AboutPage extends Component {
   render() {
@@ -22,23 +23,30 @@ export default class AboutPage extends Component {
                 height: "700",
               }}
             >
-              <label>
-                Name:
-                <input type="text" name="name" />
-              </label>
-              <label>
-                Email:
-                <input type="text" name="email" />
-              </label>
-              <label>
-                Message:
-                <textarea name="message" />
-              </label>
+              <div className="form-group">
+                <label>
+                  Name:
+                  <input type="text" name="name" className="form-control" />
+                </label>
+              </div>
+              <div className="form-group">
+                <label>
+                  Email:
+                  <input type="text" name="email" className="form-control" />
+                </label>
+              </div>
+              <div className="form-group">
+                <label>
+                  Message:
+                  <textarea name="message" />
+                </label>
+              </div>
               <br />
-              <label>
+              <label className="agreement-container">
                 <input type="checkbox" name="I accept the Terms" />
+                <p>J'ai lu et j'accepte les <a href=""> conditions générales d'utilisation</a></p>
               </label>
-              <input type="submit" value="Submit" />
+              <input type="submit" value="Submit" className="btn btn-primary" />
             </form>
           </div>
           <div>

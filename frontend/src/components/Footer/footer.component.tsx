@@ -49,15 +49,17 @@ const Footer: React.FC = () => {
             </h3>
           </div>
         </div>
-        <a href="/home">Home</a>
-        <a href="/contact">Contact</a>
-        <a href="/home">Home</a>
-        <a href="/home">Home</a>
-        <a href="/home">Home</a>
+        <div className="footer-links">
+          <a href="/home">Home</a>
+          <a href="/contact">Contact</a>
+          <a href="/home">Home</a>
+          <a href="/home">Home</a>
+          <a href="/home">Home</a>
+        </div>
       </div>
       <div className="footer-bot">
         <div className="about-us">
-          <div>
+          <div className="footer-sub-links">
             <a href="" target="_">
               Privacy Policy
             </a>

@@ -2,7 +2,6 @@
   margin: 20px;
   padding: 20px;
   background-color: #f9f9f9;
-  height: 100vh;
   margin: 3rem 5rem 0 3rem;
   padding: 2rem;
 }
@@ -57,12 +56,14 @@
 
 .item-action button:hover {
   background-color: #ff8000;
+  color: white;
 }
 
 .total-price {
   color: #333;
   margin-top: 20px;
   font-size: 20px;
+  margin-bottom: 10px;
 }
 
 .submit-button {
@@ -95,4 +96,10 @@
   border-bottom: #333 2px dashed;
   background-color: #c3c3c381;
   padding: 1rem;
+}
+
+.cart-confirm {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
 }
