@@ -130,32 +130,40 @@ export default class Shop extends React.Component<Props, State> {
           <div className="vinyls">
             {currentProducts.map((product, index) => (
               <div key={index} className="child-section">
-                <img src={product.image} className="vinyl-cover" alt="cover" />
-                <Link to={`/shop/${product.id}`}>
-                  <p>{product.name}</p>
-                </Link>
-                <p>{product.artist}</p>
-                <p>{product.price}€</p>
-                <div className="buttons-div">
-                  <button
-                    onClick={() => addToWishlist(product)}
-                    className="wishlist-button"
-                  >
-                    <GoHeartFill />
-                  </button>
-                  <button
-                    onClick={() =>
-                      this.handleAddToCart(
-                        product.id,
-                        product.name,
-                        product.image,
-                        product.price
-                      )
-                    }
-                    className="cart-button"
-                  >
-                    <ImCart />
-                  </button>
+                {/* <div className="vinyl-img-container"> */}
+                  <Link to={`/shop/${product.id}`}>
+                    <img src={product.image} className="vinyl-cover" alt="cover" />
+                  </Link>
+                {/* </div> */}
+                <div className="product-details-and-btns-container">
+                  <div className="product-details-container">
+                    <Link to={`/shop/${product.id}`}>
+                      <p>{product.name}</p>
+                    </Link>
+                    <p>{product.artist}</p>
+                    <p>{product.price}€</p>
+                  </div>
+                  <div className="buttons-div">
+                    <button
+                      onClick={() => addToWishlist(product)}
+                      className="wishlist-button"
+                    >
+                      <GoHeartFill />
+                    </button>
+                    <button
+                      onClick={() =>
+                        this.handleAddToCart(
+                          product.id,
+                          product.name,
+                          product.image,
+                          product.price
+                        )
+                      }
+                      className="cart-button"
+                    >
+                      <ImCart />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

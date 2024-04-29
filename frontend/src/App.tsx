@@ -23,6 +23,8 @@ import CreateProduct from "./components/AdminBoard/ProductCRUD/CreateProduct";
 import UpdateUser from "./components/AdminBoard/UserCRUD/UpdateUser";
 import Shop from "./pages/shop/Shop";
 import AboutPage from "./pages/About/AboutPage";
+import Footer from "./components/Footer/footer.component";
+import { Rgpd } from "./pages/RGPD/Rgpd";
 
 type Props = object;
 
@@ -126,7 +128,9 @@ class App extends Component<Props, State> {
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/debug" element={<Debug />} />
+          <Route path="/rgpd" element={<Rgpd />} />
         </Routes>
+        <Footer/>
       </BrowserRouter>
     );
   }

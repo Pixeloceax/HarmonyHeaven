@@ -13,8 +13,8 @@ export default class DeleteAccount extends Component<Props> {
 
   render() {
     return (
-      <div>
-        <button onClick={this.deleteUser}>Delete Account</button>
+      <div className="delete-account-container">
+        <button onClick={this.deleteUser} className="btn btn-primary">Delete Account</button>
       </div>
     );
   }

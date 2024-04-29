@@ -97,7 +97,11 @@ export default class AdminBoardComponent extends Component<Props, State> {
                       </li>
                     );
                   })}
-                  <li onClick={() => AuthService.logout()}>Logout</li>
+                  <li onClick={() => AuthService.logout()}>
+                  <button type="submit" className="btn btn-primary">
+                    Logout
+                  </button>
+                  </li>
                 </ul>
               </nav>
             </div>

@@ -6,6 +6,7 @@ import IProduct from "../../types/product.type";
 import Loader from "../loader/loader.component";
 import CartService from "../../services/CartService";
 import "./ProductDetail.css";
+import { ImCart } from "react-icons/im";
 
 const ProductDetail = () => {
   const [thisProduct, setThisProduct] = useState<IProduct | null>(null);
@@ -41,54 +42,27 @@ const ProductDetail = () => {
   return (
     <React.Fragment>
       <div className="product-detail-container">
-        <div className="product-detail-images">
-          <img
-            className="PlaceholderImage"
-            src={thisProduct.image || "https://via.placeholder.com/648x624"}
-            alt={thisProduct.name}
-          />
-          <div className="Column">
-            <div className="Row">
-              <img
-                className="PlaceholderImage"
-                src={
-                  (thisProduct.image =
-                    thisProduct.image || "https://via.placeholder.com/316x304")
-                }
-              />
-              <img
-                className="PlaceholderImage"
-                src={
-                  (thisProduct.image =
-                    thisProduct.image || "https://via.placeholder.com/316x304")
-                }
-              />
-            </div>
-            <div className="Row">
-              <img
-                className="PlaceholderImage"
-                src={
-                  (thisProduct.image =
-                    thisProduct.image || "https://via.placeholder.com/316x304")
-                }
-              />
-              <div className="Container">
-                <img
-                  className="PlaceholderImage"
-                  src={
-                    (thisProduct.image =
-                      thisProduct.image ||
-                      "https://via.placeholder.com/316x304")
-                  }
-                />
-              </div>
-            </div>
+        <div className="images-container">
+          <div className="main-img-container">
+            <img className="PlaceholderImage" src={thisProduct.image 
+            || "https://via.placeholder.com/648x624"} alt={thisProduct.name} />
+          </div>
+          <div className="sub-imgs-container">
+            <img className="PlaceholderImage" src={(thisProduct.image = thisProduct.image 
+            || "https://via.placeholder.com/316x304")}/>
+            <img className="PlaceholderImage" src={(thisProduct.image = thisProduct.image 
+            || "https://via.placeholder.com/316x304")}/>
+            <img className="PlaceholderImage" src={(thisProduct.image = thisProduct.image 
+            || "https://via.placeholder.com/316x304")}/>
+            <img className="PlaceholderImage" src={(thisProduct.image = thisProduct.image 
+            || "https://via.placeholder.com/316x304")}/>
           </div>
         </div>
+        
         <div className="product-detail-informations">
           <h1 className="product-name">{thisProduct.name}</h1>{" "}
-          <p className="product-price">{thisProduct.price}€</p>
-        </div>
+          <h2 className="product-price">{thisProduct.price}€</h2>
+        
         <div className="product-detail-description">
           <p
             className="product-description"
@@ -131,10 +105,11 @@ const ProductDetail = () => {
               thisProduct.price as number
             )
           }
-          className="add-to-cart-btn"
+          className="add-to-cart-btn submit-button"
         >
-          Add to Cart
+          <ImCart /> Add to Cart
         </button>
+      </div>
       </div>
     </React.Fragment>
   );

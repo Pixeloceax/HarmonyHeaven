@@ -4,6 +4,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  padding: 1em;
 }
 
 .user-board-nav-items li {
@@ -18,4 +19,21 @@
   font-size: small;
   font-weight: normal;
   cursor: auto;
+}
+
+.form-control {
+  border-radius: 10px;
+}
+
+.form-group>.btn-primary, .logout-btn-container>.btn-primary, .delete-account-container>.btn-primary {
+  background-color: #ff5400;
+  padding: 1em 1em;
+  border: 0px;
+  border-radius: 10px;
+  color: white;
+}
+
+.form-group>.btn-primary:hover, .logout-btn-container>.btn-primary:hover, .delete-account-container>.btn-primary:hover {
+  background-color: #ff8000;
+  cursor: pointer;
 }
