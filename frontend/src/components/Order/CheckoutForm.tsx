@@ -12,6 +12,9 @@ import "./CheckoutForm.css";
 import authHeader from "../../services/AuthHeader";
 import Loader from "../loader/loader.component";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const PAY_URL = import.meta.env.VITE_PAY;
+
 interface CheckoutFormProps {
   amount: number;
   description: string;
@@ -40,7 +43,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
       }
 
       const response = await axios.post(
-        "http://localhost:8000/pay",
+        `${BACKEND_URL}${PAY_URL}`,
         { amount, description, customerName },
         { headers: authHeader() }
       );
