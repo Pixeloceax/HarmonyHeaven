@@ -30,12 +30,16 @@ rectangle "usecase e-commerce" {
     U -- UC7
     U -- UC8
     U -- UC9
-  
-    A --|> U 
 
     A -- UCA1
     A -- UCA2
     A -- UCA3
+
+    A --|> U
+
+    (UC5) .> (UCA1) : include
+    (UC5) .> (UCA2) : include
+    (UC5) .> (UCA3) : include
 }
 
 @enduml
