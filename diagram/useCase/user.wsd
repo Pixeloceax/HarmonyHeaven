@@ -1,7 +1,11 @@
 @startuml usecase e-commerce
+
 left to right direction
+
 skinparam actorStyle awesome
+
 !theme blueprint
+
 actor User as U
 actor Admin as A
 
@@ -40,6 +44,10 @@ rectangle "usecase e-commerce" {
     (UC5) .> (UCA1) : include
     (UC5) .> (UCA2) : include
     (UC5) .> (UCA3) : include
+    (UC5) .> (UC4) : include
+    (UC5) .> (UC8) : include
+    (UC5) .> (UC9) : include
+
 }
 
 @enduml
