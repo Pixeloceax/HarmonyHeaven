@@ -15,34 +15,38 @@ export function Rgpd() {
             <li className="rgpd-sub-section">
                 <h3>2 Responsable du traitement des données</h3>
                 <p>Harmony Heaven est le responsable du traitement des données personnelles collectées sur ce site web. <br/>
-                Coordonnées : [Adresse postale] [Adresse e-mail] [Numéro de téléphone]</p>
+                Coordonnées : 19 Rue des Écoles, 59100 ROUBAIX / harmonyheaven.noreply@gmail.com / 03.27.21.17.77 </p>
             </li>
             <li className="rgpd-sub-section">
                 <h3>3 Données personnelles collectées</h3>
-                <p>Nous collectons les données personnelles suivantes : [Type de données personnelles, par exemple : 
-                    nom, adresse e-mail, adresse IP, etc.]</p>
+                <p>Nous collectons les données personnelles suivantes : Adresse mail, numéro de téléphone, adresse de facturation</p>
             </li>
             <li className="rgpd-sub-section">
                 <h3>4 Finalités et bases juridiques du traitement</h3>
-                <p>Nous traitons vos données personnelles aux fins suivantes : [Objectif du traitement, par exemple : 
-                fourniture de services, amélioration du site web, marketing, etc.] La base juridique du traitement est :
-                [Base juridique, par exemple : consentement, exécution d'un contrat, intérêts légitimes, etc.]</p>
+                <p>Nous traitons vos données personnelles aux fins suivantes : Fournir nos services et répondre à vos demandes de renseignements.
+                    Améliorer notre site web et nos services. Respecter nos obligations légales et réglementaires.
+                </p>
             </li>
             <li className="rgpd-sub-section">
                 <h3>5 Destinataires des données personnelles</h3>
-                <p>Nous pouvons partager vos données personnelles avec : [Tiers avec lesquels vous partagez des données, par exemple 
-                    : prestataires de services, partenaires commerciaux, etc.] </p>
+                <p>Nous ne partageons pas vos données personnelles avec des tiers, sauf si cela est nécessaire pour 
+                    fournir nos services ou pour nous conformer à nos obligations légales et réglementaires. 
+                    Dans ce cas, nous nous assurons que les destinataires de vos données personnelles respectent la 
+                    législation applicable en matière de protection des données. </p>
             </li>
             <li className="rgpd-sub-section">
                 <h3>6 Durée de conservation des données</h3>
-                <p>Nous conservons vos données personnelles pendant : [Durée de conservation, par exemple : 
-                    la durée nécessaire à la réalisation des finalités du traitement, sauf si une durée de conservation 
-                    plus longue est requise par la loi.]</p>
+                <p>Nous conservons vos données personnelles pendant la durée nécessaire à la réalisation des 
+                    finalités du traitement, sauf si une durée de conservation plus longue est requise par la loi. 
+                    Nous révisons régulièrement la pertinence de la conservation de vos données personnelles et 
+                    les supprimons ou les anonymisons lorsqu'elles ne sont plus nécessaires.</p>
             </li>
             <li className="rgpd-sub-section">
                 <h3>7 Transfert de données hors de l'Union européenne</h3>
-                <p>[Si vous transférez des données hors de l'UE, indiquez les garanties appropriées mises en place pour assurer 
-                    la protection des données.]</p>
+                <p>Nous ne transférons pas vos données personnelles hors de l'Union européenne. Toutefois, si nous 
+                    devions le faire à l'avenir, nous nous assurerions que des garanties appropriées sont mises en place 
+                    pour assurer la protection de vos données, conformément à la législation applicable en matière de 
+                    protection des données.</p>
             </li>
             <li className="rgpd-sub-section">
                 <h3>8 Vos droits</h3>
