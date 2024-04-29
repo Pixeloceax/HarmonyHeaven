@@ -1,21 +1,21 @@
 services:
   frontend:
-    image: harmony-heaven-front:v1.1
+    image: axelvalentin/harmonyheaven:frontend-v1.0.3-2024-04-28
     ports:
       - "5200:5200"
     networks:
       - app_net
 
   backend:
-    image: axelvalentin/harmonyheaven:backend-1
+    image: axelvalentin/harmonyheaven:backend-v1.0.4-2024-04-28
+    ports:
+      - "8000:8000"
     environment:
       - APP_ENV=prod
       - APP_DEBUG=0
-      - DATABASE_URL=mysql://symfony_user:symfony_password@database:3306/symfony_db
+      - DATABASE_URL=mysql://41529f9a3cdd:-U%g}W(MJL2UFJLDGe:+@database:3306/harmonyheaven
     networks:
       - app_net
-    ports:
-      - 8000:8000
     depends_on:
       - database
 
@@ -24,8 +24,8 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
-      MYSQL_DATABASE: symfony_db
-      MYSQL_USER: symfony_user
+      MYSQL_DATABASE: harmonyheaven
+      MYSQL_USER_FILE: /run/secrets/mysql_user
       MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
     volumes:
       - db-data:/var/lib/mysql
@@ -33,6 +33,7 @@ services:
       - app_net
     secrets:
       - mysql_root_password
+      - mysql_user
       - mysql_password
 
   adminer:
@@ -44,10 +45,12 @@ services:
       - app_net
 
 secrets:
-  mysql_root_password:
-    file: ./secrets/mysql_root_password.txt
+  mysql_user:
+    file: ./secrets/mysql_user.txt
   mysql_password:
     file: ./secrets/mysql_password.txt
+  mysql_root_password:
+    file: ./secrets/mysql_root_password.txt
 
 networks:
   app_net:
