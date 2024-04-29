@@ -15,7 +15,6 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install intl
 RUN docker-php-ext-install pdo
 RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-install pdo_pgsql
 RUN docker-php-ext-install zip
 
 # Enable the Apache mod_rewrite module
@@ -31,9 +30,6 @@ WORKDIR /var/www/html
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer install --no-scripts --no-autoloader
 
-# Fixtures
-RUN php bin/console doctrine:fixtures:load --no-interaction
-
 # Symfony CLI
 RUN wget https://get.symfony.com/cli/installer -O - | bash
 RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
@@ -41,5 +37,7 @@ RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 # Generate autoloading files and assets
 RUN composer dump-autoload --optimize
 RUN php bin/console assets:install --symlink
+
+EXPOSE 8000
 
 CMD symfony server:start

@@ -1,0 +1,11 @@
+.env
+.env.test
+.phpunit.result.cache
+.gitignore
+.phpunit.cache
+.phpunit.result.cache
+phpunit.xml.dist
+
+
+/tests/
+/templates/

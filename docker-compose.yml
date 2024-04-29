@@ -1,41 +1,60 @@
-version: '3.8'
-
 services:
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: axelvalentin/harmonyheaven:frontend-v1.0.3-2024-04-28
     ports:
-      - "3000:3000"
+      - "5200:5200"
+    networks:
+      - app_net
 
   backend:
-    build:
-      context: ./backend/harmonyheaven
-      dockerfile: Dockerfile
+    image: axelvalentin/harmonyheaven:backend-v1.0.4-2024-04-28
     ports:
       - "8000:8000"
     environment:
-      - APP_ENV=dev
-      - APP_DEBUG=1
-      - DATABASE_URL=mysql://symfony_user:symfony_password@database:3306/symfony_db
+      - APP_ENV=prod
+      - APP_DEBUG=0
+      - DATABASE_URL=mysql://41529f9a3cdd:-U%g}W(MJL2UFJLDGe:+@database:3306/harmonyheaven
+    networks:
+      - app_net
     depends_on:
       - database
-   
+
   database:
     image: mysql:latest
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_DATABASE: symfony_db
-      MYSQL_USER: symfony_user
-      MYSQL_PASSWORD: symfony_password
-    ports:
-      - "3306"
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_DATABASE: harmonyheaven
+      MYSQL_USER_FILE: /run/secrets/mysql_user
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - app_net
+    secrets:
+      - mysql_root_password
+      - mysql_user
+      - mysql_password
 
   adminer:
     image: adminer:latest
-    restart: always
+    restart: unless-stopped
     ports:
       - 8080:8080
+    networks:
+      - app_net
+
+secrets:
+  mysql_user:
+    file: ./secrets/mysql_user.txt
+  mysql_password:
+    file: ./secrets/mysql_password.txt
+  mysql_root_password:
+    file: ./secrets/mysql_root_password.txt
+
+networks:
+  app_net:
 
 volumes:
   db-data:
+    driver: local
