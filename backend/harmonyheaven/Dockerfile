@@ -1,4 +1,4 @@
-# Use a base image with PHP (without Apache)
+# Use a base image with PHP
 FROM php:8.2-fpm
 
 # Install the necessary dependencies for Symfony
@@ -17,8 +17,6 @@ RUN docker-php-ext-install pdo
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install zip
 
-# Enable the PHP-FPM service
-CMD ["php-fpm"]
 
 # Copy the application files into the container
 COPY . /var/www/html
@@ -37,6 +35,5 @@ RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 # Generate autoloading files and assets
 RUN composer dump-autoload --optimize
 
-RUN symfony console cache:clear --env=prod
-
-EXPOSE 8000
+# Start Symfony server
+CMD ["symfony", "serve", "--no-tls", "--port=8000"]
