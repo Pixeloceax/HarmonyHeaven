@@ -20,12 +20,6 @@ class Receipt
     #[ORM\Column(length: 255)]
     private ?string $receipt_number = null;
 
-    #[ORM\Column]
-    private ?int $productId = null;
-
-    #[ORM\Column]
-    private ?int $quantity = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -51,30 +45,6 @@ class Receipt
     public function setReceiptNumber(string $receipt_number): static
     {
         $this->receipt_number = $receipt_number;
-
-        return $this;
-    }
-
-    public function getProductId(): ?int
-    {
-        return $this->productId;
-    }
-
-    public function setProductId(int $productId): static
-    {
-        $this->productId = $productId;
-
-        return $this;
-    }
-
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): static
-    {
-        $this->quantity = $quantity;
 
         return $this;
     }
