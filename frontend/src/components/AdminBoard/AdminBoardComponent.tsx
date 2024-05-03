@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Loader from "../loader/loader.component";
-import AuthService from "../../services/auth.service";
+import AuthService from "../../services/AuthService";
 import "./AdminBoard.css";
 import OrderComponent from "./OrderComponent";
 import PersonalInformationComponent from "./UserCRUD/UserInformationComponent";
@@ -97,7 +97,11 @@ export default class AdminBoardComponent extends Component<Props, State> {
                       </li>
                     );
                   })}
-                  <li onClick={() => AuthService.logout()}>Logout</li>
+                  <li onClick={() => AuthService.logout()}>
+                  <button type="submit" className="btn btn-primary">
+                    Logout
+                  </button>
+                  </li>
                 </ul>
               </nav>
             </div>

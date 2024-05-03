@@ -1,19 +1,33 @@
-# Use a base image containing Node.js and npm
-FROM node:alpine
-# Set the working directory in the container
+FROM node:alpine as build
+
 WORKDIR /app
 
-# Copy the package.json and package-lock.json into the container
-COPY package*.json ./
+# Copy package.json and package-lock.json separately to leverage Docker caching
+COPY package.json .
+COPY package-lock.json .
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application files into the container
+# Copy the rest of the application code
 COPY . .
 
-# Expose the port on which the application listens
-EXPOSE 3000
+# Build the application
+RUN npm run build
 
-# Start the React application
-CMD ["npm", "run", "dev"]
+# Remove development dependencies
+RUN npm install --omit=dev
+
+# Use unprivileged image for security
+FROM nginxinc/nginx-unprivileged
+
+# Configuration file
+COPY nginx.conf /etc/nginx/nginx.conf
+
+COPY --from=build /app/dist /usr/share/nginx/html
+
+EXPOSE 8080
+
+USER nginx
+
+CMD ["nginx", "-g", "daemon off;"]

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import IUser from "../../../types/user.type";
-import adminService from "../../../services/admin.service";
+import AdminService from "../../../services/AdminService";
 import Loader from "../../loader/loader.component";
+import "./UpdateUser.css"
 
 const UpdateUser = () => {
   const { userId } = useParams();
@@ -19,7 +20,7 @@ const UpdateUser = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await adminService.getUserById(String(userId));
+        const response = await AdminService.getUserById(String(userId));
         setUser(response.data);
       } catch (error) {
         throw new Error("Error getting user: " + error);
@@ -50,7 +51,7 @@ const UpdateUser = () => {
     event.preventDefault();
     try {
       console.log(changes);
-      await adminService.updateUserInformation(
+      await AdminService.updateUserInformation(
         String(userId),
         JSON.stringify(changes)
       );
@@ -67,8 +68,9 @@ const UpdateUser = () => {
     <React.Fragment>
       <h1>Update User</h1>
       <div className="board-container">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="update-user-form">
           {fields.map((field) => (
+            <div className="form-group">
             <label key={field.name}>
               {field.label}:
               <input
@@ -76,10 +78,12 @@ const UpdateUser = () => {
                 name={field.name}
                 value={user[field.name as keyof IUser]}
                 onChange={handleChange}
+                className="form-control"
               />
             </label>
+            </div>
           ))}
-          <button type="submit">Update</button>
+          <button type="submit" className="btn btn-primary">Update</button>
         </form>
       </div>
     </React.Fragment>

@@ -9,7 +9,7 @@ header {
   background-color: #0000007a;
   justify-content: space-between;
   align-items: center;
-  padding: 1% 5%;
+  padding: 2em 5em;
   color: white;
   width: 100%;
 }
@@ -67,7 +67,6 @@ header {
 
 .navbar-overlay-content {
   position: relative;
-  top: 25%;
   width: 100%;
   text-align: center;
   margin-top: 30px;
@@ -95,17 +94,21 @@ header {
   background-color: transparent;
   cursor: pointer;
   filter: invert(100%);
-  font-size: 16px;
   padding: 0;
   margin: 0;
   display: flex;
   align-items: center;
+  font-size: 1.5em;
 }
 
 .navbar-overlay .navbar-close-button {
-  position: absolute;
+  /* position: absolute;
   top: 2.5%;
-  right: 8%;
+  right: 8%; */
+  width: 100%;
+  display: flex;
+  padding: 2em 5em;
+  justify-content: flex-end;
 }
 
 .navbar-link-container {
@@ -142,11 +145,24 @@ header {
   display: flex;
   min-width: 100px;
   justify-content: space-around;
+  align-items: baseline;
+}
+
+.nav-icons>li>.navbar-cart>svg:hover {
+  color: #ff8000;
+}
+
+.nav-icons>li>.navbar-wishlist>svg:hover {
+  color: red;
 }
 
 .logo {
   text-decoration: none;
   color: white;
+}
+
+.cart-icon, .heart-icon {
+  font-size: 1.3em;
 }
 
 @keyframes slide {
@@ -164,4 +180,22 @@ header {
     top: 15px;
     right: 35px;
   }
+}
+
+@media screen and (min-width: 320px) and (max-width: 479px) {
+  /* Styles pour les écrans mobiles entre 320px et 479px */
+  .navbar {
+    padding: 1em 2em;
+  }
+  .cart-icon, .heart-icon {
+    font-size: 1em;
+  }
+  .navbar-open-button,.navbar-close-button {
+  font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  /* Styles pour les tablettes entre 768px et 991px */
+  
 }

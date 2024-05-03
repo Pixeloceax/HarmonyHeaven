@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import IProduct from "../../../types/product.type";
-import adminService from "../../../services/admin.service";
+import AdminService from "../../../services/AdminService";
 
 type Props = object;
 
@@ -36,7 +36,7 @@ export default class CreateProduct extends Component<Props, State> {
     const formData = new FormData(form);
     const product = Object.fromEntries(formData.entries());
     try {
-      await adminService.createProduct(product);
+      await AdminService.createProduct(product);
       form.reset();
     } catch (error) {
       throw new Error("Error creating product: " + error);
@@ -51,18 +51,19 @@ export default class CreateProduct extends Component<Props, State> {
           <form onSubmit={this.handleSubmit}>
             {this.fields.map((field) => {
               return (
-                <div key={field.name}>
+                <div key={field.name} className="form-group">
                   <label htmlFor={field.name}>{field.label}</label>
                   <input
                     type={field.type}
                     id={field.name}
                     name={field.name}
                     required
+                    className="form-control"
                   />
                 </div>
               );
             })}
-            <button type="submit">Create Product</button>
+            <button type="submit" className="btn btn-primary">Create Product</button>
           </form>
         </div>
       </React.Fragment>

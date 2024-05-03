@@ -62,7 +62,7 @@ class Wishlist extends React.Component<Props, State> {
 
   addToCart = async (product: IWishlistItem) => {
     try {
-      // Add logic to add the product to cart
+      console.log(product);
     } catch (error) {
       console.error("Error adding product to cart:", error);
     }
@@ -71,8 +71,9 @@ class Wishlist extends React.Component<Props, State> {
   calculateTotalPrice = (wishlist: IWishlistItem[] | null) => {
     if (!wishlist) return;
     let totalPrice = 0;
+
     wishlist.forEach((item) => {
-      totalPrice += item.price;
+      if (item.price) totalPrice += item.price;
     });
     this.setState({ totalPrice });
   };

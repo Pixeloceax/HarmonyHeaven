@@ -1,0 +1,20 @@
+.update-user-form {
+    width: 500px;
+}
+
+.form-group>label {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-control {
+    order: 3;
+  background-color: white;
+  border: 1px solid #d3d3d3;
+  height: 48px;
+  width: 480px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}

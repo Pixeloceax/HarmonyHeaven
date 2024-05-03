@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import adminService from "../../../services/admin.service";
-import AuthService from "../../../services/auth.service";
+import AdminService from "../../../services/AdminService";
+import AuthService from "../../../services/AuthService";
 import IUser from "../../../types/user.type";
 import Loader from "../../loader/loader.component";
 import "../AdminBoard.css";
 import { Link } from "react-router-dom";
+import { MdModeEditOutline, MdDelete } from "react-icons/md";
 
 type Props = object;
 type State = {
@@ -29,7 +30,7 @@ export default class UsersInformationComponent extends Component<Props, State> {
 
   async componentDidMount() {
     try {
-      const getAllUsers = await adminService.getAllUsers();
+      const getAllUsers = await AdminService.getAllUsers();
       const user = await AuthService.getCurrentUser();
       if (!user || !getAllUsers) {
         this.setState({ redirect: "/login" });
@@ -52,7 +53,7 @@ export default class UsersInformationComponent extends Component<Props, State> {
         {currentUser || getAllUsers ? (
           <>
             <h1>info</h1>
-            <table>
+            <table className="users-table">
               <tbody>
                 <tr>
                   <th>Name</th>
@@ -71,17 +72,18 @@ export default class UsersInformationComponent extends Component<Props, State> {
                     <td>{user.phone}</td>
                     <td>{user.roles}</td>
                     <td>
-                      <button className="board-edit-button">
-                        <Link to={`/admin/user/${user.id}`}>Edit</Link>
+                      <button className="board-button board-edit-button">
+                        <Link to={`/admin/user/${user.id}`}><MdModeEditOutline /> Edit</Link>
                       </button>
                     </td>
                     <td>
                       <button
                         onClick={() => {
-                          adminService.deleteUser(user.id);
+                          AdminService.deleteUser(user.id);
                         }}
-                        className="board-edit-button"
+                        className="board-button board-delete-button"
                       >
+                        <MdDelete />
                         Delete
                       </button>
                     </td>

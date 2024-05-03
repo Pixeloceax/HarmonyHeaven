@@ -2,7 +2,6 @@
   margin: 20px;
   padding: 20px;
   background-color: #f9f9f9;
-  height: 100vh;
   margin: 3rem 5rem 0 3rem;
   padding: 2rem;
 }
@@ -35,12 +34,12 @@
   color: #666;
 }
 
-.item-actions {
+.item-action {
   display: flex;
-  align-items: center;
+  align-items: baseline;
 }
 
-.item-actions label {
+.item-action label {
   margin-right: 10px;
 }
 
@@ -49,14 +48,22 @@
   margin-right: 10px;
 }
 
-.item-actions button:hover {
-  background-color: #d9534f;
+.item-action button {
+  background-color: #ff5400;
+  padding: 0.8em 1em;
+  border-radius: 10px;
+}
+
+.item-action button:hover {
+  background-color: #ff8000;
+  color: white;
 }
 
 .total-price {
   color: #333;
   margin-top: 20px;
   font-size: 20px;
+  margin-bottom: 10px;
 }
 
 .submit-button {
@@ -79,7 +86,7 @@
   color: #333;
 }
 
-.item-actions > label {
+.item-action > label {
   color: #333;
 }
 
@@ -89,4 +96,10 @@
   border-bottom: #333 2px dashed;
   background-color: #c3c3c381;
   padding: 1rem;
+}
+
+.cart-confirm {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
 }

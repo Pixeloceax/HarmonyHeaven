@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import {
   CardNumberElement,
@@ -9,6 +10,10 @@ import {
 import axios from "axios";
 import "./CheckoutForm.css";
 import authHeader from "../../services/AuthHeader";
+import Loader from "../loader/loader.component";
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const PAY_URL = import.meta.env.VITE_PAY;
 
 interface CheckoutFormProps {
   amount: number;
@@ -27,18 +32,18 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   const stripe = useStripe();
   const elements = useElements();
 
-  if (!stripe || !elements) {
-    return <div>Loading...</div>;
-  }
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsProcessing(true);
 
     try {
       const customerName = (event.target as any).name.value;
+      if (!customerName) {
+        throw new Error("Please provide a name.");
+      }
+
       const response = await axios.post(
-        "http://localhost:8000/pay",
+        `${BACKEND_URL}${PAY_URL}`,
         { amount, description, customerName },
         { headers: authHeader() }
       );
@@ -46,7 +51,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
       const result = await stripe?.confirmCardPayment(clientSecret, {
         payment_method: {
-          card: elements.getElement(CardNumberElement) as any,
+          card: elements!.getElement(CardNumberElement)!,
           billing_details: {
             name: customerName,
           },
@@ -59,9 +64,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
       onSuccess(result);
     } catch (error) {
-      const typedError = error as Error;
-      // traitez l'erreur en tant qu'instance de la classe Error
-      console.error(typedError.message);
+      onError(error);
     }
 
     setIsProcessing(false);
@@ -69,6 +72,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
   return (
     <form className="pay-form" onSubmit={handleSubmit}>
+      {isProcessing && <Loader />}
       <div className="card-element-container">
         <span className="card-info">Card number</span>
         <CardNumberElement

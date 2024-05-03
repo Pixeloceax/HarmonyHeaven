@@ -1,11 +1,12 @@
 import { Component } from "react";
-import AuthService from "../../services/auth.service";
+import AuthService from "../../services/AuthService";
 import IUser from "../../types/user.type";
 import "./Narvbar.css";
 import logo from "../../assets/icons/png/LOGO sans texte.png";
-import cartService from "../../services/cart.service";
+import CartService from "../../services/CartService";
 import { ImCart } from "react-icons/im";
 import { GoHeartFill } from "react-icons/go";
+import { IconContext } from "react-icons";
 
 interface State {
   error: string | null;
@@ -21,18 +22,24 @@ class Navbar extends Component<object, State> {
     this.state = {
       error: null,
       currentUser: null,
-      cartTotal: cartService.getCartTotalItems(),
+      cartTotal: 0,
     };
     this.updateCartTotal = this.updateCartTotal.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
-  componentDidMount() {
+  async getCartTotal() {
+    const cartTotal = await CartService.getCartTotalItems();
+    this.setState({ cartTotal });
+  }
+
+  async componentDidMount() {
     this.fetchCurrentUser();
-    cartService.subscribe(this.updateCartTotal);
+    CartService.subscribe(this.updateCartTotal);
   }
 
   componentWillUnmount() {
-    cartService.unsubscribe(this.updateCartTotal);
+    CartService.unsubscribe(this.updateCartTotal);
   }
 
   async fetchCurrentUser() {
@@ -65,8 +72,8 @@ class Navbar extends Component<object, State> {
     }
   }
 
-  updateCartTotal() {
-    this.setState({ cartTotal: cartService.getCartTotalItems() });
+  async updateCartTotal() {
+    this.setState({ cartTotal: await CartService.getCartTotalItems() });
   }
 
   render() {
@@ -78,13 +85,17 @@ class Navbar extends Component<object, State> {
             <div className="nav-icons">
               <li>
                 <a className="navbar-cart" href="/cart">
-                  <ImCart />
+                  <IconContext.Provider value={{ className: "cart-icon"}}>
+                    <ImCart />
+                  </IconContext.Provider>
                   <p>{cartTotal}</p>
                 </a>
               </li>
               <li>
                 <a className="navbar-wishlist" href="/wishlist">
-                  <GoHeartFill />
+                  <IconContext.Provider value={{ className: "heart-icon"}}>
+                    <GoHeartFill />
+                  </IconContext.Provider>
                 </a>
               </li>
             </div>

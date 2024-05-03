@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import IProduct from "../../../types/product.type";
-import adminService from "../../../services/admin.service";
+import AdminService from "../../../services/AdminService";
 import Loader from "../../loader/loader.component";
 import { Link } from "react-router-dom";
 import IGenre from "../../../types/genreType";
 import IStyle from "../../../types/styleType";
 import "../AdminBoard.css";
+import { MdModeEditOutline, MdDelete } from "react-icons/md";
 
 type Props = object;
 
@@ -23,7 +24,7 @@ export default class ProductComponent extends Component<Props, State> {
 
   async componentDidMount() {
     try {
-      const products = await adminService.getAllProducts();
+      const products = await AdminService.getAllProducts();
       const firstFiveProducts = products.slice(10, 15);
       this.setState({
         products: firstFiveProducts,
@@ -39,7 +40,7 @@ export default class ProductComponent extends Component<Props, State> {
     return (
       <React.Fragment>
         <h2>Products</h2>
-        <button>
+        <button className="add-product-btn-container">
           <Link to={`/admin/new-product`}>Add Product</Link>
         </button>
         {products ? (
@@ -69,7 +70,6 @@ export default class ProductComponent extends Component<Props, State> {
                 <tr key={product.id}>
                   <td>
                     <img
-                      style={{ width: "100px" }}
                       src={product.image}
                       alt={product.name}
                     />
@@ -108,14 +108,21 @@ export default class ProductComponent extends Component<Props, State> {
                   </td>
                   <td>
                     <Link to={`/admin/product/${product.id}`}>
-                      <button className="board-edit-button">Edit</button>
+                      <button className="board-button board-edit-button"><MdModeEditOutline />Edit</button>
                     </Link>
                   </td>
                   <td>
                     <button
-                      onClick={() => adminService.deleteProduct(product.id)}
-                      className="board-edit-button"
+                      onClick={() => {
+                        if (product.id !== undefined) {
+                          AdminService.deleteProduct(product.id);
+                        } else {
+                          console.error("Product ID is undefined.");
+                        }
+                      }}
+                      className="board-button board-delete-button"
                     >
+                      <MdDelete />
                       Delete
                     </button>
                   </td>

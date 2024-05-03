@@ -1,0 +1,33 @@
+@startuml deployment e-commerce
+
+!theme blueprint
+left to right direction
+
+Docker_Engine as "Docker Engine"
+
+
+node Client <<web browser>>
+node Docker_Engine <<host>> {
+    node Front <<service>> {
+        node Alpine <<image>> 
+        node Nginx <<image>> 
+        node NodeJS <<image>> 
+    }
+    node Back <<service>> {
+        node Php <<image>> 
+    }
+    node Database <<service>> {
+        node MySQL <<image>> 
+    }
+    node Volume <<volume>> {
+        label "Database & Configuration"
+    }
+}
+
+
+Front --> Back : HTTP
+Back --> Database : TCP/IP
+Volume <.. Database : volume_from
+Client -- Docker_Engine : TCP/IP <<protocol>>
+
+@enduml

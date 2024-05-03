@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import shopService from "../../../services/shop.service";
+import ShopService from "../../../services/ShopService";
 import IProduct from "../../../types/product.type";
 import IGenre from "../../../types/genreType";
 import IStyle from "../../../types/styleType";
 import Loader from "../../loader/loader.component";
-import adminService from "../../../services/admin.service";
+import AdminService from "../../../services/AdminService";
 
 const UpdateProduct = () => {
   const { productId } = useParams();
@@ -29,7 +29,7 @@ const UpdateProduct = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const product = await shopService.getProductById(Number(productId));
+        const product = await ShopService.getProductById(Number(productId));
         setProduct(product);
       } catch (error) {
         throw new Error("Error getting product: " + error);
@@ -60,7 +60,7 @@ const UpdateProduct = () => {
     event.preventDefault();
     try {
       console.log(changes);
-      await adminService.updateProductsInformation(
+      await AdminService.updateProductsInformation(
         Number(productId),
         JSON.stringify(changes)
       );
@@ -78,6 +78,7 @@ const UpdateProduct = () => {
       <div className="board-container">
         <form onSubmit={handleSubmit}>
           {fields.map((field) => (
+            <div className="form-group">
             <label key={field.name}>
               {field.label}:
               <input
@@ -85,10 +86,12 @@ const UpdateProduct = () => {
                 name={field.name}
                 value={product[field.name as keyof IProduct]}
                 onChange={handleChange}
+                className="form-control"
               />
             </label>
+            </div>
           ))}
-          <label>
+          <label className="genre-array-container">
             Genre du produit:
             {Array.isArray(product.genre) &&
               product.genre.map((genre: IGenre) => (
@@ -98,11 +101,12 @@ const UpdateProduct = () => {
                   name="genre"
                   value={genre.name}
                   readOnly
+                  className="array-form-control"
                 />
               ))}
           </label>
 
-          <label>
+          <label className="genre-array-container">
             Style du produit:
             {Array.isArray(product.style) &&
               product.style.map((style: IStyle) => (
@@ -112,10 +116,11 @@ const UpdateProduct = () => {
                   name="style"
                   value={style.name}
                   readOnly
+                  className="array-form-control"
                 />
               ))}
           </label>
-          <button type="submit">Update product</button>
+          <button type="submit" className="btn btn-primary">Update product</button>
         </form>
       </div>
     </React.Fragment>

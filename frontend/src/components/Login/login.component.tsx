@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import "./login.css";
 import Cat from "../../assets/images/cat.jpg";
 
+import CartService from "../../services/CartService";
 import AuthService from "../../services/AuthService";
 
 type Props = object;
@@ -45,7 +46,8 @@ export default class Login extends Component<Props, State> {
     });
 
     AuthService.login(email, password).then(
-      () => {
+      async () => {
+        await CartService.persistStorage();
         window.location.href = "/user";
       },
       (error) => {
