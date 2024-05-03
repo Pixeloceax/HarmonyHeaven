@@ -1,10 +1,15 @@
 .user-board-container {
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: baseline;
   padding: 1em;
+}
+
+.user-board-nav {
+  position: sticky;
+  top: 13%;
 }
 
 .user-board-nav-items li {
@@ -19,6 +24,17 @@
   font-size: small;
   font-weight: normal;
   cursor: auto;
+}
+
+.user-board-content {
+  min-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.order-historic-container {
+  width: 100%;
 }
 
 .form-control {
@@ -37,3 +53,71 @@
   background-color: #ff8000;
   cursor: pointer;
 }
+
+.btn-user-board {
+  width: 480px;
+}
+
+.command-details-info-container {
+  display: flex;
+  align-items: center;
+  margin: 1.5em 1em 0 0;
+}
+
+.command-details-info-container>img {
+  width: 50px;
+  margin-right: 0.5em;
+}
+
+.order-historic-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1em;
+  margin-top: 4em;
+}
+
+.single-order-container {
+  background-color: #333;
+  padding: 1em;
+  margin: 1em;
+  border-radius: 10px;
+  border: 1px solid #333;
+  position: relative;
+}
+
+.single-order-container:hover {
+  background-color: #555;
+  border: 1px solid white;
+}
+
+.total-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1em 1em 0 0;
+}
+
+.separator {
+  height: 1px;
+  background: linear-gradient(to right, rgba(204, 204, 204, 0), rgba(204, 204, 204, 1), rgba(204, 204, 204, 0));
+  margin: 1em 0;
+  width: 100%;
+}
+
+.single-item-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.status-label {
+  padding: 0.5em;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  font-size: 1em;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
