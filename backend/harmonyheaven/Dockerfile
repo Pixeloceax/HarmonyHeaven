@@ -1,5 +1,5 @@
-# Use a base image with PHP and Apache
-FROM php:8.2-apache
+# Use a base image with PHP
+FROM php:8.2-fpm
 
 # Install the necessary dependencies for Symfony
 RUN apt-get update && apt-get install -y \
@@ -17,13 +17,11 @@ RUN docker-php-ext-install pdo
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install zip
 
-# Enable the Apache mod_rewrite module
-RUN a2enmod rewrite
 
 # Copy the application files into the container
 COPY . /var/www/html
 
-# Set the working directory
+# Set the working directory 
 WORKDIR /var/www/html
 
 # Install the Symfony project dependencies
@@ -36,10 +34,6 @@ RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 
 # Generate autoloading files and assets
 RUN composer dump-autoload --optimize
-RUN php bin/console assets:install --symlink
 
-RUN symfony console cache:clear --env=prod
-
-EXPOSE 8000
-
-CMD symfony server:start
+# Start Symfony server
+CMD ["symfony", "serve", "--no-tls", "--port=8000"]

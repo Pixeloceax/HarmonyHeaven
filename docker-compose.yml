@@ -1,13 +1,13 @@
 services:
   frontend:
-    image: axelvalentin/harmonyheaven:frontend-v1.0.5-2024-04-29
+    image: axelvalentin/harmonyheaven:frontend-v1.0.8-2024-05-02
     ports:
-      - "5200:5200"
+      - "8080:8080"
     networks:
       - app_net
 
   backend:
-    image: axelvalentin/harmonyheaven:backend-v1.0.6-2024-04-29
+    image: axelvalentin/harmonyheaven:backend-v1.0.7-2024-05-03
     ports:
       - "8000:8000"
     environment:
@@ -36,13 +36,13 @@ services:
       - mysql_user
       - mysql_password
 
-  adminer:
-    image: adminer:latest
-    restart: unless-stopped
-    ports:
-      - 8080:8080
-    networks:
-      - app_net
+  # adminer:
+  #   image: adminer:latest
+  #   restart: unless-stopped
+  #   ports:
+  #     - 8080:8080
+  #   networks:
+  #     - app_net
 
 secrets:
   mysql_user:
