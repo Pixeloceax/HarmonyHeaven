@@ -4,6 +4,7 @@
   background-color: #f9f9f9;
   margin: 3rem 5rem 0 3rem;
   padding: 2rem;
+  min-height: 100vh;
 }
 
 .cart-item {
@@ -102,4 +103,31 @@
   display: flex;
   align-items: flex-end;
   flex-direction: column;
+}
+
+.empty-cart-title {
+  color: var(--primary-bg-color);
+  display: flex;
+  align-items: center;
+}
+
+.btn-shop {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-back-to-shop {
+  background-color: #ff5400;
+  color: white;
+  padding: 1em 2em;
+  border-radius: 50px;
+  margin-left: 1em;
+}
+
+.btn-back-to-shop:hover {
+  background-color: #ff8000;
+  color: white;
 }
