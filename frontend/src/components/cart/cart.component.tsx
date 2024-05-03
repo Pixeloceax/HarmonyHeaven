@@ -133,7 +133,13 @@ const Cart = () => {
   return (
     <div className="cart-container">
       {Array.isArray(userCart) && userCart.length === 0 && (
-        <h2 className="empty-cart-title"> Your cart is empty, return to  <button className="btn btn-shop btn-back-to-shop"><Link to={"/shop"}> Shop ? </Link></button></h2>
+        <h2 className="empty-cart-title">
+          {" "}
+          Your cart is empty, return to{" "}
+          <button className="btn btn-shop btn-back-to-shop">
+            <Link to={"/shop"}> Shop ? </Link>
+          </button>
+        </h2>
       )}
       {Array.isArray(userCart) &&
         userCart.map((item: CartItem) => {
