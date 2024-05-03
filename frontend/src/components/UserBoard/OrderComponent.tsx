@@ -50,7 +50,6 @@ const formatDate = (date: string) => {
   return `${day}/${month}/${year}`;
 };
 
-
 const OrderComponent = () => {
   const [orders, setOrders] = useState<Order[]>([]);
 
@@ -66,7 +65,7 @@ const OrderComponent = () => {
               headers: AuthHeader(),
             }
           );
-          console.log('historique commande : ', response);
+          console.log("historique commande : ", response);
           setOrders(response.data);
         }
       } catch (err) {
@@ -84,33 +83,41 @@ const OrderComponent = () => {
           <React.Fragment key={order.id}>
             <div className="order-historic-header">
               <h3>Numéro de commande • {order["tracking-details"]}</h3>
-              <div className="delivery-date-container">Date de livraison : {formatDate(order["delivery-date"].date)}</div>
+              <div className="delivery-date-container">
+                Date de livraison : {formatDate(order["delivery-date"].date)}
+              </div>
             </div>
             <div key={order.id} className="single-order-container">
-              <div className="status-label" style={{ backgroundColor: getStatusColor(order.status) }}>{getOrderStatus(order.status)}</div>
-              {order["order-detail"].map((detail: Order["order-detail"][0], index: number) => (
-                <React.Fragment key={detail.product}>
-                  <li className="command-details-info-container">
-                    <img src={detail.img} alt={detail.product} />
-                    <div className="single-item-info">
-                      <div>
-                        {detail.product} x{detail.quantity}
+              <div
+                className="status-label"
+                style={{ backgroundColor: getStatusColor(order.status) }}
+              >
+                {getOrderStatus(order.status)}
+              </div>
+              {order["order-detail"].map(
+                (detail: Order["order-detail"][0], index: number) => (
+                  <React.Fragment key={detail.product}>
+                    <li className="command-details-info-container">
+                      <img src={detail.img} alt={detail.product} />
+                      <div className="single-item-info">
+                        <div>
+                          {detail.product} x{detail.quantity}
+                        </div>
+                        <div>{detail.price.toFixed(2)}€</div>
                       </div>
-                      <div>
-                        {detail.price}€
-                      </div>
-                    </div>
-                  </li>
-                  {index < order["order-detail"].length - 1 && <div className="separator" />}
-                </React.Fragment>
-              ))}
+                    </li>
+                    {index < order["order-detail"].length - 1 && (
+                      <div className="separator" />
+                    )}
+                  </React.Fragment>
+                )
+              )}
 
               <div className="separator"></div>
               <div className="total-container">
-                <h3>Total :</h3> {(order.total).toFixed(2)}€
+                <h3>Total :</h3> {order.total.toFixed(2)}€
               </div>
             </div>
-            
           </React.Fragment>
         ))}
       </div>
