@@ -109,6 +109,11 @@ order:
   controller: App\Controller\CartController::order
   methods: POST
 
+order-historic:
+  path: /order-historic
+  controller: App\Controller\OrderController::orderHistoric
+  methods: GET
+
 # USER BOARD
 
 get-order:

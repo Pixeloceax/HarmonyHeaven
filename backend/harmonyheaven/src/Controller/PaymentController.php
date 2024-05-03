@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Receipt;
 use App\Repository\CommandRepository;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
@@ -29,7 +30,12 @@ class PaymentController extends AbstractController
         $decodedJwtToken = $jwtEncoder->decode($authToken);
         $userId = $decodedJwtToken['id'];
         $user = $userRepository->findOneBy(['id' => $userId]);
-        
+
+        // Vérifier qu'une adresse de livraison est bien renseignée
+        if (!array_key_exists('address', $data)) {
+            return new JsonResponse(['error' => 'Vous devez choisir une addresse de livraison'], 401);
+        }
+
         // Récupérez cartData du corps de la requête POST
         $totalPrice = $data['amount'];
 
@@ -65,22 +71,32 @@ class PaymentController extends AbstractController
         $decodedJwtToken = $jwtEncoder->decode($authToken);
         $userId = $decodedJwtToken['id'];
         $user = $userRepository->findOneBy(['id' => $userId]);
+        $address = $data['address'];
 
         // Récuperer la commande, la livraison et le paiement à update
         $command = $commandRepository->findOneBy(['id' => $idOrder]);
         $delivery = $command->getDelivery();
         $payment = $command->getPayment();
 
+        // Ajouter l'adresse
+        $delivery->setAddress($address);
+
+        //Créer une facture
+        $receipt = new Receipt();
+        $receipt->setCommand($command);
+        $receipt->setReceiptNumber($delivery->getTrackingDetails());
+
         // Update les statuts
         $command->setStatut(1);
         $delivery->setStatus(1);
         $payment->setStatus(1);
         $entityManager->persist($command);
+        $entityManager->persist($receipt);
         $entityManager->persist($delivery);
         $entityManager->persist($payment);
         $entityManager->flush();
 
         // Envoyez le clientSecret au client (par exemple, en tant que réponse JSON)
-        return new JsonResponse(['Statuts mis à jour']);
+        return new JsonResponse(['Statut mis à jour']);
     }
 }

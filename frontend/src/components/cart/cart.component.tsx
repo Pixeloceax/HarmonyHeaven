@@ -5,6 +5,7 @@ import axios from "axios";
 import AuthHeader from "../../services/AuthHeader";
 import AuthService from "../../services/AuthService";
 import CartService from "../../services/CartService";
+import { Link } from "react-router-dom";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const UPDATE_CART_ITEM = import.meta.env.VITE_UPDATE_CART_ITEM;
 const UPDATE_STOCK = import.meta.env.VITE_UPDATE_STOCK;
@@ -132,7 +133,7 @@ const Cart = () => {
   return (
     <div className="cart-container">
       {Array.isArray(userCart) && userCart.length === 0 && (
-        <h1>Your cart is empty, return to Shop?</h1>
+        <h2 className="empty-cart-title"> Your cart is empty, return to  <button className="btn btn-shop btn-back-to-shop"><Link to={"/shop"}> Shop ? </Link></button></h2>
       )}
       {Array.isArray(userCart) &&
         userCart.map((item: CartItem) => {

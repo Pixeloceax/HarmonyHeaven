@@ -448,7 +448,7 @@ class CartController extends AbstractController
     private function createNewCommand($user, $existingCart, $entityManager, $totalAmount)
     {
         // Livraison
-        $delivery = $this->createDelivery($user, $entityManager, $totalAmount);
+        $delivery = $this->createDelivery($entityManager, $totalAmount);
 
         // Main Command entity
         $command = new Command();
@@ -564,14 +564,14 @@ class CartController extends AbstractController
         return new JsonResponse($response, 200);
     }
 
-    private function createDelivery($user, $entityManager, $totalAmount)
+    private function createDelivery($entityManager, $totalAmount)
     {
         $delivery = new Delivery();
-        $delivery->setAddress($user->getAddress());
         $delivery->setStatus(0);
         $delivery->setDeliveryDate(new DateTime());
         $delivery->setDeliveryCost($totalAmount);
-        $delivery->setTrackingDetails('jhjhhhbdj');
+        $delivery->setDeliveryMethod('FedEx');
+        $delivery->setTrackingDetails(substr(uniqid(), -8));
         $entityManager->persist($delivery);
         return $delivery;
     }
