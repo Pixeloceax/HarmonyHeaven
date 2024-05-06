@@ -35,17 +35,77 @@ color: #666;
 margin: 0;
 }
 
-.command-actions>button {
-background-color: #ff6347;
-padding: 5px 10px;
+.btn-default {
+padding: 10px 20px;
+background-color: #333;
 color: #fff;
 border: none;
-border-radius: 3px;
+border-radius: 5px;
 cursor: pointer;
+transition: background-color 0.3s;
+}
+
+.remove-btn {
+background-color: #ff5400;
+padding: 0.8em 1em;
+border-radius: 10px;
+}
+
+.remove-btn:hover {
+background-color: #ff8000;
+color: white;
+}
+
+.delivery-address, .delivery-date {
+color: #333;
 }
 
 .delivery-address {
+text-align: center;
+margin-bottom: 0.5em;
+}
+
+.delivery-address-container {
+margin-right: 1em;
+}
+
+.delivery-address-header-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.separator {
+height: 1px;
+background: linear-gradient(to right, rgba(204, 204, 204, 0), rgba(204, 204, 204, 1), rgba(204, 204, 204, 0));
+margin: 1em 0;
+width: 100%;
+}
+
+.form-control {
+order: 3;
+background-color: white;
+border: 1px solid #d3d3d3;
+height: 48px;
+width: 480px;
+padding-left: 24px;
+padding-right: 24px;
+padding-top: 12px;
+padding-bottom: 12px;
+}
+
+.delivery-container {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.remember-address-container {
 color: #333;
-margin-top: 20px;
-font-size: 20px;
+display: flex;
+margin-top: 0.5em;
+}
+
+.remember-address-container>input {
+margin-right: 0.5em;
 }

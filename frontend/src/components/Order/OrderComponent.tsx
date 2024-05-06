@@ -8,6 +8,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UserService from "../../services/UserService";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const GET_ORDER = import.meta.env.VITE_GET_ORDER;
 const UPDATE_STATUTS = import.meta.env.VITE_UPDATE_STATUTS;
@@ -36,10 +37,21 @@ interface OrderState {
 
 const Order = () => {
   const [address, setAddress] = useState("");
+  const [rememberAddress, setRememberAddress] = useState(false);
   const [orderState, setOrderState] = useState<OrderState>({
     orderItems: [],
     totalPrice: 0,
     idOrder: 0,
+  });
+
+  const now = new Date();
+  const deliveryDate = new Date(now.getTime());
+  deliveryDate.setDate(now.getDate() + 2);
+  const deliveryDateString = deliveryDate.toLocaleString('fr-FR', {
+    weekday: 'long',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
   });
 
   useEffect(() => {
@@ -55,8 +67,10 @@ const Order = () => {
             totalPrice: calculateTotalPrice(response.data.order),
             idOrder: response.data.idOrder,
           });
+          console.log('adresse avant de vérif si existe :', response.data.address)
           if (response.data.address) {
             setAddress(response.data.address);
+            console.log('adresse après vérif si existe et mis ds state:', response.data.address)
           }
         } else {
           console.error("Invalid order data:", response.data);
@@ -83,17 +97,32 @@ const Order = () => {
   const handlePaymentSuccess = (response: any) => {
     console.log("Payment successful:", response);
     // Traitez le paiement réussi ici
-    axios.post(`${BACKEND_URL}${UPDATE_STATUTS}/${orderState.idOrder}`, null, {
-      headers: AuthHeader(),
-    });
+    axios.post(
+      `${BACKEND_URL}${UPDATE_STATUTS}/${orderState.idOrder}`,
+      {
+        address: address,
+      },
+      {
+        headers: AuthHeader(),
+      }
+    );
+
+    if (rememberAddress) {
+      UserService.updateUserBoard(address); // Passer l'adresse en tant que chaîne de caractères
+    }
+
     toast.success("Paiement effectué. Merci pour votre achat.");
     //Rediriger ( vers l'historique des commandes par exemple )
   };
 
   const handlePaymentError = (error: any) => {
     console.error("Payment error:", error);
-    // Traitez l'erreur de paiement ici
-    toast.error("Un problème est survenu.");
+
+    if (error.response && error.response.status === 401) {
+      toast.error(error.response.data.error);
+    } else {
+      toast.error("Un problème est survenu lors du paiement.");
+    }
   };
 
   return (
@@ -120,7 +149,7 @@ const Order = () => {
                 </option>
               ))}
             </select>
-            <button>Remove</button>
+            <button className="remove-btn btn-default">Remove</button>
           </div>
         </div>
       ))}
@@ -130,17 +159,39 @@ const Order = () => {
         </h2>
       </div>
 
-      <h2 className="delivery-address">Adresse de livraison</h2>
-      <input
-        type="text"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-      />
+      <div className="separator" />
+
+      <div className="delivery-container">
+        <div className="delivery-address-container">
+          <div className="delivery-address-header-container">
+            <h4 className="delivery-address">Adresse de livraison</h4>
+            <input
+              type="text"
+              className="form-control"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+          </div>
+          <div className="remember-address-container">
+            <input
+              type="checkbox"
+              checked={rememberAddress}
+              onChange={(e) => setRememberAddress(e.target.checked)}
+            />
+            <h5>Choisir cette adresse comme addresse de livraison pour mes futurs achats</h5>
+          </div>
+        </div>
+        
+        <h4 className="delivery-date">Livraison prévue le <em>{deliveryDateString}</em></h4>
+      </div>
+
+      <div className="separator" />
 
       <Elements stripe={stripePromise}>
         <CheckoutForm
           amount={orderState.totalPrice * 100}
           description="Commande de produits"
+          address={address}
           onSuccess={handlePaymentSuccess}
           onError={handlePaymentError}
         />

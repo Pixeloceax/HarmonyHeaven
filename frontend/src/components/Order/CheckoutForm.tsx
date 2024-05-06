@@ -18,6 +18,7 @@ const PAY_URL = import.meta.env.VITE_PAY;
 interface CheckoutFormProps {
   amount: number;
   description: string;
+  address: string;
   onSuccess: (response: any) => void;
   onError: (error: any) => void;
 }
@@ -25,6 +26,7 @@ interface CheckoutFormProps {
 const CheckoutForm: React.FC<CheckoutFormProps> = ({
   amount,
   description,
+  address,
   onSuccess,
   onError,
 }) => {
@@ -44,7 +46,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
       const response = await axios.post(
         `${BACKEND_URL}${PAY_URL}`,
-        { amount, description, customerName },
+        { amount, description, customerName, address },
         { headers: authHeader() }
       );
       const { clientSecret } = response.data;

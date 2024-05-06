@@ -88,6 +88,11 @@
         + setEmptyCart()
     }
 
+    class Cart_item {
+        + Int id
+        + Int quantity
+    }
+
     class Wishlist {
         + Int id
         + User user_id
@@ -98,6 +103,11 @@
         + addProductToWishlist()
         + updateWishlist()
         + removeProductFromWishlist()
+    }
+
+    class Wishlist_item {
+        + Int id
+        + Int quantity
     }
 
     class Command {
@@ -113,6 +123,11 @@
         + cancelCommand()
         + getStatus()
         + updateStatus()
+    }
+
+    class Command_item {
+        + Int id
+        + Int quantity
     }
 
     class Receipt {
@@ -153,30 +168,35 @@
         + getDeliveryCost()
     }
 
-    'Un User peut avoir plusieurs Cart et Command (OneToMany)
 
-    User "1" -- "0..*" Cart
+    User "1" -- "*" Cart
 
-    User "1" -- "0..*" Wishlist
+    Cart "1" -- "*" Cart_item
 
-    User "1" -- "0..*" Command 
+    Cart_item "*" -- "1..*" Product
 
-    'Un Product peut être dans plusieurs Cart et Command, et peut avoir plusieurs Genre et Style (ManyToMany)
+    User "1" -- "*" Wishlist
 
-    Product "*" -- "0..*" Cart 
+    Wishlist "1" -- "*" Wishlist_item
 
-    Product "*" -- "0..*" Command 
+    Wishlist_item "*" -- "1..*" Product
 
-    Product "*" -- "0..*" Genre 
+    User "1" -- "*" Command 
 
-    Product "*" -- "0..*" Style 
 
-    'Une Command a un Receipt, un Payment et un Delivery (OneToOne)
+    Product "*" -- "*" Genre 
 
-    Command "1" -- "1" Receipt 
+    Product "*" -- "*" Style 
 
-    Command "1" -- "1" Payment 
 
-    Command "1" -- "1" Delivery 
-&
+    Command "1" -- "*" Receipt 
+
+    Command "1" -- "*" Payment 
+
+    Command "1" -- "*" Delivery 
+
+    Command "1" -- "1..*" Command_item
+
+    Command_item "1..*" -- "1..*" Product
+
     @enduml
